@@ -21,7 +21,7 @@ public class Application {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String helloWorld() {
-        return "The application is running.";
+        return "The application is running. This is SoPra FS 21 Group 16";
     }
 
     @Bean

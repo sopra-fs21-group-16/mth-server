@@ -25,32 +25,81 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public List<UserGetDTO> getAllUsers() {
-        // fetch all users in the internal representation
-        List<User> users = userService.getUsers();
-        List<UserGetDTO> userGetDTOs = new ArrayList<>();
-
-        // convert each user to the API representation
-        for (User user : users) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-        }
-        return userGetDTOs;
-    }
-
-    @PostMapping("/users")
+    //Schedule - to get ScheduledActivity after a successful session
+    @PostMapping("/schedules/{sessionId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
-        // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+    public void getScheduledActivity(@PathVariable Long sessionId, @RequestHeader("Authorization")String token) {
+        //only if the sent token is in the rep, the POST request will be successful
+        userService.authorizationCheck(token);
 
-        // create user
-        User createdUser = userService.createUser(userInput);
-
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        /*
+        return scheduledActivity
+         */
     }
+
+    //Schedule - To get all matched activities and start a scheduling session
+    @GetMapping("/schedules/")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void getListOfActivitiesAndSessionID(@RequestHeader("Authorization")String token) {
+        //only if the sent token is in the rep, the GET request will be successful
+        userService.authorizationCheck(token);
+
+        /*
+        in UserService:
+        if some paramaters are no longer true e.g. other user went offline etc.
+        throw ResponseStatusException "410 GONE"
+         */
+
+        /*
+        return List<Activity> and sessionId
+         */
+    }
+
+    //Schedule - To get proposed locations/dates etc. during a Session
+    @GetMapping("/schedules/{sessionId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void getProposedInformation(@PathVariable Long sessionId, @RequestHeader("Authorization")String token) {
+        //only if the sent token is in the rep, the GET request will be successful
+        userService.authorizationCheck(token);
+
+        /*
+        return updated SchedulingSession
+         */
+    }
+
+    //Schedule - To set proposed locations/dates etc. during a Session
+    @PutMapping("/schedules/{sessionId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void setProposedInformation(@PathVariable Long sessionId, @RequestHeader("Authorization")String token) {
+        //only if the sent token is in the rep, the PUT request will be successful
+        userService.authorizationCheck(token);
+
+        /*
+        in UserService:
+        if trying to access a non-existing session
+        throw ResponseStatusException "400 BAD REQUEST"
+         */
+    }
+
+    //Schedule - To delete a scheduledActivity
+    @DeleteMapping("/schedules/{sessionId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void deleteScheduledActivity(@PathVariable Long sessionId, @RequestHeader("Authorization")String token) {
+        //only if the sent token is in the rep, the DELETE request will be successful
+        userService.authorizationCheck(token);
+
+        //Update other User information as well (?)
+    }
+
+
+
+
+
+
+
 }

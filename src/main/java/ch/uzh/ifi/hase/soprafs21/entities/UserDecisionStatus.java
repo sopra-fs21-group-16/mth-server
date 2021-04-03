@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
+import ch.uzh.ifi.hase.soprafs21.constant.DecisionStatus;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -21,7 +23,7 @@ public class UserDecisionStatus implements Serializable {
     private User user;
 
     @Column
-    private Boolean decisionStatus;
+    private DecisionStatus decisionStatus;
 
     public User getUser() {
         return user;
@@ -31,11 +33,11 @@ public class UserDecisionStatus implements Serializable {
         this.user = user;
     }
 
-    public Boolean getDecisionStatus() {
+    public DecisionStatus getDecisionStatus() {
         return decisionStatus;
     }
 
-    public void setDecisionStatus(Boolean decisionStatus) {
+    public void setDecisionStatus(DecisionStatus decisionStatus) {
         this.decisionStatus = decisionStatus;
     }
 }

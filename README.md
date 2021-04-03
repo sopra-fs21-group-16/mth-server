@@ -1,4 +1,4 @@
-# SoPra RESTful Service Template FS21
+# MoreThanHey Server
 
 ## Getting started with Spring Boot
 

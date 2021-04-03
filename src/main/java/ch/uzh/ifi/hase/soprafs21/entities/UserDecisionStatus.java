@@ -13,7 +13,6 @@ public class UserDecisionStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // not sure if ID is needed --> maybe needed because every entity in a table needs an ID
     @Id
     @GeneratedValue
     private Long id;

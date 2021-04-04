@@ -24,11 +24,7 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
-    /**
-     * googlePOI was left out, since we have to discuss how the relationship shall be between
-     * the GooglePOI object and the activityPreset --> should one activity have multiple locations, since for example football can be played on multiple locations?
      private GooglePOI googlePOI;
-     */
 
     public Long getId() {
         return id;

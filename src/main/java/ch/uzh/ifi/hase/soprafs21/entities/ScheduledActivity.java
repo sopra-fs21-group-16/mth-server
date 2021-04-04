@@ -35,7 +35,7 @@ public class ScheduledActivity implements Serializable {
         return chosenActivity;
     }
 
-    public void setChosenActivity(UserActivity chosenLocation) {
+    public void setChosenActivity(UserActivity chosenActivity) {
         this.chosenActivity = chosenActivity;
     }
 

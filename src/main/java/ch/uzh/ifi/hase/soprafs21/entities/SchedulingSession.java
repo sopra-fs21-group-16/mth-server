@@ -83,6 +83,12 @@ public class SchedulingSession implements Serializable {
         this.dateList= dateList;
     }
 
+    public Date getChosenDate() {
+        return chosenDate;
+    }
+
+    public void setChosenDate(Date chosenDate) { this.chosenDate = chosenDate; }
+
     /**
      * ToDo
      */

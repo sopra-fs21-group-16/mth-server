@@ -24,7 +24,7 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
-     private GooglePOI googlePOI;
+    private GooglePOI googlePOI;
 
     public Long getId() {
         return id;

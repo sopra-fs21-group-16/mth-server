@@ -29,13 +29,6 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void authorizationCheck(String token){
-        User user = userRepository.findByToken(token);
-        if(user==null){
-            String baseErrorMessage = "Access denied";
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, baseErrorMessage);
-        }
-    }
 
     public List<User> getUsers() {
         return this.userRepository.findAll();

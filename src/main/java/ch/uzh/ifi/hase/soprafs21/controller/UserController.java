@@ -58,7 +58,7 @@ public class UserController {
     @PostMapping("/users/{userId}/logout")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void logout(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public void logout(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 
@@ -70,7 +70,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/overview")
     @ResponseStatus(HttpStatus.OK)
-    public List<Activity> getUserOverview(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public List<Activity> getUserOverview(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 
@@ -83,7 +83,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/ping")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void userPing(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public void userPing(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 
@@ -96,7 +96,7 @@ public class UserController {
 
     @PostMapping("/users/{userId}/profile")
     @ResponseStatus(HttpStatus.OK)
-    public void createUserProfile(@RequestBody User userProfile, @PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public void createUserProfile(@RequestBody User userProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 
@@ -110,7 +110,7 @@ public class UserController {
 
     @PutMapping("/users/{userId}/profile")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUserProfile(@RequestBody User profileUpdates, @PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public void updateUserProfile(@RequestBody User profileUpdates, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 
@@ -123,7 +123,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/profile")
     @ResponseStatus(HttpStatus.OK)
-    public void getUserProfile(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public void getUserProfile(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 

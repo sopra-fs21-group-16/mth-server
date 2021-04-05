@@ -66,7 +66,7 @@ public class UserController {
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);
 
-        // returns all matches and activities in the form of a list of UserActivities
+        // returns all matches and activities in the form of a list of Activities
         userService.getUserOverview(userId);
     }
 

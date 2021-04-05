@@ -35,13 +35,13 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
-        User createdUser = userService.createUser(userInput);
+        //User createdUser = userService.createUser(userInput);
 
         // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
     @PostMapping("/users/login")
@@ -52,7 +52,7 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // checks User input and returns token when successful
-        return userService.loginUser(userPostDTO);
+        //return userService.loginUser(userPostDTO);
     }
 
     @PostMapping("/users/{userId}/logout")
@@ -63,9 +63,9 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // checks if user id and token are from the same user
-        userService.authorizationCheck(userId, token);
+        //userService.authorizationCheck(userId, token);
 
-        return userService.logoutUser(userId);
+        //return userService.logoutUser(userId);
     }
 
     @GetMapping("/users/{userId}/overview")
@@ -75,10 +75,10 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // checks if user id and token are from the same user
-        userService.authorizationCheck(userId, token);
+        //userService.authorizationCheck(userId, token);
 
         // returns all matches and activities in the form of a list of Activities
-        userService.getUserOverview(userId);
+        //userService.getUserOverview(userId);
     }
 
     @GetMapping("/users/{userId}/ping")
@@ -88,7 +88,7 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // checks if user id and token are from the same user
-        userService.authorizationCheck(userId, token);
+        //userService.authorizationCheck(userId, token);
 
         // additional step necessary
 
@@ -102,10 +102,10 @@ public class UserController {
 
 
         // checks if user id and token are from the same user
-        userService.authorizationCheck(userId, token);
+        //userService.authorizationCheck(userId, token);
 
         // creates user profile
-        userService.createUserProfile(userProfile, userId);
+        //userService.createUserProfile(userProfile, userId);
     }
 
     @PutMapping("/users/{userId}/profile")
@@ -115,10 +115,10 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // checks if user id and token are from the same user
-        userService.authorizationCheck(userId, token);
+        //userService.authorizationCheck(userId, token);
 
         // updates user profile
-        userService.updateUserProfile(profileUpdates, userId);
+        //userService.updateUserProfile(profileUpdates, userId);
     }
 
     @GetMapping("/users/{userId}/profile")
@@ -128,10 +128,10 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // checks only the token, because everyone can view a profile
-        userService.authorizationCheckOnlyToken(token);
+        //userService.authorizationCheckOnlyToken(token);
 
         // returns user profile
-        userService.getUserProfile(userId);
+        //userService.getUserProfile(userId);
     }
 
     @GetMapping("/users/{userId}/profile/verify")
@@ -141,7 +141,7 @@ public class UserController {
         throw new UnsupportedOperationException("Not implemented yet");
 
         // verifies Email
-        userService.verifyEmail(verificationToken);
+        //userService.verifyEmail(verificationToken);
 
     }
 

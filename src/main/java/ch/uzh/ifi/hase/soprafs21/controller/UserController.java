@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.entity.User;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
@@ -10,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 /**
  * User Controller
@@ -29,6 +31,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
+
+        throw new UnsupportedOperationException("Not implemented yet");
+
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
@@ -44,6 +49,8 @@ public class UserController {
     @ResponseBody
     public String login(@RequestBody UserPostDTO userPostDTO){
 
+        throw new UnsupportedOperationException("Not implemented yet");
+
         // checks User input and returns token when successful
         return userService.loginUser(userPostDTO);
     }
@@ -52,6 +59,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void logout(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+
+        throw new UnsupportedOperationException("Not implemented yet");
 
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);
@@ -62,6 +71,8 @@ public class UserController {
     @GetMapping("/users/{userId}/overview")
     @ResponseStatus(HttpStatus.OK)
     public List<Activity> getUserOverview(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+
+        throw new UnsupportedOperationException("Not implemented yet");
 
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);
@@ -74,6 +85,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void userPing(@PathVariable Long userId, @RequestHeader("Authorization")String token){
 
+        throw new UnsupportedOperationException("Not implemented yet");
+
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);
 
@@ -84,6 +97,9 @@ public class UserController {
     @PostMapping("/users/{userId}/profile")
     @ResponseStatus(HttpStatus.OK)
     public void createUserProfile(@RequestBody User userProfile, @PathVariable Long userId, @RequestHeader("Authorization")String token){
+
+        throw new UnsupportedOperationException("Not implemented yet");
+
 
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);
@@ -96,6 +112,8 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void updateUserProfile(@RequestBody User profileUpdates, @PathVariable Long userId, @RequestHeader("Authorization")String token){
 
+        throw new UnsupportedOperationException("Not implemented yet");
+
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);
 
@@ -107,16 +125,20 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void getUserProfile(@PathVariable Long userId, @RequestHeader("Authorization")String token){
 
+        throw new UnsupportedOperationException("Not implemented yet");
+
         // checks only the token, because everyone can view a profile
         userService.authorizationCheckOnlyToken(token);
 
         // returns user profile
-        userService.getUserProfile(profileUpdates, userId);
+        userService.getUserProfile(userId);
     }
 
     @GetMapping("/users/{userId}/profile/verify")
     @ResponseStatus(HttpStatus.OK)
     public void verifyUserProfile(@PathVariable Long userId, @RequestBody String verificationToken){
+
+        throw new UnsupportedOperationException("Not implemented yet");
 
         // verifies Email
         userService.verifyEmail(verificationToken);

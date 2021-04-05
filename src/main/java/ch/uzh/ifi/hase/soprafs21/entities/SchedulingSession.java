@@ -93,7 +93,7 @@ public class SchedulingSession implements Serializable {
      */
     public void proposeLocation(String location){ }
 
-    public void proposeDate(Date date){ }
+    public void proposeDate(LocalDateTime date){ }
 
     public void saveScheduledDate(){ }
 

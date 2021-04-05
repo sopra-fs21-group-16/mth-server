@@ -28,7 +28,7 @@ public class ActivityPreset implements Serializable{
     @OneToOne
     private GooglePOI googlePOI;
 
-    ActivityPreset(){
+    public ActivityPreset(){
 
     }
 

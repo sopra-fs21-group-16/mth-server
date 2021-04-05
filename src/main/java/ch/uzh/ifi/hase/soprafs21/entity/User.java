@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs21.entities;
+package ch.uzh.ifi.hase.soprafs21.entity;
 
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 

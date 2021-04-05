@@ -4,9 +4,8 @@ import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-
 
 
 @Entity
@@ -20,10 +19,10 @@ public class SchedulingSession implements Serializable {
     private Long id;
 
     @OneToMany
-    private List<UserActivity> activityList;
+    private List<Activity> activityList;
 
     @Column
-    private UserActivity chosenActivity;
+    private Activity chosenActivity;
 
     @Column
     private List<String> locationList;
@@ -32,10 +31,10 @@ public class SchedulingSession implements Serializable {
     private String chosenLocation;
 
     @Column
-    private List<Date> dateList;
+    private List<LocalDateTime> dateList;
 
     @Column
-    private Date chosenDate;
+    private LocalDateTime chosenDate;
 
     public Long getId() {
         return id;
@@ -45,17 +44,17 @@ public class SchedulingSession implements Serializable {
         this.id = id;
     }
 
-    public List<UserActivity> getUserActivities() {
+    public List<Activity> getUserActivities() {
         return activityList;
     }
 
-    public void setUserActivities(List<UserActivity> activityList) { this.activityList = activityList;}
+    public void setUserActivities(List<Activity> activityList) { this.activityList = activityList;}
 
-    public UserActivity getChosenActivity() {
+    public Activity getChosenActivity() {
         return chosenActivity;
     }
 
-    public void setChosenActivity(UserActivity chosenActivity) {
+    public void setChosenActivity(Activity chosenActivity) {
         this.chosenActivity = chosenActivity;
     }
 
@@ -75,19 +74,19 @@ public class SchedulingSession implements Serializable {
         this.chosenLocation = chosenLocation;
     }
 
-    public List<Date> getDates() {
+    public List<LocalDateTime> getDates() {
         return dateList;
     }
 
-    public void setDates(List<Date> dateList) {
+    public void setDates(List<LocalDateTime> dateList) {
         this.dateList= dateList;
     }
 
-    public Date getChosenDate() {
+    public LocalDateTime getChosenDate() {
         return chosenDate;
     }
 
-    public void setChosenDate(Date chosenDate) { this.chosenDate = chosenDate; }
+    public void setChosenDate(LocalDateTime chosenDate) { this.chosenDate = chosenDate; }
 
     /**
      * ToDo

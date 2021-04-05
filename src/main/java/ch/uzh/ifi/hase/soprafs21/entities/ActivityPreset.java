@@ -28,6 +28,15 @@ public class ActivityPreset implements Serializable{
     @OneToOne
     private GooglePOI googlePOI;
 
+    public ActivityPreset(){
+
+    }
+
+    ActivityPreset(String activityName, ActivityCategory activityCategory){
+        this.activityName = activityName;
+        this.activityCategory = activityCategory;
+    }
+
     public Long getId() {
         return id;
     }
@@ -50,5 +59,13 @@ public class ActivityPreset implements Serializable{
 
     public void setActivityCategory(ActivityCategory activityCategory) {
         this.activityCategory = activityCategory;
+    }
+
+    public GooglePOI getGooglePOI() {
+        return googlePOI;
+    }
+
+    public void setGooglePOI(GooglePOI googlePOI) {
+        this.googlePOI = googlePOI;
     }
 }

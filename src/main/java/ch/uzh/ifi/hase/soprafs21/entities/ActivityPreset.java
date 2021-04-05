@@ -25,14 +25,6 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
-    public GooglePOI getGooglePOI() {
-        return googlePOI;
-    }
-
-    public void setGooglePOI(GooglePOI googlePOI) {
-        this.googlePOI = googlePOI;
-    }
-
     @OneToOne
     private GooglePOI googlePOI;
 
@@ -58,5 +50,13 @@ public class ActivityPreset implements Serializable{
 
     public void setActivityCategory(ActivityCategory activityCategory) {
         this.activityCategory = activityCategory;
+    }
+
+    public GooglePOI getGooglePOI() {
+        return googlePOI;
+    }
+
+    public void setGooglePOI(GooglePOI googlePOI) {
+        this.googlePOI = googlePOI;
     }
 }

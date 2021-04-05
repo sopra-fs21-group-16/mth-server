@@ -24,6 +24,6 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "email", target = "email")
-    @Mapping(source = "online", target = "online")
+    @Mapping(source = "lastSeen", target = "lastSeen")
     UserGetDTO convertEntityToUserGetDTO(User user);
 }

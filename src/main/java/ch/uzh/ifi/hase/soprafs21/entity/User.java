@@ -9,6 +9,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Internal User Representation
@@ -61,7 +63,7 @@ public class User implements Serializable {
     private String profilePicture;
 
     @Column(nullable = false)
-    private UserStatus online;
+    private LocalDateTime lastSeen;
 
     public Long getId() {
         return id;
@@ -71,12 +73,12 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public UserStatus getOnline() {
-        return online;
+    public LocalDateTime getLastSeen() {
+        return lastSeen;
     }
 
-    public void setOnline(UserStatus status) {
-        this.online = status;
+    public void setLastSeen(LocalDateTime time) {
+        this.lastSeen = time;
     }
 
     public String getEmail() {

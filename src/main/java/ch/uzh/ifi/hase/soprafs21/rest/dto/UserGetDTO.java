@@ -1,12 +1,15 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+import org.apache.tomcat.jni.Local;
+
+import java.time.LocalDateTime;
 
 public class UserGetDTO {
 
     private Long id;
     private String email;
-    private UserStatus online;
+    private LocalDateTime lastSeen;
 
     public Long getId() {
         return id;
@@ -24,11 +27,11 @@ public class UserGetDTO {
         this.email = username;
     }
 
-    public UserStatus getOnline() {
-        return online;
+    public LocalDateTime getLastSeen() {
+        return lastSeen;
     }
 
-    public void setOnline(UserStatus status) {
-        this.online = status;
+    public void setLastSeen(LocalDateTime time) {
+        this.lastSeen = time;
     }
 }

@@ -61,7 +61,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/overview")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserActivity> getUserOverview(@PathVariable Long userId, @RequestHeader("Authorization")String token){
+    public List<Activity> getUserOverview(@PathVariable Long userId, @RequestHeader("Authorization")String token){
 
         // checks if user id and token are from the same user
         userService.authorizationCheck(userId, token);

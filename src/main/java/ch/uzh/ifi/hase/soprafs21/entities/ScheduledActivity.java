@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "ScheduledActivity")
@@ -15,13 +15,13 @@ public class ScheduledActivity implements Serializable {
     private Long id;
 
     @Column
-    private UserActivity chosenActivity;
+    private Activity activity;
 
     @Column
-    private String chosenLocation;
+    private String location;
 
     @Column
-    private Date chosenDate;
+    private LocalDateTime date;
 
     public Long getId() {
         return id;
@@ -31,28 +31,28 @@ public class ScheduledActivity implements Serializable {
         this.id = id;
     }
 
-    public UserActivity getChosenActivity() {
-        return chosenActivity;
+    public Activity getActivity() {
+        return activity;
     }
 
-    public void setChosenActivity(UserActivity chosenActivity) {
-        this.chosenActivity = chosenActivity;
+    public void setActivity(Activity activity) {
+        this.activity = activity;
     }
 
-    public String getChosenLocation() {
-        return chosenLocation;
+    public String getLocation() {
+        return location;
     }
 
-    public void setChosenLocation(String chosenLocation) {
-        this.chosenLocation = chosenLocation;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
-    public Date getChosenDate() {
-        return chosenDate;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public void setChosenDate(Date chosenDate) {
-        this.chosenDate = chosenDate;
+    public void setDate(LocalDateTime chosenDate) {
+        this.date = date;
     }
 
 }

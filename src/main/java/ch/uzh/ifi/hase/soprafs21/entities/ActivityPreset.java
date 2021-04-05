@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
+import ch.uzh.ifi.hase.soprafs21.ExternalAPI.GooglePOI;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
+    @OneToOne
     private GooglePOI googlePOI;
 
     public Long getId() {

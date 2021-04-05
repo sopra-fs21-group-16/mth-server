@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
-import ch.uzh.ifi.hase.soprafs21.constant.DecisionStatus;
+import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -10,8 +10,8 @@ import java.io.Serializable;
  * --> has to be an entity in a table otherwise definition of relationship of UserActivity to UserDecisionStatus not possible
  */
 @Entity
-@Table(name = "UserDecisionStatus")
-public class UserDecisionStatus implements Serializable {
+@Table(name = "UserSwipeStatus")
+public class UserSwipeStatus implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -23,7 +23,7 @@ public class UserDecisionStatus implements Serializable {
     private User user;
 
     @Column
-    private DecisionStatus decisionStatus;
+    private SwipeStatus swipeStatus;
 
     public User getUser() {
         return user;
@@ -33,11 +33,11 @@ public class UserDecisionStatus implements Serializable {
         this.user = user;
     }
 
-    public DecisionStatus getDecisionStatus() {
-        return decisionStatus;
+    public SwipeStatus getSwipeStatus() {
+        return swipeStatus;
     }
 
-    public void setDecisionStatus(DecisionStatus decisionStatus) {
-        this.decisionStatus = decisionStatus;
+    public void setSwipeStatus(SwipeStatus swipeStatus) {
+        this.swipeStatus = swipeStatus;
     }
 }

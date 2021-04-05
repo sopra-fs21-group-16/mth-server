@@ -10,8 +10,8 @@ import java.util.List;
  * This class is used to save information about activities and its associated user decisions
  */
 @Entity
-@Table(name = "UserActivity")
-public class UserActivity implements Serializable{
+@Table(name = "Activity")
+public class Activity implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
@@ -27,9 +27,9 @@ public class UserActivity implements Serializable{
     @OneToOne
     private ActivityPreset activityPreset;
 
-    // since two UserDecisionStatus objects are needed per UserActivity
+    // since two UserSwipeStatus objects are needed per UserActivity
     @OneToMany
-    private List<UserDecisionStatus> userDecisionStatusList;
+    private List<UserSwipeStatus> userSwipeStatusList;
 
     public Date getCreationDate() {
         return creationDate;
@@ -47,12 +47,12 @@ public class UserActivity implements Serializable{
         this.activityPreset = activityPreset;
     }
 
-    public List<UserDecisionStatus> getUserDecisionStatusList() {
-        return userDecisionStatusList;
+    public List<UserSwipeStatus> getUserSwipeStatusList() {
+        return userSwipeStatusList;
     }
 
-    public void setUserDecisionStatusList(List<UserDecisionStatus> userDecisionStatusList) {
-        this.userDecisionStatusList = userDecisionStatusList;
+    public void setUserSwipeStatusList(List<UserSwipeStatus> userSwipeStatusList) {
+        this.userSwipeStatusList = userSwipeStatusList;
     }
 
     /**

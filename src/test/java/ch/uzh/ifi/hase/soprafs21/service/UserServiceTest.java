@@ -11,6 +11,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
@@ -34,13 +39,13 @@ public class UserServiceTest {
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
-        // when -> any object is being save in the userRepository -> return the dummy testUser
+        // when -> any object is being saved in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
     }
 
     @Test
     public void createUser_validInputs_success(){
-        // when -> any object is being save in the userRepository -> return the dummy testUser
+        // when -> any object is being saved in the userRepository -> return the dummy testUser
         User createdUser = userService.createUser(testUser);
 
         // then
@@ -50,10 +55,8 @@ public class UserServiceTest {
         assertEquals(testUser.getEmail(), createdUser.getEmail());
         assertEquals(testUser.getName(), createdUser.getName());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
+        assertEquals(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), createdUser.getLastSeen());
         assertNotNull(createdUser.getToken());
-
-        /* ToDo */
-        //assertEquals(UserStatus.ONLINE, createdUser.getStatus());
     }
 
     @Test
@@ -61,13 +64,42 @@ public class UserServiceTest {
         // create an user with not unique email
         userService.createUser(testUser);
 
-        // when -> setup additional mocks for UserRepository
+        // when -> calling findByEmail gives existing user back -> invokes exception throw
         Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
 
-        // then -> attempt to create second user with same user -> check that an error is thrown
+        // then -> attempt to create second user with same user -> check that an exception is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
     }
 
+    @Test
+    public void logOutUser_success(){
+        // create user that has to be logged out
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("test.user2@uzh.ch");
+        user.setName("Tester2");
+        user.setPassword("testPassword2");
+        user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minus(20,ChronoUnit.MINUTES));
+        user.setToken(UUID.randomUUID().toString());
+
+        // reset LocalDateTime
+        user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+        user.setToken(null);
+
+        // when -> any object is being saved in the userRepository -> return the dummy testUser
+        User createdUser = userService.createUser(testUser);
+
+        // log out the testUser --> test logOutUser
+        userService.logOutUser(testUser.getId());
+
+        // when -> calling findById gives mock user
+        //Mockito.when(userRepository.findById(Mockito.any())).thenReturn(testUser);
+
+        assertEquals(testUser.getLastSeen(), user.getLastSeen());
+        assertEquals(testUser.getToken(), user.getToken());
+
+
+    }
 
 
 }

@@ -31,17 +31,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
         // convert API user to internal representation
-        //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
-        //User createdUser = userService.createUser(userInput);
+        User createdUser = userService.createUser(userInput);
 
         // convert internal representation of user back to API
-        //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
     @PostMapping("/users/login")

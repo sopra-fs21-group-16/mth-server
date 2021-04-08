@@ -1,8 +1,8 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +43,9 @@ public class UserService {
         checkIfUserExists(newUser);
 
         newUser.setToken(UUID.randomUUID().toString());
-        //newUser.setStatus(UserStatus.ONLINE);
+
+        // round the LocalDateTime to Minutes using truncatedTo
+        newUser.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         // saves the given entity but data is only persisted in the database once flush() is called
         newUser = userRepository.save(newUser);
@@ -58,6 +61,14 @@ public class UserService {
         if (userByEmail != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "email", "is"));
         }
+    }
+
+    public void logOutUser(long userId){
+        User userById = userRepository.findById(userId);
+
+        userById.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+        userById.setToken(null);
+
     }
 
 }

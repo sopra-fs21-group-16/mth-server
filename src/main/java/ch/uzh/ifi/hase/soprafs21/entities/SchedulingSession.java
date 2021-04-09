@@ -1,12 +1,9 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Entity
 @Table(name = "SchedulingSession")
@@ -21,14 +18,17 @@ public class SchedulingSession implements Serializable {
     @OneToMany
     private List<Activity> activityList;
 
+
     @Column
     private Activity chosenActivity;
+
 
     @Column
     private List<String> locationList;
 
     @Column
     private String chosenLocation;
+
 
     @Column
     private List<LocalDateTime> dateList;
@@ -50,6 +50,7 @@ public class SchedulingSession implements Serializable {
 
     public void setUserActivities(List<Activity> activityList) { this.activityList = activityList;}
 
+
     public Activity getChosenActivity() {
         return chosenActivity;
     }
@@ -65,6 +66,7 @@ public class SchedulingSession implements Serializable {
     public void setLocations(List<String> locationList) {
         this.locationList = locationList;
     }
+
 
     public String getChosenLocation() {
         return chosenLocation;
@@ -88,9 +90,7 @@ public class SchedulingSession implements Serializable {
 
     public void setChosenDate(LocalDateTime chosenDate) { this.chosenDate = chosenDate; }
 
-    /**
-     * ToDo
-     */
+
     public void proposeLocation(String location){ }
 
     public void proposeDate(LocalDateTime date){ }

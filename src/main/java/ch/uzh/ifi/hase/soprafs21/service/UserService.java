@@ -75,6 +75,9 @@ public class UserService {
         userById.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         userById.setToken(null);
 
+        // saves the given entity but data is only persisted in the database once flush() is called
+        userRepository.save(userById);
+        userRepository.flush();
     }
 
 }

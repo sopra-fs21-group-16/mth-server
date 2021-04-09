@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
@@ -48,7 +49,7 @@ public class User implements Serializable {
     @Pattern(regexp = "(^$|(0|\\+41)[0-9]{9})", message = "Must be a valid swiss phone number")
     private String phone;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String token;
 
     @Column
@@ -56,7 +57,7 @@ public class User implements Serializable {
     private String name;
 
     @Column
-    @NotBlank(message = "You must specify your gender identity")
+    @NotNull(message = "You must specify your gender identity")
     private Gender gender;
 
     @Column

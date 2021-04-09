@@ -39,6 +39,11 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
+    public User getUserByID(long userId){
+        User userById = this.userRepository.findById(userId);
+        return userById;
+    }
+
     public User createUser(User newUser) {
         checkIfUserExists(newUser);
 
@@ -62,6 +67,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "email", "is"));
         }
     }
+
 
     public void logOutUser(long userId){
         User userById = userRepository.findById(userId);

@@ -74,31 +74,26 @@ public class UserServiceTest {
     @Test
     public void logOutUser_success(){
         // create user that has to be logged out
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("test.user2@uzh.ch");
-        user.setName("Tester2");
-        user.setPassword("testPassword2");
-        user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minus(20,ChronoUnit.MINUTES));
-        user.setToken(UUID.randomUUID().toString());
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minus(20,ChronoUnit.MINUTES));
+        testUser.setToken(UUID.randomUUID().toString());
 
-        // reset LocalDateTime
+        // reset LocalDateTime and token
+        User user = new User();
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setToken(null);
 
-        // when -> any object is being saved in the userRepository -> return the dummy testUser
-        User createdUser = userService.createUser(testUser);
+        // when -> calling findById gives user
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
 
-        // log out the testUser --> test logOutUser
+        // log out the user --> test logOutUser
         userService.logOutUser(testUser.getId());
 
-        // when -> calling findById gives mock user
-        //Mockito.when(userRepository.findById(Mockito.any())).thenReturn(testUser);
-
-        assertEquals(testUser.getLastSeen(), user.getLastSeen());
-        assertEquals(testUser.getToken(), user.getToken());
-
-
+        assertEquals(user.getLastSeen(), testUser.getLastSeen());
+        assertEquals(user.getToken(), testUser.getToken());
     }
 
 

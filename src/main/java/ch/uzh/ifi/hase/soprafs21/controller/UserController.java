@@ -57,12 +57,10 @@ public class UserController {
     @ResponseBody
     public void logout(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
-        throw new UnsupportedOperationException("Not implemented yet");
-
         // checks if user id and token are from the same user
         //userService.authorizationCheck(userId, token);
 
-        //return userService.logoutUser(userId);
+        userService.logOutUser(userId);
     }
 
     @GetMapping("/users/{userId}/overview")

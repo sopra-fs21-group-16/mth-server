@@ -96,5 +96,4 @@ public class UserServiceTest {
         assertEquals(user.getToken(), testUser.getToken());
     }
 
-
 }

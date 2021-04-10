@@ -4,15 +4,18 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "ScheduledActivity")
 public class ScheduledActivity implements Serializable {
+
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
     private Long id;
+
 
     @Column
     private Activity activity;

@@ -4,7 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Table(name = "ScheduledActivity")
 public class ScheduledActivity implements Serializable {
@@ -59,4 +58,3 @@ public class ScheduledActivity implements Serializable {
     }
 
 }
-

@@ -120,4 +120,9 @@ public class User implements Serializable {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+
+    public String getToken() { return token; }
+
+    public void setToken(String token) { this.token = token; }
+
 }

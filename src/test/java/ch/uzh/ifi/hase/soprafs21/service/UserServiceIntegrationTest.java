@@ -41,7 +41,6 @@ public class UserServiceIntegrationTest {
         userRepository.deleteAll();
     }
 
-    /*
     @Test
     public void loginUser_validInputs_success() {
 
@@ -67,6 +66,5 @@ public class UserServiceIntegrationTest {
         // then
         assertNotNull(createdUser.getToken());
     }
-     */
 
 }

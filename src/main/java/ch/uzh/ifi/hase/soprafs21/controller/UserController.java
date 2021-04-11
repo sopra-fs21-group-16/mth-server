@@ -58,7 +58,7 @@ public class UserController {
     public void logout(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         // checks if user id and token are from the same user
-        //userService.authorizationCheck(userId, token);
+        userService.isUserAuthenticated(userId, token);
 
         userService.logOutUser(userId);
     }

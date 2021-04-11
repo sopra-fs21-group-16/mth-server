@@ -15,7 +15,6 @@ public class ScheduledActivity implements Serializable {
     @GeneratedValue
     private Long id;
 
-
     @Column
     private Activity activity;
 

@@ -60,14 +60,13 @@ public class UserService {
     }
 
     public void checkIfUserExists(User userToBeChecked) {
-        User userByEmail = userRepository.findByEmail(userToBeCreated.getEmail());
+        User userByEmail = userRepository.findByEmail(userToBeChecked.getEmail());
 
         String baseErrorMessage = "The %s provided %s not unique and already used. Please use another email!";
         if (userByEmail != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "email", "is"));
         }
     }
-
 
     public void logOutUser(long userId){
         User userById = userRepository.findById(userId);

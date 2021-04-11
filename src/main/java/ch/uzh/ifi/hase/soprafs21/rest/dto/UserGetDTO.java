@@ -1,8 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
-import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDateTime;
 
@@ -56,19 +54,13 @@ public class UserGetDTO {
         this.gender = gender;
     }
 
-    public String getBio() {
-        return bio;
-    }
+    public String getBio() {return bio;}
 
     public void setBio(String bio) {
         this.bio = bio;
     }
 
-    public String getToken() {
-        return token;
-    }
+    public String getToken() {return token;}
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+    public void setToken(String token) {this.token = token;}
 }

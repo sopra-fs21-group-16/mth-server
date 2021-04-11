@@ -46,9 +46,7 @@ public class UserPostDTO {
         this.gender = gender;
     }
 
-    public String getBio() {
-        return bio;
-    }
+    public String getBio() {return bio;}
 
     public void setBio(String bio) {
         this.bio = bio;

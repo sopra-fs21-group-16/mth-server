@@ -32,7 +32,7 @@ public class UserInterests implements Serializable {
     private GenderPreference genderPreference;
 
     @ElementCollection(targetClass = ActivityCategory.class)
-    @CollectionTable(name = "USER_INTERESTS_ACITIVITY", joinColumns = @JoinColumn(name = "userInterestsId"))
+    @CollectionTable(name = "USER_INTERESTS_ACTIVITY", joinColumns = @JoinColumn(name = "userInterestsId"))
     @Column
     @Enumerated(EnumType.STRING)
     private Set<ActivityCategory> activityInterests;

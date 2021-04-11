@@ -42,11 +42,6 @@ public class ActivityController {
 
         throw new UnsupportedOperationException("Not implemented yet");
 
-        // checks if user id and token are from the same user
-        //userService.authorizationCheck(userId, token);
-
-        // updates user profile
-        //userService.updateUserProfile(profileUpdates, userId);
     }
 
 }

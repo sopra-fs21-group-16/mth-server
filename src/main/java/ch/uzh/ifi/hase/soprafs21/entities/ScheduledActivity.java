@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Table(name = "ScheduledActivity")
 public class ScheduledActivity implements Serializable {
 
-
     private static final long serialVersionUID = 1L;
 
     @Id

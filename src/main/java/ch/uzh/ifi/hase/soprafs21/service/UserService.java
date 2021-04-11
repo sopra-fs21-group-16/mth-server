@@ -59,7 +59,7 @@ public class UserService {
         return newUser;
     }
 
-    public void checkIfUserExists(User userToBeCreated) {
+    public void checkIfUserExists(User userToBeChecked) {
         User userByEmail = userRepository.findByEmail(userToBeCreated.getEmail());
 
         String baseErrorMessage = "The %s provided %s not unique and already used. Please use another email!";

@@ -48,11 +48,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String login(@RequestBody UserPostDTO userPostDTO){
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
-        // checks User input and returns token when successful
-        //return userService.loginUser(userPostDTO);
+        return userService.loginUser(userPostDTO);
     }
 
     @PostMapping("/users/{userId}/logout")

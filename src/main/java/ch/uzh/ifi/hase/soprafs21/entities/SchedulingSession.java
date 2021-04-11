@@ -3,9 +3,11 @@ package ch.uzh.ifi.hase.soprafs21.entities;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -19,9 +21,10 @@ public class SchedulingSession implements Serializable {
     private Long id;
 
     @OneToMany
-    private List<Activity> activityList;
+    @JoinColumn(name = "activity_id")
+    private Set<Activity> activityList;
 
-    @Column
+    @OneToOne
     private Activity chosenActivity;
 
     @Column
@@ -44,11 +47,11 @@ public class SchedulingSession implements Serializable {
         this.id = id;
     }
 
-    public List<Activity> getUserActivities() {
+    public Set<Activity> getUserActivities() {
         return activityList;
     }
 
-    public void setUserActivities(List<Activity> activityList) { this.activityList = activityList;}
+    public void setUserActivities(Set<Activity> activityList) { this.activityList = activityList;}
 
     public Activity getChosenActivity() {
         return chosenActivity;
@@ -88,14 +91,24 @@ public class SchedulingSession implements Serializable {
 
     public void setChosenDate(LocalDateTime chosenDate) { this.chosenDate = chosenDate; }
 
+    public void addLocation(String location){
+        locationList.add(location);
+    }
+
+    public void removeLocation(String location){
+        locationList.remove(location);
+    }
+
+    public void addDate(LocalDateTime date){
+        dateList.add(date);
+    }
+
+    public void removeDate(LocalDateTime date){
+        dateList.remove(date);
+    }
+
     /**
      * ToDo
      */
-    public void proposeLocation(String location){ }
-
-    public void proposeDate(LocalDateTime date){ }
-
     public void saveScheduledDate(){ }
-
-
 }

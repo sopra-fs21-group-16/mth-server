@@ -97,17 +97,21 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getBio() {
-        return bio;
-    }
+    public String getBio() { return bio; }
+
+    public void setToken(String token){this.token = token;}
+
+    public String getToken(){return token; }
 
     public void setBio(String bio) {
         this.bio = bio;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
+    public String getName() { return name; }
+
+    public void setName(String name) {this.name = name; }
+
+    public Gender getGender() { return gender; }
 
     public void setGender(Gender gender) {
         this.gender = gender;

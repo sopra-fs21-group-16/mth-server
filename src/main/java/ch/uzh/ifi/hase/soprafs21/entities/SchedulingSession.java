@@ -21,15 +21,19 @@ public class SchedulingSession implements Serializable {
     @OneToMany
     private List<Activity> activityList;
 
-    @Column
+    @OneToOne
     private Activity chosenActivity;
 
+    @ElementCollection
+    @CollectionTable(name="SCHEDULING_SESSION_LOCATION_LIST", joinColumns = @JoinColumn(name = "locationId"))
     @Column
     private List<String> locationList;
 
     @Column
     private String chosenLocation;
 
+    @ElementCollection
+    @CollectionTable(name="SCHEDULING_SESSION_DATE_LIST", joinColumns = @JoinColumn(name = "dateId"))
     @Column
     private List<LocalDateTime> dateList;
 

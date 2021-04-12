@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
@@ -48,7 +49,7 @@ public class User implements Serializable {
     @Pattern(regexp = "(^$|(0|\\+41)[0-9]{9})", message = "Must be a valid swiss phone number")
     private String phone;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String token;
 
     @Column
@@ -56,7 +57,7 @@ public class User implements Serializable {
     private String name;
 
     @Column
-    @NotBlank(message = "You must specify your gender identity")
+    @NotNull(message = "You must specify your gender identity")
     private Gender gender;
 
     @Column
@@ -108,9 +109,15 @@ public class User implements Serializable {
         this.bio = bio;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
+    public String getToken(){ return token;}
+
+    public void setToken(String token){ this.token = token;}
+
+    public String getName(){ return name;}
+
+    public void setName(String name){ this.name = name;}
+
+    public Gender getGender() {return gender; }
 
     public void setGender(Gender gender) {
         this.gender = gender;
@@ -123,9 +130,5 @@ public class User implements Serializable {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
-
-    public String getToken() { return token; }
-
-    public void setToken(String token) { this.token = token; }
 
 }

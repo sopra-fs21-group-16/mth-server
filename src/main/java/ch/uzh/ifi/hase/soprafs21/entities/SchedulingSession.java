@@ -18,17 +18,14 @@ public class SchedulingSession implements Serializable {
     @OneToMany
     private List<Activity> activityList;
 
-
     @Column
     private Activity chosenActivity;
-
 
     @Column
     private List<String> locationList;
 
     @Column
     private String chosenLocation;
-
 
     @Column
     private List<LocalDateTime> dateList;
@@ -50,46 +47,25 @@ public class SchedulingSession implements Serializable {
 
     public void setUserActivities(List<Activity> activityList) { this.activityList = activityList;}
 
+    public Activity getChosenActivity() {return chosenActivity;}
 
-    public Activity getChosenActivity() {
-        return chosenActivity;
-    }
+    public void setChosenActivity(Activity chosenActivity) {this.chosenActivity = chosenActivity;}
 
-    public void setChosenActivity(Activity chosenActivity) {
-        this.chosenActivity = chosenActivity;
-    }
+    public List<String> getLocations() {return locationList; }
 
-    public List<String> getLocations() {
-        return locationList;
-    }
+    public void setLocations(List<String> locationList) {this.locationList = locationList;}
 
-    public void setLocations(List<String> locationList) {
-        this.locationList = locationList;
-    }
+    public String getChosenLocation() {return chosenLocation;}
 
+    public void setChosenLocation(String chosenLocation) {this.chosenLocation = chosenLocation;}
 
-    public String getChosenLocation() {
-        return chosenLocation;
-    }
+    public List<LocalDateTime> getDates() {return dateList;}
 
-    public void setChosenLocation(String chosenLocation) {
-        this.chosenLocation = chosenLocation;
-    }
+    public void setDates(List<LocalDateTime> dateList) {this.dateList= dateList;}
 
-    public List<LocalDateTime> getDates() {
-        return dateList;
-    }
-
-    public void setDates(List<LocalDateTime> dateList) {
-        this.dateList= dateList;
-    }
-
-    public LocalDateTime getChosenDate() {
-        return chosenDate;
-    }
+    public LocalDateTime getChosenDate() {return chosenDate;}
 
     public void setChosenDate(LocalDateTime chosenDate) { this.chosenDate = chosenDate; }
-
 
     public void proposeLocation(String location){ }
 

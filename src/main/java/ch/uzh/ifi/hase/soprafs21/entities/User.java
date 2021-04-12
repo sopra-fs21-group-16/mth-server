@@ -65,6 +65,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
+    @OneToOne
+    private UserInterests userInterests;
+
     public Long getId() {
         return id;
     }

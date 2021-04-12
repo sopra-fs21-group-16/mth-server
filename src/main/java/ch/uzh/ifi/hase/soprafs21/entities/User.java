@@ -66,6 +66,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
+    @OneToOne
+    private UserInterests userInterests;
+
     public Long getId() {
         return id;
     }
@@ -127,4 +130,9 @@ public class User implements Serializable {
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
+
+    public String getToken() { return token; }
+
+    public void setToken(String token) { this.token = token; }
+
 }

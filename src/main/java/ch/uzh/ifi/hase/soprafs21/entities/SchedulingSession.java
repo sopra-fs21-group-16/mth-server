@@ -33,17 +33,11 @@ public class SchedulingSession implements Serializable {
     @Column
     private LocalDateTime chosenDate;
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) {this.id = id;}
 
-    public List<Activity> getUserActivities() {
-        return activityList;
-    }
+    public List<Activity> getUserActivities() {return activityList;}
 
     public void setUserActivities(List<Activity> activityList) { this.activityList = activityList;}
 
@@ -72,7 +66,6 @@ public class SchedulingSession implements Serializable {
     public void proposeDate(LocalDateTime date){ }
 
     public void saveScheduledDate(){ }
-
 
 }
 

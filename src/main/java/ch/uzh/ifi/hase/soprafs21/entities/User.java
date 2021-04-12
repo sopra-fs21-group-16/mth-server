@@ -131,8 +131,4 @@ public class User implements Serializable {
         this.profilePicture = profilePicture;
     }
 
-    public String getToken() { return token; }
-
-    public void setToken(String token) { this.token = token; }
-
 }

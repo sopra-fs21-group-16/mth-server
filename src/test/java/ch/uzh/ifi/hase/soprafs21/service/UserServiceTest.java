@@ -115,7 +115,7 @@ public class UserServiceTest {
         User testUser2 = new User();
         testUser2.setId(1L);
         testUser2.setEmail("test.user@uzh.ch");
-        testUser2.setName("Tester");
+        testUser2.setName("Tester2");
         testUser2.setPassword("testWrongPassword");
 
 

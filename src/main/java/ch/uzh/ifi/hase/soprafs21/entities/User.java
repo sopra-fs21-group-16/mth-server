@@ -52,6 +52,7 @@ public class User implements Serializable {
     private String token;
 
     @Column
+    @NotBlank(message = "Must not be empty")
     private String name;
 
     @Column

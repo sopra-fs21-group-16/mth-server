@@ -48,6 +48,7 @@ public class UserServiceIntegrationTest {
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
         // when
@@ -57,7 +58,7 @@ public class UserServiceIntegrationTest {
         assertEquals(testUser.getId(), createdUser.getId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getEmail(), createdUser.getEmail());
-        assertEquals(testUser.getGender(),createdUser.getGender());
+        assertEquals(testUser.getName(),createdUser.getName());
         assertNotNull(createdUser.getToken());
         assertEquals(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), createdUser.getLastSeen());
     }
@@ -68,6 +69,7 @@ public class UserServiceIntegrationTest {
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
         testUser.setPassword("testPassword");
         User createdUser = userService.createUser(testUser);
 
@@ -76,6 +78,7 @@ public class UserServiceIntegrationTest {
 
         // change the password but forget about the email
         testUser2.setPassword("testPassword2");
+        testUser.setName("Tester2");
         testUser2.setEmail("test.user@uzh.ch");
 
         // check that an error is thrown
@@ -88,13 +91,15 @@ public class UserServiceIntegrationTest {
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
         testUser.setPassword("testPassword");
         User createdUserWithID = userService.createUser(testUser);
 
         // reset LocalDateTime and token
         User user = new User();
         user.setEmail("test2.user@uzh.ch");
-        testUser.setPassword("testPassword2");
+        user.setName("Tester2");
+        user.setPassword("testPassword2");
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setToken(null);
 
@@ -114,6 +119,7 @@ public class UserServiceIntegrationTest {
         assertNull(userRepository.findByEmail("testEmail"));
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
         User createdUser = userService.createUser(testUser);

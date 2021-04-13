@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -94,6 +95,37 @@ public class UserServiceTest {
 
         assertEquals(user.getLastSeen(), testUser.getLastSeen());
         assertEquals(user.getToken(), testUser.getToken());
+    }
+
+    @Test
+    public void loginUser_validInputs_success(){
+
+        // when
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
+
+        // then
+        String result = userService.loginUser(testUser);
+
+        assertEquals(testUser.getToken(),result);
+    }
+
+    @Test
+    public void loginUser_invalidInputs_throwsException(){
+
+        User testUser2 = new User();
+        testUser2.setId(1L);
+        testUser2.setEmail("test.user@uzh.ch");
+        testUser2.setName("Tester");
+        testUser2.setPassword("testWrongPassword");
+
+
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
+        userService.logOutUser(testUser.getId());
+
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser2));
     }
 
 }

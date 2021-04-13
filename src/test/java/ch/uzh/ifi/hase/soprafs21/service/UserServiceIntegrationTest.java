@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,28 @@ public class UserServiceIntegrationTest {
 
         assertEquals(user.getLastSeen(), userWithDeletedToken.getLastSeen());
         assertEquals(user.getToken(), userWithDeletedToken.getToken());
+    }
+
+    @Test
+    public void loginUser_validInputs_success() {
+
+        // given
+        assertNull(userRepository.findByEmail("testEmail"));
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        testUser.setGender(Gender.FEMALE);
+        testUser.setBio("asdf");
+
+        User createdUser = userService.createUser(testUser);
+        userService.logOutUser(createdUser.getId());
+
+        // when
+        userService.loginUser(testUser);
+
+        // then
+        assertNotNull(createdUser.getToken());
     }
 
 }

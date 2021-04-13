@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.hibernate.validator.internal.constraintvalidators.bv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +67,25 @@ public class UserService {
         if (userByEmail != null) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "email", "is"));
         }
+    }
+
+    public String loginUser(User userInput) {
+        User userByEmail = userRepository.findByEmail(userInput.getEmail());
+        try {
+            checkIfUserExists(userByEmail);
+        } catch (ResponseStatusException error) {
+            if(userInput.getPassword().equals(userByEmail.getPassword())){
+                userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+                userByEmail.setToken(UUID.randomUUID().toString());
+                userRepository.save(userByEmail);
+                userRepository.flush();
+                return userByEmail.getToken();
+            }
+            else{
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password is wrong.");
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username does not exist.");
     }
 
     public void logOutUser(long userId){

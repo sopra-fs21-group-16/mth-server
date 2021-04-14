@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,6 @@ public class UserServiceIntegrationTest {
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
-        testUser.setGender(Gender.FEMALE);
-        testUser.setBio("asdf");
 
         // when
         User createdUser = userService.createUser(testUser);
@@ -59,7 +58,7 @@ public class UserServiceIntegrationTest {
         assertEquals(testUser.getId(), createdUser.getId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getEmail(), createdUser.getEmail());
-        assertEquals(testUser.getGender(),createdUser.getGender());
+        assertEquals(testUser.getName(),createdUser.getName());
         assertNotNull(createdUser.getToken());
         assertEquals(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), createdUser.getLastSeen());
     }
@@ -72,8 +71,6 @@ public class UserServiceIntegrationTest {
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
-        testUser.setGender(Gender.MALE);
-        testUser.setBio("asdf");
         User createdUser = userService.createUser(testUser);
 
         // attempt to create second user with same email
@@ -81,9 +78,8 @@ public class UserServiceIntegrationTest {
 
         // change the password but forget about the email
         testUser2.setPassword("testPassword2");
+        testUser.setName("Tester2");
         testUser2.setEmail("test.user@uzh.ch");
-        testUser2.setGender(Gender.MALE);
-        testUser2.setBio("asdf");
 
         // check that an error is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
@@ -97,17 +93,13 @@ public class UserServiceIntegrationTest {
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
-        testUser.setGender(Gender.MALE);
-        testUser.setBio("asdf");
         User createdUserWithID = userService.createUser(testUser);
 
         // reset LocalDateTime and token
         User user = new User();
         user.setEmail("test2.user@uzh.ch");
         user.setName("Tester2");
-        user.setPassword("testPassword");
-        user.setGender(Gender.MALE);
-        user.setBio("asdf");
+        user.setPassword("testPassword2");
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setToken(null);
 
@@ -118,6 +110,26 @@ public class UserServiceIntegrationTest {
 
         assertEquals(user.getLastSeen(), userWithDeletedToken.getLastSeen());
         assertEquals(user.getToken(), userWithDeletedToken.getToken());
+    }
+
+    @Test
+    public void loginUser_validInputs_success() {
+
+        // given
+        assertNull(userRepository.findByEmail("testEmail"));
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        User createdUser = userService.createUser(testUser);
+        userService.logOutUser(createdUser.getId());
+
+        // when
+        userService.loginUser(testUser);
+
+        // then
+        assertNotNull(createdUser.getToken());
     }
 
 }

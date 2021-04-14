@@ -42,7 +42,6 @@ public class User implements Serializable {
     private String password;
 
     @Column
-    @NotBlank(message = "Must not be empty")
     private String bio;
 
     @Column
@@ -57,7 +56,6 @@ public class User implements Serializable {
     private String name;
 
     @Column
-    @NotNull(message = "You must specify your gender identity")
     private Gender gender;
 
     @Column

@@ -25,9 +25,7 @@ public class DTOMapperTest {
         UserPostDTO userPostDTO = new UserPostDTO();
         userPostDTO.setEmail("name@uzh.ch");
         userPostDTO.setPassword("blabla");
-        userPostDTO.setName("name");
-        userPostDTO.setGender(Gender.MALE);
-        userPostDTO.setBio("I am a test");
+        userPostDTO.setName("Tester");
 
         // MAP -> Create user
         User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
@@ -36,8 +34,6 @@ public class DTOMapperTest {
         assertEquals(userPostDTO.getEmail(), user.getEmail());
         assertEquals(userPostDTO.getPassword(), user.getPassword());
         assertEquals(userPostDTO.getName(), user.getName());
-        assertEquals(userPostDTO.getGender(), user.getGender());
-        assertEquals(userPostDTO.getBio(), user.getBio());
     }
 
     @Test

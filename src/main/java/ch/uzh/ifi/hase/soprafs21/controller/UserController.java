@@ -45,11 +45,11 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String login(@RequestBody UserPostDTO userPostDTO){
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        throw new UnsupportedOperationException("Not implemented yet");
-
-        // checks User input and returns token when successful
-        //return userService.loginUser(userPostDTO);
+        // login user and return token as String
+        return userService.loginUser(userInput);
     }
 
     @PostMapping("/users/{userId}/logout")

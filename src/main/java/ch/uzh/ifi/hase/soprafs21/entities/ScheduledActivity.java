@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,10 +15,11 @@ public class ScheduledActivity implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @OneToOne
     private Activity activity;
 
     @Column
+    @NotBlank(message = "Must not be empty")
     private String location;
 
     @Column
@@ -56,4 +58,3 @@ public class ScheduledActivity implements Serializable {
     }
 
 }
-

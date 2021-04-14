@@ -31,28 +31,25 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
         // convert API user to internal representation
-        //User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
-        //User createdUser = userService.createUser(userInput);
+        User createdUser = userService.createUser(userInput);
 
         // convert internal representation of user back to API
-        //return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
     @PostMapping("/users/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String login(@RequestBody UserPostDTO userPostDTO){
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        throw new UnsupportedOperationException("Not implemented yet");
-
-        // checks User input and returns token when successful
-        //return userService.loginUser(userPostDTO);
+        // login user and return token as String
+        return userService.loginUser(userInput);
     }
 
     @PostMapping("/users/{userId}/logout")
@@ -60,12 +57,10 @@ public class UserController {
     @ResponseBody
     public void logout(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
-        throw new UnsupportedOperationException("Not implemented yet");
-
         // checks if user id and token are from the same user
-        //userService.authorizationCheck(userId, token);
+        userService.isUserAuthenticated(userId, token);
 
-        //return userService.logoutUser(userId);
+        userService.logOutUser(userId);
     }
 
     @GetMapping("/users/{userId}/overview")
@@ -142,7 +137,6 @@ public class UserController {
 
         // verifies Email
         //userService.verifyEmail(verificationToken);
-
     }
 
 }

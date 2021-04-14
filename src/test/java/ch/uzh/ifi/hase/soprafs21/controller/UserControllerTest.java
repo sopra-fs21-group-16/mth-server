@@ -114,7 +114,6 @@ public class UserControllerTest {
         user.setEmail("test@uzh.ch");
 
         // when
-        // need additional token
         MockHttpServletRequestBuilder postRequest = post("/users/1/logout")
                 .contentType(MediaType.APPLICATION_JSON);
 

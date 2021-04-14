@@ -27,7 +27,6 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
-
     //@OneToOne
     //private GooglePOI googlePOI;
 

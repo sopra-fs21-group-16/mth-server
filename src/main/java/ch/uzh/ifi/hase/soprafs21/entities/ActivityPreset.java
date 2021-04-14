@@ -56,7 +56,6 @@ public class ActivityPreset implements Serializable{
         this.activityName = activityName;
     }
 
-
     public ActivityCategory getActivityCategory() {
         return activityCategory;
     }

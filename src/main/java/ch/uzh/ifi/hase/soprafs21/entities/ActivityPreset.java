@@ -37,7 +37,7 @@ public class ActivityPreset implements Serializable{
 
     ActivityPreset(String activityName, ActivityCategory activityCategory){
         this.activityName = activityName;
-        //this.activityCategory = activityCategory;
+        this.activityCategory = activityCategory;
     }
 
     public Long getId() {

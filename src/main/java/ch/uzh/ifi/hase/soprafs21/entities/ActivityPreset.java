@@ -22,8 +22,10 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false, unique = true)
     private String activityName;
 
+    /**
     @Column(nullable = false)
     private ActivityCategory activityCategory;
+    */
 
     //@OneToOne
     //private GooglePOI googlePOI;
@@ -34,7 +36,7 @@ public class ActivityPreset implements Serializable{
 
     ActivityPreset(String activityName, ActivityCategory activityCategory){
         this.activityName = activityName;
-        this.activityCategory = activityCategory;
+        //this.activityCategory = activityCategory;
     }
 
     public Long getId() {
@@ -53,6 +55,7 @@ public class ActivityPreset implements Serializable{
         this.activityName = activityName;
     }
 
+    /**
     public ActivityCategory getActivityCategory() {
         return activityCategory;
     }
@@ -60,7 +63,8 @@ public class ActivityPreset implements Serializable{
     public void setActivityCategory(ActivityCategory activityCategory) {
         this.activityCategory = activityCategory;
     }
-/*
+    */
+    /**
     public GooglePOI getGooglePOI() {
         return googlePOI;
     }

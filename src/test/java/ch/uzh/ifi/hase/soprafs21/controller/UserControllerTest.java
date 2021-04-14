@@ -106,7 +106,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void logoutUser() {
+    void logoutUser() throws Exception{
         // given
         User user = new User();
         user.setId(1L);
@@ -115,15 +115,14 @@ public class UserControllerTest {
 
         // when
         MockHttpServletRequestBuilder postRequest = post("/users/1/logout")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", user.getToken());
+
+        given(userService.isUserAuthenticated(user.getId(),user.getToken())).willReturn(Boolean.TRUE);
 
         // then
-        /*
-        MvcResult result=mockMvc.perform(postRequest)
-                .andExpect(status().isOk())
-                .andReturn();
-
-         */
+        mockMvc.perform(postRequest)
+                .andExpect(status().isOk());
     }
 
     @Test

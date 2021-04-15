@@ -61,7 +61,5 @@ public class UserInterests implements Serializable {
         return activityInterests;
     }
 
-    public void setActivityInterests(Set<ActivityCategory> activityInterests) {
-        this.activityInterests = activityInterests;
-    }
+    public void setActivityInterests(Set<ActivityCategory> activityInterests) {this.activityInterests = activityInterests;}
 }

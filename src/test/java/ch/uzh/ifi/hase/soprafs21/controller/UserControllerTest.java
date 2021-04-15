@@ -1,8 +1,11 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -135,7 +138,37 @@ public class UserControllerTest {
     }
 
     @Test
-    void createUserProfile() {
+    void createUserProfileSuccess() throws Exception{
+        // will be set after put request
+        User user = new User();
+        user.setId(1L);
+        user.setGender(Gender.MALE);
+        user.setToken("ssfs");
+
+        // given
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setId(1L);
+        userPutDTO.setGender(Gender.MALE);
+        String tokenFromHeader = "ssfs";
+        User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+
+        given(userService.isUserAuthenticated(userPutDTO.getId(),user.getToken())).willReturn(true);
+
+        given(userService.getUserByID(userPutDTO.getId())).willReturn(user);
+
+        given(userService.isUserAuthorized(userPutDTO.getId(),user.getId(),tokenFromHeader)).willReturn(true);
+
+        doNothing().when(userService).applyUserProfileChange(userInput,user);
+
+        // when
+        MockHttpServletRequestBuilder postRequest = post("/users/" + userPutDTO.getId() + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPutDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("gender",is(user.getGender())));
     }
 
     @Test

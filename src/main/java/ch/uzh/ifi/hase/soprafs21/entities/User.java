@@ -129,4 +129,11 @@ public class User implements Serializable {
         this.profilePicture = profilePicture;
     }
 
+    public String getPhone() {return phone;}
+
+    public void setPhone(String phone) {this.phone = phone;}
+
+    public UserInterests getUserInterests() {return userInterests;}
+
+    public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
 }

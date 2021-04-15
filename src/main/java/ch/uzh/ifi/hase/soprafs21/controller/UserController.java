@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -90,17 +91,22 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/profile")
-    @ResponseStatus(HttpStatus.OK)
-    public void createUserProfile(@RequestBody User userProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
+    @ResponseStatus(HttpStatus.CREATED)
+    public void createUserProfile(@RequestBody UserPutDTO userPutDTOProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTOProfile);
 
-        throw new UnsupportedOperationException("Not implemented yet");
+        // Checks if the provided user exists and whether the token is valid and matches the user
+        userService.isUserAuthenticated(userId,token);
 
+        // find the user in the repo that holds resource to be changed
+        User userFromRepo = userService.getUserByID(userId);
 
-        // checks if user id and token are from the same user
-        //userService.authorizationCheck(userId, token);
+        // Checks whether the user is authenticated and authorized to use a resource, given the resource owner userId
+        userService.isUserAuthorized(userInput.getId(), userFromRepo.getId(), token);
 
         // creates user profile
-        //userService.createUserProfile(userProfile, userId);
+        userService.applyUserProfileChange(userInput,userFromRepo);
     }
 
     @PutMapping("/users/{userId}/profile")

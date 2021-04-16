@@ -112,15 +112,18 @@ public class UserController {
 
     @GetMapping("/users/{userId}/profile")
     @ResponseStatus(HttpStatus.OK)
-    public void getUserProfile(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
+    public UserGetDTO getUserProfile(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
-        throw new UnsupportedOperationException("Not implemented yet");
+        // checks if the profile to be visited exists
+        userService.checkIfUserExistsWithGivenId(userId);
 
-        // checks only the token, because everyone can view a profile
-        //userService.authorizationCheckOnlyToken(token);
+        // checks if the visitor has a valid token
+        userService.checkIfValidToken(token);
 
-        // returns user profile
-        //userService.getUserProfile(userId);
+        // get user profile
+        User userFromRepo = userService.getUserByID(userId);
+
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
     }
 
     @GetMapping("/users/{userId}/profile/verify")

@@ -46,7 +46,7 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
-        checkIfUserExists(newUser);
+        checkIfUserExistsByEmail(newUser);
 
         newUser.setToken(UUID.randomUUID().toString());
 
@@ -60,19 +60,19 @@ public class UserService {
         return newUser;
     }
 
-    public void checkIfUserExists(User userToBeChecked) {
+    public void checkIfUserExistsByEmail(User userToBeChecked) {
         User userByEmail = userRepository.findByEmail(userToBeChecked.getEmail());
 
         String baseErrorMessage = "The %s provided %s not unique and already used. Please use another email!";
         if (userByEmail != null) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(baseErrorMessage, "email", "is"));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "email", "is"));
         }
     }
 
     public String loginUser(User userInput) {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {
-            checkIfUserExists(userByEmail);
+            checkIfUserExistsByEmail(userByEmail);
         } catch (ResponseStatusException error) {
             if(userInput.getPassword().equals(userByEmail.getPassword())){
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
@@ -186,5 +186,20 @@ public class UserService {
         userRepository.flush();
     }
 
+    public void checkIfUserExistsWithGivenId(long userId){
+        try{
+            userRepository.findById(userId);
+        }
+        catch(ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user with " + userId + " was not found"));
+        }
+    }
+
+    public boolean checkIfValidToken(String tokenToCheck){
+        if(tokenToCheck == null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
+        }
+        return true;
+    }
 
 }

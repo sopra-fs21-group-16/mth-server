@@ -78,6 +78,28 @@ public class UserControllerTest {
     }
 
     @Test
+    public void createUser_invalidInput_userNotCreated() throws Exception {
+        // given a user that already has the same email as the new one wants to have
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("test@uzh.ch");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setEmail("test@uzh.ch");
+
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,"The email provided is not unique and already used. Please use another email!")).when(userService).createUser(Mockito.any());
+
+        // when
+        MockHttpServletRequestBuilder postRequest = post("/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void loginUser_validInput_TokenReturned() throws Exception {
         // given
         User user = new User();
@@ -135,7 +157,6 @@ public class UserControllerTest {
     @Test
     void userPing() {
     }
-
 
     @Test
     public void updateUserProfile_Success() throws Exception{
@@ -209,9 +230,124 @@ public class UserControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    public void updateUserProfile_For_Not_Existing_User() throws Exception{
+        // no user in repo
+
+        // user object containing new changes for user in repo --> containing no change data
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setGender(Gender.MALE);
+        String tokenFromHeader = "ssfs";
+        Long idFromURI = 1L;
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"Provided user could not be found.")).when(userService).isUserAuthenticated(idFromURI,tokenFromHeader);
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPutDTO))
+                .header("Auth-Token", tokenFromHeader);
+
+        // then
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNotFound());
+    }
 
     @Test
-    void getUserProfile() {
+    public void updateUserProfile_With_Invalid_Token() throws Exception{
+        // user in repo
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setGender(null);
+        userFromRepo.setToken("ssfs");
+
+        // user object containing new changes for user in repo --> containing no change data
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setGender(Gender.MALE);
+        String tokenFromHeader = "notTheSameTokenAsInRepo";
+        Long idFromURI = 1L;
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provided user does not match Auth-Token.")).when(userService).isUserAuthenticated(idFromURI,tokenFromHeader);
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPutDTO))
+                .header("Auth-Token", tokenFromHeader);
+
+        // then
+        mockMvc.perform(putRequest)
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getUserProfile_Success() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+
+        String tokenFromHeader = "ssfs";
+        Long idFromURI = 1L;
+
+        doNothing().when(userService).checkIfUserExistsWithGivenId(idFromURI);
+
+        given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
+
+        given(userService.getUserByID(idFromURI)).willReturn(userFromRepo);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/" + idFromURI + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", tokenFromHeader);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(userFromRepo.getId().intValue())))
+                .andExpect(jsonPath("$.email", is(userFromRepo.getEmail())));
+    }
+
+    @Test
+    void getUserProfile_Invalid_Profile() throws Exception{
+        // user in repo that should be returned --> has not the matching id
+        User userFromRepo = new User();
+        userFromRepo.setId(2L);
+        userFromRepo.setEmail("test@uzh.ch");
+
+        String tokenFromHeader = "ssfs";
+        Long idFromURI = 1L;
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"Provided user could not be found.")).when(userService).checkIfUserExistsWithGivenId(idFromURI);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/" + idFromURI + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", tokenFromHeader);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getUserProfile_Invalid_Token() throws Exception{
+        // user in repo that should be returned, but it is not since invalid token
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+
+        // invalid token
+        String tokenFromHeader = "invalid";
+        Long idFromURI = 1L;
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidToken(tokenFromHeader);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/" + idFromURI + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", tokenFromHeader);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
-import ch.uzh.ifi.hase.soprafs21.ExternalAPI.GooglePOI;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 
 import javax.persistence.*;
@@ -26,8 +25,11 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
-    //@OneToOne
-    //private GooglePOI googlePOI;
+    @Column(nullable = false)
+    private String googlePOICategory;
+
+    @Column(nullable = false)
+    private String googlePOIKeyword;
 
     public ActivityPreset(){
 
@@ -62,13 +64,11 @@ public class ActivityPreset implements Serializable{
         this.activityCategory = activityCategory;
     }
 
-    /**
-    public GooglePOI getGooglePOI() {
-        return googlePOI;
-    }
+    public String getGooglePOICategory() {return googlePOICategory;}
 
-    public void setGooglePOI(GooglePOI googlePOI) {
-        this.googlePOI = googlePOI;
-    }
- */
+    public void setGooglePOICategory(String googlePOICategory) {this.googlePOICategory = googlePOICategory;}
+
+    public String getGooglePOIKeyword() {return googlePOIKeyword;}
+
+    public void setGooglePOIKeyword(String googlePOIKeyword) {this.googlePOIKeyword = googlePOIKeyword;}
 }

@@ -114,7 +114,6 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void loginUser_validInputs_success() {
-
         // given
         assertNull(userRepository.findByEmail("testEmail"));
         User testUser = new User();
@@ -132,4 +131,72 @@ public class UserServiceIntegrationTest {
         assertNotNull(createdUser.getToken());
     }
 
+    @Test
+    public void updateUserProfile_Success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // user with new data
+        User newUser = new User();
+        newUser.setName("newName");
+
+        // when
+        userService.applyUserProfileChange(newUser,testUser);
+
+        // then
+        assertEquals(newUser.getName(),testUser.getName());
+    }
+
+    @Test
+    public void updateUserProfile_InvalidChange_NoSuccess(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // user with new data
+        User newUser = new User();
+        newUser.setName(null);
+
+        // check that an error is thrown
+        assertThrows(ResponseStatusException.class, () -> userService.applyUserProfileChange(newUser,testUser));
+    }
+
+    @Test
+    public void checkIfValidToken_Success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        boolean valid = userService.checkIfValidToken(testUser.getToken());
+
+        assertEquals(true,valid);
+    }
+
+    @Test
+    public void checkIfValidToken_Invalid_NoSuccess(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+        createdUserWithID.setToken(null);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(createdUserWithID.getToken()));
+    }
 }

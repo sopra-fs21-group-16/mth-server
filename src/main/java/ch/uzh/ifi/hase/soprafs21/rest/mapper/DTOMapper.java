@@ -40,4 +40,7 @@ public interface DTOMapper {
     @Mapping(source = "profilePicture", target = "profilePicture")
     @Mapping(source = "userInterests", target = "userInterests")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
+
+    @Mapping(source = "ageRangeMin", target = "ageRangeMin")
+    UserInterests convertUserPutInterestsDTOtoEntity(UserPutDTO userPutDTO);
 }

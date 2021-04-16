@@ -91,22 +91,25 @@ public class UserController {
     }
 
     @PostMapping("/users/{userId}/profile")
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createUserProfile(@RequestBody UserPutDTO userPutDTOProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
+    @ResponseStatus(HttpStatus.OK)
+    public UserGetDTO createUserProfile(@RequestBody UserPutDTO userPutDTOProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTOProfile);
 
-        // Checks if the provided user exists and whether the token is valid and matches the user
+        // Checks if the provided user exists and whether the token is valid and matches the user --> if they match, then user is on own profile
         userService.isUserAuthenticated(userId,token);
 
         // find the user in the repo that holds resource to be changed
         User userFromRepo = userService.getUserByID(userId);
 
         // Checks whether the user is authenticated and authorized to use a resource, given the resource owner userId
-        userService.isUserAuthorized(userInput.getId(), userFromRepo.getId(), token);
+        userService.isUserAuthorized(userId, userFromRepo.getId(), token);
 
         // creates user profile
         userService.applyUserProfileChange(userInput,userFromRepo);
+
+        // convert internal representation of user back to API
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
     }
 
     @PutMapping("/users/{userId}/profile")

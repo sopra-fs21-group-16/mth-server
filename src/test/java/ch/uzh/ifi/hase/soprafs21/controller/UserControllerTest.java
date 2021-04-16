@@ -139,36 +139,37 @@ public class UserControllerTest {
 
     @Test
     void createUserProfileSuccess() throws Exception{
-        // will be set after put request
-        User user = new User();
-        user.setId(1L);
-        user.setGender(Gender.MALE);
-        user.setToken("ssfs");
+        // user in repo
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setGender(Gender.MALE);
+        userFromRepo.setToken("ssfs");
 
-        // given
+        // user object containing new changes for user in repo
         UserPutDTO userPutDTO = new UserPutDTO();
-        userPutDTO.setId(1L);
         userPutDTO.setGender(Gender.MALE);
         String tokenFromHeader = "ssfs";
+        long idFromURI = 1L;
+
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
 
-        given(userService.isUserAuthenticated(userPutDTO.getId(),user.getToken())).willReturn(true);
+        given(userService.isUserAuthenticated(idFromURI,tokenFromHeader)).willReturn(true);
 
-        given(userService.getUserByID(userPutDTO.getId())).willReturn(user);
+        given(userService.getUserByID(idFromURI)).willReturn(userFromRepo);
 
-        given(userService.isUserAuthorized(userPutDTO.getId(),user.getId(),tokenFromHeader)).willReturn(true);
+        given(userService.isUserAuthorized(idFromURI,userFromRepo.getId(),tokenFromHeader)).willReturn(true);
 
-        doNothing().when(userService).applyUserProfileChange(userInput,user);
+        doNothing().when(userService).applyUserProfileChange(userInput,userFromRepo);
 
         // when
-        MockHttpServletRequestBuilder postRequest = post("/users/" + userPutDTO.getId() + "/profile")
+        MockHttpServletRequestBuilder postRequest = post("/users/" + idFromURI + "/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO));
 
         // then
         mockMvc.perform(postRequest)
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("gender",is(user.getGender())));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("Gender.MALE",is(userFromRepo.getGender())));
     }
 
     @Test

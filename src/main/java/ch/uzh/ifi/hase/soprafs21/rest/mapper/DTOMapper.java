@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
 import org.mapstruct.*;
@@ -32,8 +33,12 @@ public interface DTOMapper {
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "token", target = "token")
+    @Mapping(source = "phone", target = "phone")
+    @Mapping(source = "profilePicture", target = "profilePicture")
+    @Mapping(source = "userInterests", target = "userInterests")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
+    @Mapping(source = "email", target = "email")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "bio", target = "bio")
@@ -42,6 +47,16 @@ public interface DTOMapper {
     @Mapping(source = "profilePicture", target = "profilePicture")
     @Mapping(source = "userInterests", target = "userInterests")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
+
+    @Mapping(source = "lastSeen", target = "lastSeen")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "gender", target = "gender")
+    @Mapping(source = "bio", target = "bio")
+    @Mapping(source = "phone", target = "phone")
+    @Mapping(source = "profilePicture", target = "profilePicture")
+    @Mapping(source = "userInterests", target = "userInterests")
+    UserGetDTOProfile convertEntityToUserGetDTOProfile(User user);
+
 
     /**
     @Mapping(source = "ageRangeMin", target = "ageRangeMin")

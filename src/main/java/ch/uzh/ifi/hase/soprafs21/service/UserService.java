@@ -142,6 +142,11 @@ public class UserService {
     public void applyUserProfileChange(User userInput,User userFromRepo) {
         boolean noNewData = true;
 
+        if(userInput.getEmail() != null){
+            userFromRepo.setEmail(userInput.getEmail());
+            noNewData = false;
+        }
+
         if (userInput.getPassword() != null){
             userFromRepo.setPassword(userInput.getPassword());
             noNewData = false;

@@ -286,6 +286,8 @@ public class UserControllerTest {
         User userFromRepo = new User();
         userFromRepo.setId(1L);
         userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
 
         String tokenFromHeader = "ssfs";
         Long idFromURI = 1L;
@@ -303,8 +305,8 @@ public class UserControllerTest {
 
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(userFromRepo.getId().intValue())))
-                .andExpect(jsonPath("$.email", is(userFromRepo.getEmail())));
+                .andExpect(jsonPath("$.name", is(userFromRepo.getName())))
+                .andExpect(jsonPath("$.bio", is(userFromRepo.getBio())));
     }
 
     @Test

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -112,7 +114,7 @@ public class UserController {
 
     @GetMapping("/users/{userId}/profile")
     @ResponseStatus(HttpStatus.OK)
-    public UserGetDTO getUserProfile(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
+    public Object getUserProfile(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
 
         // checks if the profile to be visited exists
         userService.checkIfUserExistsWithGivenId(userId);
@@ -123,7 +125,15 @@ public class UserController {
         // get user profile
         User userFromRepo = userService.getUserByID(userId);
 
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
+        // if user is on his own profile, he can see additional data like email --> return UserGetDTO
+        try{
+            if(userService.isUserAuthenticated(userId,token)){
+                return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
+            }
+        }catch(ResponseStatusException ignored){}
+
+        // if user is on others profile, he can only see public data --> return UserGetDTOProfile
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTOProfile(userFromRepo);
     }
 
     @GetMapping("/users/{userId}/profile/verify")

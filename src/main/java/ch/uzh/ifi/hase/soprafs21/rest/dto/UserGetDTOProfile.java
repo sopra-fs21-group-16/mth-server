@@ -3,27 +3,28 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
-public class UserPutDTO {
+import java.time.LocalDateTime;
 
-    private String email;
-
-    private String password;
-
+public class UserGetDTOProfile {
+    private LocalDateTime lastSeen;
     private String name;
-
-    private String bio;
-
-    private String phone;
-
     private Gender gender;
-
+    private String bio;
+    private String phone;
     private String profilePicture;
-
     private UserInterests userInterests;
 
-    public String getEmail() {return email;}
+    public LocalDateTime getLastSeen() {return lastSeen;}
 
-    public void setEmail(String email) {this.email = email;}
+    public void setLastSeen(LocalDateTime lastSeen) {this.lastSeen = lastSeen;}
+
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
+
+    public Gender getGender() {return gender;}
+
+    public void setGender(Gender gender) {this.gender = gender;}
 
     public String getBio() {return bio;}
 
@@ -33,10 +34,6 @@ public class UserPutDTO {
 
     public void setPhone(String phone) {this.phone = phone;}
 
-    public Gender getGender() {return gender;}
-
-    public void setGender(Gender gender) {this.gender = gender;}
-
     public String getProfilePicture() {return profilePicture;}
 
     public void setProfilePicture(String profilePicture) {this.profilePicture = profilePicture;}
@@ -44,12 +41,4 @@ public class UserPutDTO {
     public UserInterests getUserInterests() {return userInterests;}
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
-
-    public String getPassword() {return password;}
-
-    public void setPassword(String password) {this.password = password;}
-
-    public String getName() {return name;}
-
-    public void setName(String name) {this.name = name;}
 }

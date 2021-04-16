@@ -109,7 +109,7 @@ public class UserService {
         User userById = userRepository.findById(userId);
 
         if (userById == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provided user could not be found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Provided user could not be found.");
         } else if (!userById.getToken().equals(token)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provided user does not match Auth-Token.");
         }
@@ -134,9 +134,56 @@ public class UserService {
         return true;
     }
 
-    public void applyUserProfileChange(User userInput,User userFromRepo){
+    /**
+     * apply the change of the user data, throw error if only null values are given
+     * @param userInput
+     * @param userFromRepo
+     */
+    public void applyUserProfileChange(User userInput,User userFromRepo) {
+        boolean noNewData = true;
 
+        if (userInput.getPassword() != null){
+            userFromRepo.setPassword(userInput.getPassword());
+            noNewData = false;
+        }
 
+        if (userInput.getName() != null){
+            userFromRepo.setName(userInput.getName());
+            noNewData = false;
+        }
+
+        if (userInput.getBio() != null){
+            userFromRepo.setBio(userInput.getBio());
+            noNewData = false;
+        }
+
+        if (userInput.getPhone() != null){
+            userFromRepo.setPhone(userInput.getPhone());
+            noNewData = false;
+        }
+
+        if (userInput.getGender() != null){
+            userFromRepo.setGender(userInput.getGender());
+            noNewData = false;
+        }
+
+        if (userInput.getProfilePicture() != null){
+            userFromRepo.setProfilePicture(userInput.getProfilePicture());
+            noNewData = false;
+        }
+
+        if (userInput.getUserInterests() != null){
+            userFromRepo.setUserInterests(userInput.getUserInterests());
+            noNewData = false;
+        }
+
+        else if(noNewData){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No change data was provided");
+        }
+
+        userRepository.save(userFromRepo);
+
+        userRepository.flush();
     }
 
 

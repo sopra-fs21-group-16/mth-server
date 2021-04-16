@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
@@ -10,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,6 +32,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -121,7 +120,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         // then
-        /*
+        /**
         MvcResult result=mockMvc.perform(postRequest)
                 .andExpect(status().isOk())
                 .andReturn();
@@ -137,19 +136,24 @@ public class UserControllerTest {
     void userPing() {
     }
 
+
     @Test
-    void createUserProfileSuccess() throws Exception{
+    public void updateUserProfile_Success() throws Exception{
         // user in repo
         User userFromRepo = new User();
         userFromRepo.setId(1L);
-        userFromRepo.setGender(Gender.MALE);
+        userFromRepo.setGender(null);
         userFromRepo.setToken("ssfs");
+
+        // changed user
+        User changedUser = new User();
+        changedUser.setGender(Gender.MALE);
 
         // user object containing new changes for user in repo
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setGender(Gender.MALE);
         String tokenFromHeader = "ssfs";
-        long idFromURI = 1L;
+        Long idFromURI = 1L;
 
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
 
@@ -162,19 +166,49 @@ public class UserControllerTest {
         doNothing().when(userService).applyUserProfileChange(userInput,userFromRepo);
 
         // when
-        MockHttpServletRequestBuilder postRequest = post("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPutDTO));
+                .content(asJsonString(userPutDTO))
+                .header("Auth-Token", tokenFromHeader);
 
         // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("Gender.MALE",is(userFromRepo.getGender())));
+        mockMvc.perform(putRequest)
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    void updateUserProfile() {
+    public void updateUserProfile_With_Invalid_Profile() throws Exception{
+        // user in repo
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setGender(null);
+        userFromRepo.setToken("ssfs");
+
+        // user object containing new changes for user in repo --> containing no change data
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setGender(null);
+        String tokenFromHeader = "ssfs";
+        Long idFromURI = 1L;
+
+        given(userService.isUserAuthenticated(idFromURI,tokenFromHeader)).willReturn(true);
+
+        given(userService.getUserByID(idFromURI)).willReturn(userFromRepo);
+
+        given(userService.isUserAuthorized(idFromURI,userFromRepo.getId(),tokenFromHeader)).willReturn(true);
+
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,"No change data was provided")).when(userService).applyUserProfileChange(Mockito.any(),Mockito.any());
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPutDTO))
+                .header("Auth-Token", tokenFromHeader);
+
+        // then
+        mockMvc.perform(putRequest)
+                .andExpect(status().isBadRequest());
     }
+
 
     @Test
     void getUserProfile() {

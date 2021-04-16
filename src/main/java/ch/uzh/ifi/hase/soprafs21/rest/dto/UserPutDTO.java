@@ -5,6 +5,10 @@ import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
 public class UserPutDTO {
 
+    private String password;
+
+    private String name;
+
     private String bio;
 
     private String phone;
@@ -34,4 +38,12 @@ public class UserPutDTO {
     public UserInterests getUserInterests() {return userInterests;}
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
+
+    public String getPassword() {return password;}
+
+    public void setPassword(String password) {this.password = password;}
+
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
 }

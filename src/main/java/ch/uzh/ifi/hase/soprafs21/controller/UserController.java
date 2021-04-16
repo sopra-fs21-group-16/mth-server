@@ -90,9 +90,10 @@ public class UserController {
 
     }
 
-    @PostMapping("/users/{userId}/profile")
-    @ResponseStatus(HttpStatus.OK)
-    public UserGetDTO createUserProfile(@RequestBody UserPutDTO userPutDTOProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
+    @PutMapping("/users/{userId}/profile")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void updateUserProfile(@RequestBody UserPutDTO userPutDTOProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTOProfile);
 
@@ -107,22 +108,6 @@ public class UserController {
 
         // creates user profile
         userService.applyUserProfileChange(userInput,userFromRepo);
-
-        // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
-    }
-
-    @PutMapping("/users/{userId}/profile")
-    @ResponseStatus(HttpStatus.OK)
-    public void updateUserProfile(@RequestBody User profileUpdates, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
-        // checks if user id and token are from the same user
-        //userService.authorizationCheck(userId, token);
-
-        // updates user profile
-        //userService.updateUserProfile(profileUpdates, userId);
     }
 
     @GetMapping("/users/{userId}/profile")

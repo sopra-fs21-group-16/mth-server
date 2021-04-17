@@ -163,5 +163,4 @@ public class UserController {
         // verifies Email
         //userService.verifyEmail(verificationToken);
     }
-
 }

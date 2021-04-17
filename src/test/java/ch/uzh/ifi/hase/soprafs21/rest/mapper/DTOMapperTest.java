@@ -82,7 +82,8 @@ public class DTOMapperTest {
         assertEquals(user.getUserInterests(),userGetDTO.getUserInterests());
 
         // check user interest content
-        assertEquals(user.getUserInterests().getAgeRange(),userGetDTO.getUserInterests().getAgeRange());
+        assertEquals(user.getUserInterests().getAgeRange().max,userGetDTO.getUserInterests().getAgeRange().max);
+        assertEquals(user.getUserInterests().getAgeRange().min,userGetDTO.getUserInterests().getAgeRange().min);
         assertEquals(user.getUserInterests().getGenderPreference(),userGetDTO.getUserInterests().getGenderPreference());
         assertEquals(user.getUserInterests().getActivityInterests(),userGetDTO.getUserInterests().getActivityInterests());
     }
@@ -125,7 +126,8 @@ public class DTOMapperTest {
         assertEquals(userPutDTO.getUserInterests(),user.getUserInterests());
 
         // check user interest content
-        assertEquals(userPutDTO.getUserInterests().getAgeRange(),user.getUserInterests().getAgeRange());
+        assertEquals(userPutDTO.getUserInterests().getAgeRange().max,user.getUserInterests().getAgeRange().max);
+        assertEquals(userPutDTO.getUserInterests().getAgeRange().min,user.getUserInterests().getAgeRange().min);
         assertEquals(userPutDTO.getUserInterests().getGenderPreference(),user.getUserInterests().getGenderPreference());
         assertEquals(userPutDTO.getUserInterests().getActivityInterests(),user.getUserInterests().getActivityInterests());
     }
@@ -165,7 +167,8 @@ public class DTOMapperTest {
         assertEquals(user.getUserInterests(),userGetDTOProfile.getUserInterests());
 
         // check user interest content
-        assertEquals(user.getUserInterests().getAgeRange(),userGetDTOProfile.getUserInterests().getAgeRange());
+        assertEquals(user.getUserInterests().getAgeRange().max,userGetDTOProfile.getUserInterests().getAgeRange().max);
+        assertEquals(user.getUserInterests().getAgeRange().min,userGetDTOProfile.getUserInterests().getAgeRange().min);
         assertEquals(user.getUserInterests().getGenderPreference(),userGetDTOProfile.getUserInterests().getGenderPreference());
         assertEquals(user.getUserInterests().getActivityInterests(),userGetDTOProfile.getUserInterests().getActivityInterests());
     }

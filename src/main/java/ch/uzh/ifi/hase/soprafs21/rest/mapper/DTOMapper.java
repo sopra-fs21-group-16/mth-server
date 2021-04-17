@@ -43,9 +43,9 @@ public interface DTOMapper {
     @Mapping(source = "password", target = "password")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "age", target = "age")
+    @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "phone", target = "phone")
-    @Mapping(source = "gender", target = "gender")
     @Mapping(source = "profilePicture", target = "profilePicture")
     @Mapping(source = "userInterests", target = "userInterests")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);

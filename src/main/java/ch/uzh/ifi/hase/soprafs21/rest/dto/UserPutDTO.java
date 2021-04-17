@@ -11,7 +11,7 @@ public class UserPutDTO {
 
     private String name;
 
-    private String age;
+    private int age;
 
     private String bio;
 
@@ -27,9 +27,9 @@ public class UserPutDTO {
 
     public void setEmail(String email) {this.email = email;}
 
-    public String getAge() {return age;}
+    public int getAge() {return age;}
 
-    public void setAge(String age) {this.age = age;}
+    public void setAge(int age) {this.age = age;}
 
     public String getBio() {return bio;}
 

@@ -9,6 +9,7 @@ public class UserGetDTOProfile {
     private LocalDateTime lastSeen;
     private String name;
     private Gender gender;
+    private String age;
     private String bio;
     private String phone;
     private String profilePicture;
@@ -25,6 +26,10 @@ public class UserGetDTOProfile {
     public Gender getGender() {return gender;}
 
     public void setGender(Gender gender) {this.gender = gender;}
+
+    public String getAge() {return age;}
+
+    public void setAge(String age) {this.age = age;}
 
     public String getBio() {return bio;}
 

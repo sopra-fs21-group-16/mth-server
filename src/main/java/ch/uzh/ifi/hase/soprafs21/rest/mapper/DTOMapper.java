@@ -30,6 +30,7 @@ public interface DTOMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "lastSeen", target = "lastSeen")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "age", target = "age")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "token", target = "token")
@@ -41,6 +42,7 @@ public interface DTOMapper {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "age", target = "age")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "gender", target = "gender")
@@ -50,6 +52,7 @@ public interface DTOMapper {
 
     @Mapping(source = "lastSeen", target = "lastSeen")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "age", target = "age")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "phone", target = "phone")

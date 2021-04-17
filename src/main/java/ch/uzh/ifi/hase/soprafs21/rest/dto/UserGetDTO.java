@@ -11,6 +11,7 @@ public class UserGetDTO {
     private String email;
     private LocalDateTime lastSeen;
     private String name;
+    private String age;
     private Gender gender;
     private String bio;
     private String token;
@@ -49,6 +50,10 @@ public class UserGetDTO {
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getAge() {return age;}
+
+    public void setAge(String age) {this.age = age;}
 
     public Gender getGender() {
         return gender;

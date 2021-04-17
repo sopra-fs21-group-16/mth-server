@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs21.rest.dto;
+package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
@@ -6,21 +6,13 @@ import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 public class UserPutDTO {
 
     private String email;
-
     private String password;
-
     private String name;
-
     private int age;
-
     private String bio;
-
     private String phone;
-
     private Gender gender;
-
     private String profilePicture;
-
     private UserInterests userInterests;
 
     public String getEmail() {return email;}

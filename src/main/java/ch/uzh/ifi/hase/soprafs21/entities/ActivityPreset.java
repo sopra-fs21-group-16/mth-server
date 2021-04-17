@@ -30,13 +30,13 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private String googlePOIKeyword;
 
-    public ActivityPreset(){
+    public ActivityPreset(){}
 
-    }
-
-    ActivityPreset(String activityName, ActivityCategory activityCategory){
+    public ActivityPreset(String activityName, ActivityCategory activityCategory, String googlePOICategory, String googlePOIKeyword){
         this.activityName = activityName;
         this.activityCategory = activityCategory;
+        this.googlePOICategory = googlePOICategory;
+        this.googlePOIKeyword = googlePOIKeyword;
     }
 
     public Long getId() {return id;}

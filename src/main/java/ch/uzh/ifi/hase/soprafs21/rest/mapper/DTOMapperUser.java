@@ -1,10 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTOProfile;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -17,9 +17,9 @@ import org.mapstruct.factory.Mappers;
  * Always created one mapper for getting information (GET) and one mapper for creating information (POST).
  */
 @Mapper
-public interface DTOMapper {
+public interface DTOMapperUser {
 
-    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapperUser INSTANCE = Mappers.getMapper(DTOMapperUser.class);
 
     @Mapping(source = "email", target = "email")
     @Mapping(source = "password", target = "password")
@@ -59,5 +59,7 @@ public interface DTOMapper {
     @Mapping(source = "profilePicture", target = "profilePicture")
     @Mapping(source = "userInterests", target = "userInterests")
     UserGetDTOProfile convertEntityToUserGetDTOProfile(User user);
+
+
 
 }

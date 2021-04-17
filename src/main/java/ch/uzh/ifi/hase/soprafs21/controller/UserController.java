@@ -1,16 +1,15 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
-import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTOProfile;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -36,13 +35,13 @@ public class UserController {
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
         // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User userInput = DTOMapperUser.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
         User createdUser = userService.createUser(userInput);
 
         // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
     @PostMapping("/users/login")
@@ -50,7 +49,7 @@ public class UserController {
     @ResponseBody
     public String login(@RequestBody UserPostDTO userPostDTO){
         // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+        User userInput = DTOMapperUser.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // login user and return token as String
         return userService.loginUser(userInput);
@@ -97,7 +96,7 @@ public class UserController {
     @ResponseBody
     public void updateUserProfile(@RequestBody UserPutDTO userPutDTOProfile, @PathVariable Long userId, @RequestHeader("Auth-Token")String token){
         // convert API user to internal representation
-        User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTOProfile);
+        User userInput = DTOMapperUser.INSTANCE.convertUserPutDTOtoEntity(userPutDTOProfile);
 
         // Checks if the provided user exists and whether the token is valid and matches the user --> if they match, then user is on own profile
         userService.isUserAuthenticated(userId,token);
@@ -128,12 +127,12 @@ public class UserController {
         // if user is on his own profile, he can see additional data like email --> return UserGetDTO
         try{
             if(userService.isUserAuthenticated(userId,token)){
-                return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
+                return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
             }
         }catch(ResponseStatusException ignored){}
 
         // if user is on others profile, he can only see public data --> return UserGetDTOProfile
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTOProfile(userFromRepo);
+        return DTOMapperUser.INSTANCE.convertEntityToUserGetDTOProfile(userFromRepo);
     }
 
     @GetMapping("/users/profiles")
@@ -149,7 +148,7 @@ public class UserController {
 
         // convert each user to the API representation
         for (User user : users) {
-            userGetDTOProfiles.add(DTOMapper.INSTANCE.convertEntityToUserGetDTOProfile(user));
+            userGetDTOProfiles.add(DTOMapperUser.INSTANCE.convertEntityToUserGetDTOProfile(user));
         }
         return userGetDTOProfiles;
     }

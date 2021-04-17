@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs21.rest.dto;
+package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 import java.time.LocalDateTime;
 
 public class UserGetDTOProfile {
+
     private LocalDateTime lastSeen;
     private String name;
     private Gender gender;

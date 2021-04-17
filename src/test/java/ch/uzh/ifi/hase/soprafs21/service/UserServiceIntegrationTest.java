@@ -216,11 +216,42 @@ public class UserServiceIntegrationTest {
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@gmail.ch");
+        testUser.setEmail("test.user@gmail.ch"); // invalid email
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
     }
+
+    @Test
+    public void checkIfValidPhone_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        testUser.setPhone("0791233455");
+        User createdUserWithID = userService.createUser(testUser);
+
+        boolean valid = userService.checkIfValidPhone(createdUserWithID.getPhone());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidPhone_invalid(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@gmail.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        testUser.setPhone("333"); // invalid phone number
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPhone(testUser.getPhone()));
+    }
+
 }

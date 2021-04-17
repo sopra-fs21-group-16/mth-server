@@ -238,4 +238,33 @@ public class UserServiceTest {
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
     }
+
+    @Test
+    public void checkIfValidPhone_success(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("valid");
+        testUser.setPhone("0791223454");
+
+        boolean valid = userService.checkIfValidPhone(testUser.getPhone());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidPhone_invalid(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@gmail.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("valid");
+        testUser.setPhone("333");   // invalid phone number
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPhone(testUser.getPhone()));
+    }
 }

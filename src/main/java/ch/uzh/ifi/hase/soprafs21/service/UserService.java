@@ -33,7 +33,12 @@ public class UserService {
 
     private static final String EmailPattern = "(^$|.+@(.+\\.)?(uzh\\.ch|ethz\\.ch))";
 
-    private static final Pattern pattern = Pattern.compile(EmailPattern);
+    private static final String PhonePattern = "(^$|(0|\\+41)[0-9]{9})";
+
+    private static final Pattern patternEmail = Pattern.compile(EmailPattern);
+
+    private static final Pattern patternPhone = Pattern.compile(PhonePattern);
+
 
 
     @Autowired
@@ -150,6 +155,7 @@ public class UserService {
         boolean noNewData = true;
 
         if(userInput.getEmail() != null){
+            checkIfValidEmail(userInput.getEmail());
             userFromRepo.setEmail(userInput.getEmail());
             noNewData = false;
         }
@@ -170,6 +176,7 @@ public class UserService {
         }
 
         if (userInput.getPhone() != null){
+            checkIfValidPhone(userInput.getPhone());
             userFromRepo.setPhone(userInput.getPhone());
             noNewData = false;
         }
@@ -220,9 +227,17 @@ public class UserService {
      * @return
      */
     public boolean checkIfValidEmail(String emailToCheck){
-        Matcher matcher = pattern.matcher(emailToCheck);
+        Matcher matcher = patternEmail.matcher(emailToCheck);
         if(!matcher.matches()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email is not valid, please use a UZH or ETH Zurich email");
+        }
+        return true;
+    }
+
+    public boolean checkIfValidPhone(String phoneToCheck){
+        Matcher matcher = patternPhone.matcher(phoneToCheck);
+        if(!matcher.matches()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The phone number is not valid, must be a valid swiss phone number");
         }
         return true;
     }

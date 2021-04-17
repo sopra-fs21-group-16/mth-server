@@ -353,6 +353,64 @@ public class UserControllerTest {
     }
 
     @Test
+    void getUserProfiles_Success() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromHeader = "ssfs";
+        Long idFromURI = 1L;
+
+        // saves a list that contains only one object
+        List<User> allUsers = Collections.singletonList(userFromRepo);
+
+        given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
+
+        // this mocks the UserService -> we define above what the userService should return when getUsers() is called
+        given(userService.getUsers()).willReturn(allUsers);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profiles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", tokenFromHeader);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is(userFromRepo.getName())))
+                .andExpect(jsonPath("$[0].bio", is(userFromRepo.getBio())));
+    }
+
+    @Test
+    void getUserProfiles_Invalid_Token() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        // invalid token
+        String tokenFromHeader = "invalid";
+        Long idFromURI = 1L;
+
+        // saves a list that contains only one object
+        List<User> allUsers = Collections.singletonList(userFromRepo);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidToken(tokenFromHeader);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profiles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", tokenFromHeader);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void verifyUserProfile() {
     }
 

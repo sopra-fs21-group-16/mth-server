@@ -209,10 +209,36 @@ public class UserServiceTest {
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
-        testUser.setToken(null);
+        testUser.setToken(null); // invalid token
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
     }
 
+    @Test
+    public void checkIfValidEmail_success(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("valid");
+
+        boolean valid = userService.checkIfValidEmail(testUser.getEmail());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidEmail_invalid(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@gmail.ch"); // invalid email
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("valid");
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
+    }
 }

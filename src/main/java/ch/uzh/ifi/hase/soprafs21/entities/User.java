@@ -64,7 +64,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
-    @OneToOne
+    // cascade option enabled to map objects
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserInterests userInterests;
 
     public Long getId() {

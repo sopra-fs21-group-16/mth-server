@@ -13,6 +13,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -89,7 +90,6 @@ public class UserController {
         //userService.authorizationCheck(userId, token);
 
         // additional step necessary
-
     }
 
     @PutMapping("/users/{userId}/profile")
@@ -134,6 +134,24 @@ public class UserController {
 
         // if user is on others profile, he can only see public data --> return UserGetDTOProfile
         return DTOMapper.INSTANCE.convertEntityToUserGetDTOProfile(userFromRepo);
+    }
+
+    @GetMapping("/users/profiles")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTOProfile> getAllProfiles(@RequestHeader("Auth-Token")String token) {
+        // checks if the visitor has a valid token
+        userService.checkIfValidToken(token);
+
+        // fetch all users in the internal representation
+        List<User> users = userService.getUsers();
+        List<UserGetDTOProfile> userGetDTOProfiles = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : users) {
+            userGetDTOProfiles.add(DTOMapper.INSTANCE.convertEntityToUserGetDTOProfile(user));
+        }
+        return userGetDTOProfiles;
     }
 
     @GetMapping("/users/{userId}/profile/verify")

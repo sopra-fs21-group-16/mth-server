@@ -180,7 +180,7 @@ public class UserServiceIntegrationTest {
         testUser.setPassword("testPassword");
         User createdUserWithID = userService.createUser(testUser);
 
-        boolean valid = userService.checkIfValidToken(testUser.getToken());
+        boolean valid = userService.checkIfValidToken(createdUserWithID.getToken());
 
         assertEquals(true,valid);
     }
@@ -198,5 +198,33 @@ public class UserServiceIntegrationTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(createdUserWithID.getToken()));
+    }
+
+    @Test
+    public void checkIfValidEmail_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        boolean valid = userService.checkIfValidEmail(createdUserWithID.getEmail());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidEmail_invalid(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@gmail.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+       
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
     }
 }

@@ -57,9 +57,4 @@ public interface DTOMapper {
     @Mapping(source = "userInterests", target = "userInterests")
     UserGetDTOProfile convertEntityToUserGetDTOProfile(User user);
 
-
-    /**
-    @Mapping(source = "ageRangeMin", target = "ageRangeMin")
-    UserInterests convertUserPutInterestsDTOtoEntity(UserPutDTO userPutDTO);
-    */
 }

@@ -17,6 +17,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * User Service
@@ -30,6 +32,11 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+
+    private static final String EmailPattern = "(^$|.+@(.+\\.)?(uzh\\.ch|ethz\\.ch))";
+
+    private static final Pattern pattern = Pattern.compile(EmailPattern);
+
 
     @Autowired
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
@@ -46,6 +53,8 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
+        checkIfValidEmail(newUser.getEmail());
+
         checkIfUserExistsByEmail(newUser);
 
         newUser.setToken(UUID.randomUUID().toString());
@@ -203,6 +212,19 @@ public class UserService {
     public boolean checkIfValidToken(String tokenToCheck){
         if(tokenToCheck == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
+        }
+        return true;
+    }
+
+    /**
+     * checks if a given email follows the allowed pattern
+     * @param emailToCheck
+     * @return
+     */
+    public boolean checkIfValidEmail(String emailToCheck){
+        Matcher matcher = pattern.matcher(emailToCheck);
+        if(!matcher.matches()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email is not valid, please use a UZH or ETH Zurich email");
         }
         return true;
     }

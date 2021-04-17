@@ -80,6 +80,11 @@ public class DTOMapperTest {
         assertEquals(user.getPhone(),userGetDTO.getPhone());
         assertEquals(user.getProfilePicture(),userGetDTO.getProfilePicture());
         assertEquals(user.getUserInterests(),userGetDTO.getUserInterests());
+
+        // check user interest content
+        assertEquals(user.getUserInterests().getAgeRange(),userGetDTO.getUserInterests().getAgeRange());
+        assertEquals(user.getUserInterests().getGenderPreference(),userGetDTO.getUserInterests().getGenderPreference());
+        assertEquals(user.getUserInterests().getActivityInterests(),userGetDTO.getUserInterests().getActivityInterests());
     }
 
     @Test
@@ -118,6 +123,11 @@ public class DTOMapperTest {
         assertEquals(userPutDTO.getPhone(),user.getPhone());
         assertEquals(userPutDTO.getProfilePicture(),user.getProfilePicture());
         assertEquals(userPutDTO.getUserInterests(),user.getUserInterests());
+
+        // check user interest content
+        assertEquals(userPutDTO.getUserInterests().getAgeRange(),user.getUserInterests().getAgeRange());
+        assertEquals(userPutDTO.getUserInterests().getGenderPreference(),user.getUserInterests().getGenderPreference());
+        assertEquals(userPutDTO.getUserInterests().getActivityInterests(),user.getUserInterests().getActivityInterests());
     }
 
     @Test
@@ -153,5 +163,10 @@ public class DTOMapperTest {
         assertEquals(user.getPhone(),userGetDTOProfile.getPhone());
         assertEquals(user.getProfilePicture(),userGetDTOProfile.getProfilePicture());
         assertEquals(user.getUserInterests(),userGetDTOProfile.getUserInterests());
+
+        // check user interest content
+        assertEquals(user.getUserInterests().getAgeRange(),userGetDTOProfile.getUserInterests().getAgeRange());
+        assertEquals(user.getUserInterests().getGenderPreference(),userGetDTOProfile.getUserInterests().getGenderPreference());
+        assertEquals(user.getUserInterests().getActivityInterests(),userGetDTOProfile.getUserInterests().getActivityInterests());
     }
 }

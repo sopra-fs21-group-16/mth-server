@@ -223,7 +223,7 @@ public class UserServiceIntegrationTest {
         testUser.setEmail("test.user@gmail.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
-       
+
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
     }

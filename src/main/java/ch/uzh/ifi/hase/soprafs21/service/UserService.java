@@ -228,7 +228,7 @@ public class UserService {
 
         // and token is invalid if token is not consistent with a token inside the repo
         for (User user : users){
-            if(tokenToCheck == user.getToken()){
+            if(tokenToCheck.equals(user.getToken())){
                 validStatus = true;
             }
         }

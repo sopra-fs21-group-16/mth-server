@@ -215,9 +215,29 @@ public class UserService {
     }
 
     public boolean checkIfValidToken(String tokenToCheck){
+        boolean validStatus = false;
+
+        // token is invalid if token is null
         if(tokenToCheck == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
         }
+
+        // get a list of all registered users
+        UserService userService = new UserService(userRepository);
+        List<User> users = userService.getUsers();
+
+        // and token is invalid if token is not consistent with a token inside the repo
+        for (User user : users){
+            if(tokenToCheck == user.getToken()){
+                validStatus = true;
+            }
+        }
+
+        // throw exception if token is not consistent to any user in repo --> meaning that someone external tries to leak data
+        if(!validStatus){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
+        }
+
         return true;
     }
 

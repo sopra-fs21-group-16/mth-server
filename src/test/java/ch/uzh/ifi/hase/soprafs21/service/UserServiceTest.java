@@ -10,12 +10,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.BDDMockito.given;
 
 import org.springframework.web.server.ResponseStatusException;
 
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -192,21 +195,39 @@ public class UserServiceTest {
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
-        testUser.setToken("valid");
+        User userInRepo = userService.createUser(testUser);
 
-        boolean valid = userService.checkIfValidToken(testUser.getToken());
+        List<User> userList = new ArrayList<>();
+        userList.add(userInRepo);
+
+        given(userService.getUsers()).willReturn(userList);
+
+        boolean valid = userService.checkIfValidToken(userInRepo.getToken());
 
         assertEquals(true,valid);
     }
 
     @Test
-    public void checkIfValidToken_invalid(){
+    public void checkIfValidToken_invalid_Null(){
         // create user that has is in repo
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         testUser.setToken(null); // invalid token
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
+    }
+
+    @Test
+    public void checkIfValidToken_invalid_ExternalAccess(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("asdf"); // invalid token that is not in repo
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));

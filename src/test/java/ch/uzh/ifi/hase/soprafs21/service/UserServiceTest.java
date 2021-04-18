@@ -288,4 +288,63 @@ public class UserServiceTest {
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPhone(testUser.getPhone()));
     }
+
+    @Test
+    public void checkIfValidPassword_success(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("valid");
+        testUser.setToken("asad");
+        testUser.setPhone("0791223454");
+
+        boolean valid = userService.checkIfValidPassword(testUser.getPassword());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidPassword_invalid(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@gmail.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword(null);
+        testUser.setToken("valid");
+        testUser.setPhone("333");   // invalid phone number
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPassword(testUser.getPassword()));
+    }
+
+    @Test
+    public void checkIfValidName_success(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("asda");
+        testUser.setToken("asad");
+        testUser.setPhone("0791223454");
+
+        boolean valid = userService.checkIfValidName(testUser.getName());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidName_invalid(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@gmail.ch");
+        testUser.setName(null);
+        testUser.setPassword("sfsf");
+        testUser.setToken("valid");
+        testUser.setPhone("333");   // invalid phone number
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidName(testUser.getName()));
+    }
+
 }

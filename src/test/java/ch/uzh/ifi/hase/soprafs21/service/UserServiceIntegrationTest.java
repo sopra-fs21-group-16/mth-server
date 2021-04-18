@@ -254,4 +254,64 @@ public class UserServiceIntegrationTest {
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPhone(testUser.getPhone()));
     }
 
+    @Test
+    public void checkIfValidPassword_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        testUser.setPhone("0791233455");
+        User createdUserWithID = userService.createUser(testUser);
+
+        boolean valid = userService.checkIfValidPassword(createdUserWithID.getPassword());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidPassword_invalid(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@gmail.ch");
+        testUser.setName("Tester");
+        testUser.setPassword(null);  // invalid password
+        testUser.setPhone("0791235666");
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPassword(testUser.getPassword()));
+    }
+
+    @Test
+    public void checkIfValidName_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("tester");
+        testUser.setPassword("testPassword");
+        testUser.setPhone("0791233455");
+        User createdUserWithID = userService.createUser(testUser);
+
+        boolean valid = userService.checkIfValidName(createdUserWithID.getName());
+
+        assertTrue(valid);
+    }
+
+    @Test
+    public void checkIfValidName_invalid(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@gmail.ch");
+        testUser.setName(null); // invalid name
+        testUser.setPassword("sdsf");
+        testUser.setPhone("0791235666");
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidName(testUser.getName()));
+    }
+
 }

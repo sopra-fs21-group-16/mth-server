@@ -60,6 +60,10 @@ public class UserService {
 
         checkIfUserExistsByEmail(newUser);
 
+        checkIfValidPassword(newUser.getPassword());
+
+        checkIfValidName(newUser.getName());
+
         newUser.setToken(UUID.randomUUID().toString());
 
         // round the LocalDateTime to Minutes using truncatedTo
@@ -161,11 +165,13 @@ public class UserService {
         }
 
         if (userInput.getPassword() != null){
+            checkIfValidPassword(userInput.getPassword());
             userFromRepo.setPassword(userInput.getPassword());
             noNewData = false;
         }
 
         if (userInput.getName() != null){
+            checkIfValidName(userInput.getName());
             userFromRepo.setName(userInput.getName());
             noNewData = false;
         }
@@ -262,4 +268,17 @@ public class UserService {
         return true;
     }
 
+    public boolean checkIfValidPassword(String passwordToCheck){
+        if(passwordToCheck == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The password is not valid, password should not be null");
+        }
+        return true;
+    }
+
+    public boolean checkIfValidName(String nameToCheck){
+        if(nameToCheck == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name is not valid, name should not be null");
+        }
+        return true;
+    }
 }

@@ -24,11 +24,12 @@ public class Activity implements Serializable{
 
     // OneToOne since every UserActivity object has only one ActivityPreset
     // unidirectional relationship since ActivityPreset does not have to be aware of the UserActivity
-    @OneToOne
+    // cascade option enabled to map objects
+    @OneToOne(cascade = {CascadeType.ALL})
     private ActivityPreset activityPreset;
 
     // since two UserSwipeStatus objects are needed per UserActivity
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.ALL})
     private List<UserSwipeStatus> userSwipeStatusList;
 
     public Long getId() {return id;}

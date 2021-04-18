@@ -253,6 +253,10 @@ public class UserService {
      * @return
      */
     public boolean checkIfValidEmail(String emailToCheck){
+        if (emailToCheck == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email is not valid, email should not be null");
+        }
+
         Matcher matcher = patternEmail.matcher(emailToCheck);
         if(!matcher.matches()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email is not valid, please use a UZH or ETH Zurich email");

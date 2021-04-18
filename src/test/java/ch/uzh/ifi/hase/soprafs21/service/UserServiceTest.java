@@ -261,6 +261,20 @@ public class UserServiceTest {
     }
 
     @Test
+    public void checkIfValidEmail_invalid_Null(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail(null);
+        testUser.setName("Tester2");
+        testUser.setPassword("dfssf");
+        testUser.setToken("valid");
+        testUser.setPhone("333");   // invalid phone number
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
+    }
+
+    @Test
     public void checkIfValidPhone_success(){
         // create user that has is in repo
         testUser.setId(1L);

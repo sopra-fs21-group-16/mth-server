@@ -225,6 +225,20 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
+    public void checkIfValidEmail_invalid_Null(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail(null);
+        testUser.setName("Tester");
+        testUser.setPassword("sasfadf");  // invalid password
+        testUser.setPhone("0791235666");
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
+    }
+
+    @Test
     public void checkIfValidPhone_success(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 

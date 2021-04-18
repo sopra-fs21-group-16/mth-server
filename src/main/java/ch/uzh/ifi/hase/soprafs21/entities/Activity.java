@@ -31,6 +31,10 @@ public class Activity implements Serializable{
     @OneToMany
     private List<UserSwipeStatus> userSwipeStatusList;
 
+    public Long getId() { return id; }
+
+    public void setId(Long id) { this.id = id; }
+
     public Date getCreationDate() {
         return creationDate;
     }
@@ -61,4 +65,6 @@ public class Activity implements Serializable{
     public Boolean isMatch(){
         return null;
     }
+
+
 }

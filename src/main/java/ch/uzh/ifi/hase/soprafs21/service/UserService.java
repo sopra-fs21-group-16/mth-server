@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,16 +33,6 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private static final String EmailPattern = "(^$|.+@(.+\\.)?(uzh\\.ch|ethz\\.ch))";
-
-    private static final String PhonePattern = "(^$|(0|\\+41)[0-9]{9})";
-
-    private static final Pattern patternEmail = Pattern.compile(EmailPattern);
-
-    private static final Pattern patternPhone = Pattern.compile(PhonePattern);
-
-
-
     @Autowired
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -56,13 +48,8 @@ public class UserService {
     }
 
     public User createUser(User newUser) {
-        checkIfValidEmail(newUser.getEmail());
 
         checkIfUserExistsByEmail(newUser);
-
-        checkIfValidPassword(newUser.getPassword());
-
-        checkIfValidName(newUser.getName());
 
         newUser.setToken(UUID.randomUUID().toString());
 
@@ -70,8 +57,10 @@ public class UserService {
         newUser.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
 
         // saves the given entity but data is only persisted in the database once flush() is called
+        try { // saves the given entity but data is only persisted in the database once flush() is called
         newUser = userRepository.save(newUser);
-        userRepository.flush();
+        userRepository.flush(); }
+        catch (ConstraintViolationException ex) { handleValidationError(ex);}
 
         return newUser;
     }
@@ -159,19 +148,17 @@ public class UserService {
         boolean noNewData = true;
 
         if(userInput.getEmail() != null){
-            checkIfValidEmail(userInput.getEmail());
             userFromRepo.setEmail(userInput.getEmail());
             noNewData = false;
         }
 
         if (userInput.getPassword() != null){
-            checkIfValidPassword(userInput.getPassword());
+            /** TODO: send emailVerification when changing password */
             userFromRepo.setPassword(userInput.getPassword());
             noNewData = false;
         }
 
         if (userInput.getName() != null){
-            checkIfValidName(userInput.getName());
             userFromRepo.setName(userInput.getName());
             noNewData = false;
         }
@@ -182,7 +169,6 @@ public class UserService {
         }
 
         if (userInput.getPhone() != null){
-            checkIfValidPhone(userInput.getPhone());
             userFromRepo.setPhone(userInput.getPhone());
             noNewData = false;
         }
@@ -206,9 +192,10 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No change data was provided");
         }
 
-        userRepository.save(userFromRepo);
-
-        userRepository.flush();
+        try { // saves the given entity but data is only persisted in the database once flush() is called
+            userFromRepo= userRepository.save(userFromRepo);
+            userRepository.flush(); }
+        catch (ConstraintViolationException ex) { handleValidationError(ex);}
     }
 
     public void checkIfUserExistsWithGivenId(long userId){
@@ -248,41 +235,15 @@ public class UserService {
     }
 
     /**
-     * checks if a given email follows the allowed pattern
-     * @param emailToCheck
-     * @return
+     * to handle errors that occur when violating database constraints
+     * @param ex
      */
-    public boolean checkIfValidEmail(String emailToCheck){
-        if (emailToCheck == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email is not valid, email should not be null");
-        }
+    private void handleValidationError(ConstraintViolationException ex){
+        AtomicReference exceptions = new AtomicReference<>();
 
-        Matcher matcher = patternEmail.matcher(emailToCheck);
-        if(!matcher.matches()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email is not valid, please use a UZH or ETH Zurich email");
-        }
-        return true;
-    }
+        exceptions.set("Validation failed: \n ");
+        ex.getConstraintViolations().forEach(violation -> { exceptions.set(exceptions + violation.getMessage() + "\n "); });
 
-    public boolean checkIfValidPhone(String phoneToCheck){
-        Matcher matcher = patternPhone.matcher(phoneToCheck);
-        if(!matcher.matches()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The phone number is not valid, must be a valid swiss phone number");
-        }
-        return true;
-    }
-
-    public boolean checkIfValidPassword(String passwordToCheck){
-        if(passwordToCheck == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The password is not valid, password should not be null");
-        }
-        return true;
-    }
-
-    public boolean checkIfValidName(String nameToCheck){
-        if(nameToCheck == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The name is not valid, name should not be null");
-        }
-        return true;
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exceptions.toString());
     }
 }

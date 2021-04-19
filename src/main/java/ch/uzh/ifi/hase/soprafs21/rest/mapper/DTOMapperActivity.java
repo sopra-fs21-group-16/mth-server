@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityPutDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -21,9 +20,6 @@ public interface DTOMapperActivity {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "activityPreset", target = "activityPreset")
-    ActivityGetDTO convertEntityToActivityGetDTO(Activity activity);
-
-    @Mapping(source = "id", target = "id")
     @Mapping(source = "userSwipeStatusList", target = "userSwipeStatusList")
-    Activity convertActivityPutDTOtoEntity(ActivityPutDTO activityPutDTO);
+    ActivityGetDTO convertEntityToActivityGetDTO(Activity activity);
 }

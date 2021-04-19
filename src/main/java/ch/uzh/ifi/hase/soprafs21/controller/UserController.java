@@ -135,6 +135,7 @@ public class UserController {
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTOProfile(userFromRepo);
     }
 
+    /** TODO: For the future, the URL has to be changed and specified for getting matched users */
     @GetMapping("/users/profiles")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

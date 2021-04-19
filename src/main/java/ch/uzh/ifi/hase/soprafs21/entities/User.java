@@ -32,13 +32,13 @@ public class User implements Serializable {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Must not be empty")
+    @NotBlank(message = "Email must not be empty")
     @Email(message = "Must be a valid email")
     @Pattern(regexp = "(^$|.+@(.+\\.)?(uzh\\.ch|ethz\\.ch))", message = "You must sing up with an email address belonging to ETH Zurich or UZH")
     private String email;
 
-    @Column
-    @NotBlank(message = "Must not be empty")
+    @Column(nullable = false)
+    @NotBlank(message = "Password must not be empty")
     private String password;
 
     @Column
@@ -52,7 +52,7 @@ public class User implements Serializable {
     private String token;
 
     @Column
-    @NotBlank(message = "Must not be empty")
+    @NotBlank(message = "Name must not be empty")
     private String name;
 
     @Column
@@ -67,6 +67,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
+    //{"userIntersts": {"genderPreference": "MALE"}}
     // cascade option enabled to map objects
     @OneToOne(cascade = {CascadeType.ALL})
     private UserInterests userInterests;

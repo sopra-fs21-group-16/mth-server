@@ -2,8 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs21.constant.*;
 import ch.uzh.ifi.hase.soprafs21.entities.*;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
@@ -20,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * DTOMapperTest
  * Tests if the mapping between the internal and the external/API representation works.
  */
-public class DTOMapperTest {
+public class DTOMapperUserTest {
     @Test
     public void testCreateUser_fromUserPostDTO_toUser_success() {
         // create UserPostDTO
@@ -168,60 +166,5 @@ public class DTOMapperTest {
         assertEquals(user.getUserInterests().getAgeRange().min,userGetDTOProfile.getUserInterests().getAgeRange().min);
         assertEquals(user.getUserInterests().getGenderPreference(),userGetDTOProfile.getUserInterests().getGenderPreference());
         assertEquals(user.getUserInterests().getActivityInterests(),userGetDTOProfile.getUserInterests().getActivityInterests());
-    }
-
-    @Test
-    public void testPutActivity_fromActivityPutDTO_toActivity_success() {
-        // create activityPutDTO
-        ActivityPutDTO activityPutDTO = new ActivityPutDTO();
-        activityPutDTO.setId(1L);
-
-        // do the setting twice to test constructor and setters
-        List<UserSwipeStatus> userSwipeStatusList= new ArrayList<>();
-        User user = new User();
-        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user, SwipeStatus.FALSE);
-        userSwipeStatus.setUser(user);
-        userSwipeStatus.setSwipeStatus(SwipeStatus.FALSE);
-        userSwipeStatusList.add(userSwipeStatus);
-        activityPutDTO.setUserSwipeStatusList(userSwipeStatusList);
-
-        // MAP -> Create Activity
-        Activity activity = DTOMapperActivity.INSTANCE.convertActivityPutDTOtoEntity(activityPutDTO);
-
-        // check content
-        assertEquals(activityPutDTO.getId(),activity.getId());
-        assertEquals(activityPutDTO.getUserSwipeStatusList(),activity.getUserSwipeStatusList());
-
-        // check swipeStatusList content
-        assertEquals(activityPutDTO.getUserSwipeStatusList().get(0).getUser(),activity.getUserSwipeStatusList().get(0).getUser());
-        assertEquals(activityPutDTO.getUserSwipeStatusList().get(0).getSwipeStatus(),activity.getUserSwipeStatusList().get(0).getSwipeStatus());
-    }
-
-    @Test
-    public void testGetActivity_fromActivity_toActivityGetDTO_success() {
-        // create activity
-        Activity activity = new Activity();
-        activity.setId(1L);
-
-        // do the setting twice to test constructor and setters
-        ActivityPreset activityPreset = new ActivityPreset("play football",ActivityCategory.SPORT,"sport","football");
-        activityPreset.setActivityName("play football");
-        activityPreset.setActivityCategory(ActivityCategory.SPORT);
-        activityPreset.setGooglePOICategory("sport");
-        activityPreset.setGooglePOIKeyword("football");
-        activity.setActivityPreset(activityPreset);
-
-        // MAP -> Create ActivityGetDTO
-        ActivityGetDTO activityGetDTO = DTOMapperActivity.INSTANCE.convertEntityToActivityGetDTO(activity);
-
-        // check content
-        assertEquals(activity.getId(), activityGetDTO.getId());
-        assertEquals(activity.getActivityPreset(),activityGetDTO.getActivityPreset());
-
-        // check activity preset content
-        assertEquals(activity.getActivityPreset().getActivityName(),activityGetDTO.getActivityPreset().getActivityName());
-        assertEquals(activity.getActivityPreset().getActivityCategory(),activityGetDTO.getActivityPreset().getActivityCategory());
-        assertEquals(activity.getActivityPreset().getGooglePOICategory(),activityGetDTO.getActivityPreset().getGooglePOICategory());
-        assertEquals(activity.getActivityPreset().getGooglePOIKeyword(),activityGetDTO.getActivityPreset().getGooglePOIKeyword());
     }
 }

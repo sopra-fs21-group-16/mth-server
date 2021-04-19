@@ -15,9 +15,12 @@ import static org.mockito.BDDMockito.given;
 import org.springframework.web.server.ResponseStatusException;
 
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -221,7 +224,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkIfValidToken_invalid_ExternalAccess(){
+    public void checkIfValidToken_invalid_ExternalAccess() {
         // create user that has is in repo
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
@@ -231,134 +234,6 @@ public class UserServiceTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
-    }
-
-    @Test
-    public void checkIfValidEmail_success(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("valid");
-
-        boolean valid = userService.checkIfValidEmail(testUser.getEmail());
-
-        assertTrue(valid);
-    }
-
-    @Test
-    public void checkIfValidEmail_invalid(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@gmail.ch"); // invalid email
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("valid");
-
-        // then
-        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
-    }
-
-    @Test
-    public void checkIfValidEmail_invalid_Null(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail(null);
-        testUser.setName("Tester2");
-        testUser.setPassword("dfssf");
-        testUser.setToken("valid");
-        testUser.setPhone("333");   // invalid phone number
-
-        // then
-        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidEmail(testUser.getEmail()));
-    }
-
-    @Test
-    public void checkIfValidPhone_success(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("valid");
-        testUser.setPhone("0791223454");
-
-        boolean valid = userService.checkIfValidPhone(testUser.getPhone());
-
-        assertTrue(valid);
-    }
-
-    @Test
-    public void checkIfValidPhone_invalid(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@gmail.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("valid");
-        testUser.setPhone("333");   // invalid phone number
-
-        // then
-        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPhone(testUser.getPhone()));
-    }
-
-    @Test
-    public void checkIfValidPassword_success(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("valid");
-        testUser.setToken("asad");
-        testUser.setPhone("0791223454");
-
-        boolean valid = userService.checkIfValidPassword(testUser.getPassword());
-
-        assertTrue(valid);
-    }
-
-    @Test
-    public void checkIfValidPassword_invalid(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@gmail.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword(null);
-        testUser.setToken("valid");
-        testUser.setPhone("333");   // invalid phone number
-
-        // then
-        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidPassword(testUser.getPassword()));
-    }
-
-    @Test
-    public void checkIfValidName_success(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("asda");
-        testUser.setToken("asad");
-        testUser.setPhone("0791223454");
-
-        boolean valid = userService.checkIfValidName(testUser.getName());
-
-        assertTrue(valid);
-    }
-
-    @Test
-    public void checkIfValidName_invalid(){
-        // create user that has is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@gmail.ch");
-        testUser.setName(null);
-        testUser.setPassword("sfsf");
-        testUser.setToken("valid");
-        testUser.setPhone("333");   // invalid phone number
-
-        // then
-        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidName(testUser.getName()));
     }
 
 }

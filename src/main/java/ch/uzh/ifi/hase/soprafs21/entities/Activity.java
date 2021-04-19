@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.AttributedCharacterIterator;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,13 @@ public class Activity implements Serializable{
     // since two UserSwipeStatus objects are needed per UserActivity
     @OneToMany
     private List<UserSwipeStatus> userSwipeStatusList;
+
+    public Activity(){}
+
+    public Activity(ActivityPreset activityPreset, List<UserSwipeStatus> userSwipeStatusList) {
+        this.setActivityPreset(activityPreset);
+        this.setUserSwipeStatusList(userSwipeStatusList);
+    }
 
     public Date getCreationDate() {
         return creationDate;

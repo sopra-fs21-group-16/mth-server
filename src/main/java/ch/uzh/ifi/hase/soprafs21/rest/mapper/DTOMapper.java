@@ -1,6 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.ActivityGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.ActivityPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.mapstruct.*;
@@ -32,4 +36,11 @@ public interface DTOMapper {
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "token", target = "token")
     UserGetDTO convertEntityToUserGetDTO(User user);
+
+    @Mapping(source = "userSwipeStatusList", target = "userSwipeStatusList")
+    Activity convertActivityPutDTOtoEntity(ActivityPutDTO activityPutDTO);
+
+    @Mapping(source = "userSwipeStatusList", target = "userSwipeStatusList")
+    @Mapping(source = "activityPreset", target = "activityPreset")
+    ActivityGetDTO convertEntityToActivityGetDTO(Activity activity);
 }

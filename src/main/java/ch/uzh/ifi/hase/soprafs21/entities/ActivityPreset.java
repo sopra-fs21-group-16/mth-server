@@ -35,7 +35,7 @@ public class ActivityPreset implements Serializable{
 
     }
 
-    ActivityPreset(String activityName, ActivityCategory activityCategory){
+    public ActivityPreset(String activityName, ActivityCategory activityCategory){
         this.activityName = activityName;
         this.activityCategory = activityCategory;
     }

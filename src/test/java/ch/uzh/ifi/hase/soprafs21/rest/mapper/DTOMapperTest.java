@@ -1,8 +1,14 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs21.entities.Activity;
+import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
+import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.ActivityGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.ActivityPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
@@ -10,7 +16,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -58,6 +66,48 @@ public class DTOMapperTest {
         assertEquals(user.getGender(),userGetDTO.getGender());
         assertEquals(user.getBio(),userGetDTO.getBio());
         assertEquals(user.getToken(),userGetDTO.getToken());
+    }
+
+    @Test
+    public void test_Activity_to_ActivityGetDTO() {
+        // create user
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("firstname@lastname");
+        user.setPassword("verySafePassword");
+        user.setToken("token123");
+
+        // set user swipe status
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user);
+        List<UserSwipeStatus> userSwipeStatusList = Collections.singletonList(userSwipeStatus);
+
+        // set activity preset
+        ActivityPreset activityPreset = new ActivityPreset("Test Activity", ActivityCategory.MUSIC);
+
+        // combine user swipe status and activity preset to activity
+        Activity activity = new Activity(activityPreset, userSwipeStatusList);
+
+        // map
+        ActivityGetDTO activityGetDTO = DTOMapper.INSTANCE.convertEntityToActivityGetDTO(activity);
+
+        // check content
+        assertEquals(activity.getUserSwipeStatusList(), activityGetDTO.getUserSwipeStatusList());
+        assertEquals(activity.getActivityPreset(), activityGetDTO.getActivityPreset());
+    }
+
+    @Test
+    public void test_ActivityPutDTO_to_Activity() {
+        // set user swipe status
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(null);
+        List<UserSwipeStatus> userSwipeStatusList = Collections.singletonList(userSwipeStatus);
+        ActivityPutDTO activityPutDTO = new ActivityPutDTO();
+        activityPutDTO.setUserSwipeStatusList(userSwipeStatusList);
+
+        // map
+        Activity activity = DTOMapper.INSTANCE.convertActivityPutDTOtoEntity(activityPutDTO);
+
+        // check content
+        assertEquals(activityPutDTO.getUserSwipeStatusList(), activity.getUserSwipeStatusList());
     }
 
 }

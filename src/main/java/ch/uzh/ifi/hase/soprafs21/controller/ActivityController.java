@@ -30,15 +30,12 @@ public class ActivityController {
     @GetMapping("/activities/{userId}")
     @ResponseStatus(HttpStatus.OK)
     public List<Activity> getActivities(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
-        /* ToDo: Get (& generate) activities to display them to the User. */
+         return activityService.getActivities(userId, token);
     }
 
     @PutMapping("/activities/{userId}/swipe/{activityId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUserProfile(@RequestBody SwipeStatus swipeStatus, @PathVariable Long userId, @PathVariable Long activityId, @RequestHeader("Auth-Token")String token){
+    public Boolean updateActivity(@RequestBody SwipeStatus swipeStatus, @PathVariable Long userId, @PathVariable Long activityId, @RequestHeader("Auth-Token")String token){
 
         throw new UnsupportedOperationException("Not implemented yet");
 

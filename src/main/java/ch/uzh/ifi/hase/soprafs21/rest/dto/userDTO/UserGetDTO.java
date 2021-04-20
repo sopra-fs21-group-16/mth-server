@@ -1,6 +1,7 @@
-package ch.uzh.ifi.hase.soprafs21.rest.dto;
+package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
 import java.time.LocalDateTime;
 
@@ -10,9 +11,13 @@ public class UserGetDTO {
     private String email;
     private LocalDateTime lastSeen;
     private String name;
+    private int age;
     private Gender gender;
     private String bio;
     private String token;
+    private String phone;
+    private String profilePicture;
+    private UserInterests userInterests;
 
     public Long getId() {
         return id;
@@ -46,6 +51,10 @@ public class UserGetDTO {
         this.name = name;
     }
 
+    public int getAge() {return age;}
+
+    public void setAge(int age) {this.age = age;}
+
     public Gender getGender() {
         return gender;
     }
@@ -63,4 +72,16 @@ public class UserGetDTO {
     public String getToken() {return token;}
 
     public void setToken(String token) {this.token = token;}
+
+    public String getPhone() {return phone;}
+
+    public void setPhone(String phone) {this.phone = phone;}
+
+    public String getProfilePicture() {return profilePicture;}
+
+    public void setProfilePicture(String profilePicture) {this.profilePicture = profilePicture;}
+
+    public UserInterests getUserInterests() {return userInterests;}
+
+    public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
 }

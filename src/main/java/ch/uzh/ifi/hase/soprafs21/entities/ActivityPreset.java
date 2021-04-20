@@ -31,38 +31,26 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false)
     private String googlePOIKeyword;
 
-    public ActivityPreset(){
+    public ActivityPreset(){}
 
-    }
-
-    ActivityPreset(String activityName, ActivityCategory activityCategory){
+    public ActivityPreset(String activityName, ActivityCategory activityCategory, String googlePOICategory, String googlePOIKeyword){
         this.activityName = activityName;
         this.activityCategory = activityCategory;
+        this.googlePOICategory = googlePOICategory;
+        this.googlePOIKeyword = googlePOIKeyword;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) {this.id = id;}
 
-    public String getActivityName() {
-        return activityName;
-    }
+    public String getActivityName() {return activityName;}
 
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
+    public void setActivityName(String activityName) {this.activityName = activityName;}
 
-    public ActivityCategory getActivityCategory() {
-        return activityCategory;
-    }
+    public ActivityCategory getActivityCategory() {return activityCategory;}
 
-    public void setActivityCategory(ActivityCategory activityCategory) {
-        this.activityCategory = activityCategory;
-    }
+    public void setActivityCategory(ActivityCategory activityCategory) {this.activityCategory = activityCategory;}
 
     public String getGooglePOICategory() {return googlePOICategory;}
 

@@ -32,13 +32,13 @@ public class User implements Serializable {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "Must not be empty")
+    @NotBlank(message = "Email must not be empty")
     @Email(message = "Must be a valid email")
     @Pattern(regexp = "(^$|.+@(.+\\.)?(uzh\\.ch|ethz\\.ch))", message = "You must sing up with an email address belonging to ETH Zurich or UZH")
     private String email;
 
-    @Column
-    @NotBlank(message = "Must not be empty")
+    @Column(nullable = false)
+    @NotBlank(message = "Password must not be empty")
     private String password;
 
     @Column
@@ -52,8 +52,11 @@ public class User implements Serializable {
     private String token;
 
     @Column
-    @NotBlank(message = "Must not be empty")
+    @NotBlank(message = "Name must not be empty")
     private String name;
+
+    @Column
+    private int age;
 
     @Column
     private Gender gender;
@@ -64,7 +67,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
-    @OneToOne
+    //{"userIntersts": {"genderPreference": "MALE"}}
+    // cascade option enabled to map objects
+    @OneToOne(cascade = {CascadeType.ALL})
     private UserInterests userInterests;
 
     public Long getId() {
@@ -115,6 +120,10 @@ public class User implements Serializable {
 
     public void setName(String name){ this.name = name;}
 
+    public int getAge() {return age;}
+
+    public void setAge(int age) {this.age = age;}
+
     public Gender getGender() {return gender; }
 
     public void setGender(Gender gender) {
@@ -129,4 +138,11 @@ public class User implements Serializable {
         this.profilePicture = profilePicture;
     }
 
+    public String getPhone() {return phone;}
+
+    public void setPhone(String phone) {this.phone = phone;}
+
+    public UserInterests getUserInterests() {return userInterests;}
+
+    public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
 }

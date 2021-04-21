@@ -25,6 +25,13 @@ public class UserSwipeStatus implements Serializable {
     @Column
     private SwipeStatus swipeStatus;
 
+    public UserSwipeStatus(){}
+
+    public UserSwipeStatus(User user, SwipeStatus swipeStatus){
+        this.user = user;
+        this.swipeStatus = swipeStatus;
+    }
+
     public User getUser() {
         return user;
     }

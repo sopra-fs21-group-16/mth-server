@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
-import ch.uzh.ifi.hase.soprafs21.ExternalAPI.GooglePOI;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 
 import javax.persistence.*;
@@ -22,50 +21,42 @@ public class ActivityPreset implements Serializable{
     @Column(nullable = false, unique = true)
     private String activityName;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ActivityCategory activityCategory;
 
-    @OneToOne
-    private GooglePOI googlePOI;
+    @Column(nullable = false)
+    private String googlePOICategory;
 
-    public ActivityPreset(){
+    @Column(nullable = false)
+    private String googlePOIKeyword;
 
-    }
+    public ActivityPreset(){}
 
-    ActivityPreset(String activityName, ActivityCategory activityCategory){
+    public ActivityPreset(String activityName, ActivityCategory activityCategory, String googlePOICategory, String googlePOIKeyword){
         this.activityName = activityName;
         this.activityCategory = activityCategory;
+        this.googlePOICategory = googlePOICategory;
+        this.googlePOIKeyword = googlePOIKeyword;
     }
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() {return id;}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) {this.id = id;}
 
-    public String getActivityName() {
-        return activityName;
-    }
+    public String getActivityName() {return activityName;}
 
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
+    public void setActivityName(String activityName) {this.activityName = activityName;}
 
-    public ActivityCategory getActivityCategory() {
-        return activityCategory;
-    }
+    public ActivityCategory getActivityCategory() {return activityCategory;}
 
-    public void setActivityCategory(ActivityCategory activityCategory) {
-        this.activityCategory = activityCategory;
-    }
+    public void setActivityCategory(ActivityCategory activityCategory) {this.activityCategory = activityCategory;}
 
-    public GooglePOI getGooglePOI() {
-        return googlePOI;
-    }
+    public String getGooglePOICategory() {return googlePOICategory;}
 
-    public void setGooglePOI(GooglePOI googlePOI) {
-        this.googlePOI = googlePOI;
-    }
+    public void setGooglePOICategory(String googlePOICategory) {this.googlePOICategory = googlePOICategory;}
+
+    public String getGooglePOIKeyword() {return googlePOIKeyword;}
+
+    public void setGooglePOIKeyword(String googlePOIKeyword) {this.googlePOIKeyword = googlePOIKeyword;}
 }

@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
-import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
 
 import java.util.List;
 

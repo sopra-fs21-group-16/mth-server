@@ -34,7 +34,7 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     @NotBlank(message = "Email must not be empty")
     @Email(message = "Must be a valid email")
-    @Pattern(regexp = "(^$|.+@(.+\\.)?(uzh\\.ch|ethz\\.ch))", message = "You must sing up with an email address belonging to ETH Zurich or UZH")
+    @Pattern(regexp = "(^$|.{1,255}@(.{1,255}\\.)?(uzh\\.ch|ethz\\.ch))", message = "You must sing up with an email address belonging to ETH Zurich or UZH")
     private String email;
 
     @Column(nullable = false)

@@ -37,12 +37,12 @@ public class ActivityService {
         this.userRepository = userRepository;
     }
 
-    public void setSwipingStatus(Long activityId, String token, SwipeStatus swipeStatus) {
+    public void setSwipingStatus(long activityId, String token, SwipeStatus swipeStatus) {
         User user= userRepository.findByToken(token);
         if (user == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User could not be identified");
         }
-        Activity activity = activityRepository.findByID(activityId);
+        Activity activity = activityRepository.findById(activityId);
         if (activity == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activity does not exists");
         }

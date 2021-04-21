@@ -44,7 +44,7 @@ class ActivityServiceTest {
 
         //when
         Mockito.when(userRepository.findByToken("testToken")).thenReturn(testUser);
-        Mockito.when(activityRepository.findByID(5L)).thenReturn(testActivity);
+        Mockito.when(activityRepository.findById(5L)).thenReturn(testActivity);
 
         //then
         activityService.setSwipingStatus(5L,"testToken", SwipeStatus.TRUE);

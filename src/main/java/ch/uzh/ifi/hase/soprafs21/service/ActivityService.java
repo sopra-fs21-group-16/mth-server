@@ -46,12 +46,20 @@ public class ActivityService {
         if (activity == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activity does not exists");
         }
-        UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
-        userSwipeStatus.setUser(user);
-        userSwipeStatus.setSwipeStatus(swipeStatus);
 
+        boolean found = false;
         List<UserSwipeStatus> userSwipeStatusList = activity.getUserSwipeStatusList();
-        userSwipeStatusList.add(userSwipeStatus);
+        for (UserSwipeStatus userSwipeStatus : userSwipeStatusList){
+            if(userSwipeStatus.getUser()==user){
+                userSwipeStatus.setSwipeStatus(swipeStatus);
+                found=true;
+                break;
+            }
+        }
+
+        if (!found){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not part of the match.");
+        }
         activity.setUserSwipeStatusList(userSwipeStatusList);
         activityRepository.save(activity);
         activityRepository.flush();

@@ -1,15 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
-import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
 import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
-import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapper;
 
 import java.util.List;
@@ -38,7 +33,7 @@ public class ActivityController {
 
     @PutMapping("/activities/swipe/{activityId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateUserProfile(@RequestBody SwipeStatus swipeStatus, @PathVariable Long activityId, @RequestHeader("Auth-Token")String token){
+    public void updateSwipeStatus(@RequestBody SwipeStatus swipeStatus, @PathVariable Long activityId, @RequestHeader("Auth-Token")String token){
 
         activityService.setSwipingStatus(activityId,token,swipeStatus);
     }

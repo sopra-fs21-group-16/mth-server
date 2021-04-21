@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,12 @@ class ActivityServiceTest {
         testUser.setToken("testToken");
         Activity testActivity = new Activity();
         testActivity.setId(5L);
-        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
+        userSwipeStatus.setUser(testUser);
+        userSwipeStatus.setSwipeStatus(SwipeStatus.FALSE);
+        userSwipeStatusList.add(userSwipeStatus);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
 
         //when
         Mockito.when(userRepository.findByToken("testToken")).thenReturn(testUser);
@@ -52,4 +58,26 @@ class ActivityServiceTest {
         Mockito.verify(activityRepository, Mockito.times(1)).save(Mockito.any());
     }
 
+    @Test
+    public void setSwipingStatus_UserNotInSwipeStatusList_throwsException(){
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setToken("testToken");
+        Activity testActivity = new Activity();
+        testActivity.setId(5L);
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
+        userSwipeStatus.setUser(new User());
+        userSwipeStatus.setSwipeStatus(SwipeStatus.FALSE);
+        userSwipeStatusList.add(userSwipeStatus);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+
+        //when
+        Mockito.when(userRepository.findByToken("testToken")).thenReturn(testUser);
+        Mockito.when(activityRepository.findByID(5L)).thenReturn(testActivity);
+
+        //then
+        assertThrows(ResponseStatusException.class, () -> activityService.setSwipingStatus(5L,"testToken", SwipeStatus.TRUE));
+
+    }
 }

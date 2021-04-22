@@ -67,7 +67,7 @@ class ActivityServiceTest {
         testActivity.setId(5L);
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
-        userSwipeStatus.setUser(new User());
+        userSwipeStatus.setUser(new User()); //other user in SwipeStatusList
         userSwipeStatus.setSwipeStatus(SwipeStatus.FALSE);
         userSwipeStatusList.add(userSwipeStatus);
         testActivity.setUserSwipeStatusList(userSwipeStatusList);

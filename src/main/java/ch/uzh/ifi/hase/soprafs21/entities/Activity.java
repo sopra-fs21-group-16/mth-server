@@ -29,7 +29,7 @@ public class Activity implements Serializable{
     private ActivityPreset activityPreset;
 
     // since two UserSwipeStatus objects are needed per UserActivity
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<UserSwipeStatus> userSwipeStatusList;
 
     public Long getId() { return id; }

@@ -1,20 +1,27 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.BDDMockito.given;
+
 import org.springframework.web.server.ResponseStatusException;
 
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,6 +133,107 @@ public class UserServiceTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser2));
+    }
+
+    @Test
+    public void applyUserProfileChange_success(){
+        // create user that has to be changed
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minus(20,ChronoUnit.MINUTES));
+        testUser.setToken(UUID.randomUUID().toString());
+        testUser.setGender(Gender.MALE);
+
+        // create user that provides the new data
+        User newUser = new User();
+        newUser.setName("NewName");
+        newUser.setGender(Gender.FEMALE);
+
+        // change the testUser given the newUser
+        userService.applyUserProfileChange(newUser,testUser);
+
+        assertEquals(newUser.getName(), testUser.getName());
+        assertEquals(newUser.getGender(), testUser.getGender());
+    }
+
+    @Test
+    public void applyUserProfileChange_noNewData_throwsException(){
+        // create user that has to be changed
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES).minus(20,ChronoUnit.MINUTES));
+        testUser.setToken(UUID.randomUUID().toString());
+        testUser.setGender(Gender.MALE);
+
+        // create user that provides no new data
+        User newUser = new User();
+        newUser.setName(null);
+        newUser.setGender(null);
+
+        // then -> attempt to change user with no new data -> check that an exception is thrown
+        assertThrows(ResponseStatusException.class, () -> userService.applyUserProfileChange(newUser,testUser));
+    }
+
+    @Test
+    public void checkIfUserExistsWithGivenId_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        // when
+        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Mockito.any());
+        userService.checkIfUserExistsWithGivenId(testUser.getId());
+    }
+
+    @Test
+    public void checkIfValidToken_success(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User userInRepo = userService.createUser(testUser);
+
+        List<User> userList = new ArrayList<>();
+        userList.add(userInRepo);
+
+        given(userService.getUsers()).willReturn(userList);
+
+        boolean valid = userService.checkIfValidToken(userInRepo.getToken());
+
+        assertEquals(true,valid);
+    }
+
+    @Test
+    public void checkIfValidToken_invalid_Null(){
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken(null); // invalid token
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
+    }
+
+    @Test
+    public void checkIfValidToken_invalid_ExternalAccess() {
+        // create user that has is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("asdf"); // invalid token that is not in repo
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
     }
 
 }

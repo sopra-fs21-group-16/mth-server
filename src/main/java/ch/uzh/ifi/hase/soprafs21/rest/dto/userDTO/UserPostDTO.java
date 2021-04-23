@@ -1,13 +1,9 @@
-package ch.uzh.ifi.hase.soprafs21.rest.dto;
-
-import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 
 public class UserPostDTO {
 
     private String email;
-
     private String password;
-
     private String name;
 
     public String getEmail() {

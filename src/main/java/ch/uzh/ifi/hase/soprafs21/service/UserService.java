@@ -85,12 +85,12 @@ public class UserService {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {
             checkIfUserExistsByEmail(userByEmail);
-            adaptAge(userByEmail);
 
         } catch (ResponseStatusException error) {
             if(userInput.getPassword().equals(userByEmail.getPassword())){
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
+                adaptAge(userByEmail); // update age
                 userRepository.save(userByEmail);
                 userRepository.flush();
                 return userByEmail.getToken();

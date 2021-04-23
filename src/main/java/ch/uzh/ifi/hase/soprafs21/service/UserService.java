@@ -85,9 +85,7 @@ public class UserService {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {
             checkIfUserExistsByEmail(userByEmail);
-
             adaptAge(userByEmail);
-
 
         } catch (ResponseStatusException error) {
             if(userInput.getPassword().equals(userByEmail.getPassword())){
@@ -270,6 +268,10 @@ public class UserService {
      * @return
      */
     public int convertDateOfBirthToAge(Calendar dateOfBirth){
+        // if no date of birth is set yet, we return 0
+        if (dateOfBirth == null ){
+            return 0;
+        }
         // extract data
         int year = dateOfBirth.get(Calendar.YEAR);
         int month = dateOfBirth.get(Calendar.MONTH) + 1; // months are defined from 0-11, to make it consistent --> + 1

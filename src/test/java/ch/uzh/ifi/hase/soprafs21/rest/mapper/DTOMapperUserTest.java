@@ -45,6 +45,8 @@ public class DTOMapperUserTest {
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setName("test");
         user.setAge(20);
+        Calendar calendar = new GregorianCalendar(2000,2,3);
+        user.setDateOfBirth(calendar);
         user.setGender(Gender.MALE);
         user.setBio("asdf");
         user.setToken("1");
@@ -69,6 +71,8 @@ public class DTOMapperUserTest {
         assertEquals(user.getEmail(), userGetDTO.getEmail());
         assertEquals(user.getLastSeen(), userGetDTO.getLastSeen());
         assertEquals(user.getName(),userGetDTO.getName());
+        assertEquals(user.getAge(),userGetDTO.getAge());
+        assertEquals(user.getDateOfBirth(),userGetDTO.getDateOfBirth());
         assertEquals(user.getGender(),userGetDTO.getGender());
         assertEquals(user.getBio(),userGetDTO.getBio());
         assertEquals(user.getToken(),userGetDTO.getToken());
@@ -90,7 +94,8 @@ public class DTOMapperUserTest {
         userPutDTO.setEmail("firstname@lastname");
         userPutDTO.setPassword("password");
         userPutDTO.setName("test");
-        userPutDTO.setAge(20);
+        Calendar calendar = new GregorianCalendar(2000,2,3);
+        userPutDTO.setDateOfBirth(calendar);
         userPutDTO.setGender(Gender.MALE);
         userPutDTO.setBio("asdf");
         userPutDTO.setPhone("079 122 34 54");
@@ -113,7 +118,7 @@ public class DTOMapperUserTest {
         assertEquals(userPutDTO.getEmail(), user.getEmail());
         assertEquals(userPutDTO.getPassword(), user.getPassword());
         assertEquals(userPutDTO.getName(),user.getName());
-        assertEquals(userPutDTO.getAge(), user.getAge());
+        assertEquals(userPutDTO.getDateOfBirth(), user.getDateOfBirth());
         assertEquals(userPutDTO.getGender(),user.getGender());
         assertEquals(userPutDTO.getBio(),user.getBio());
         assertEquals(userPutDTO.getPhone(),user.getPhone());

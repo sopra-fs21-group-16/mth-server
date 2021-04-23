@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 public class UserGetDTO {
 
@@ -12,6 +13,7 @@ public class UserGetDTO {
     private LocalDateTime lastSeen;
     private String name;
     private int age;
+    private Calendar dateOfBirth;
     private Gender gender;
     private String bio;
     private String token;
@@ -54,6 +56,10 @@ public class UserGetDTO {
     public int getAge() {return age;}
 
     public void setAge(int age) {this.age = age;}
+
+    public Calendar getDateOfBirth() {return dateOfBirth;}
+
+    public void setDateOfBirth(Calendar dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public Gender getGender() {
         return gender;

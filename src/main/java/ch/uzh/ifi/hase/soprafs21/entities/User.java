@@ -1,17 +1,15 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
-import ch.uzh.ifi.hase.soprafs21.constant.UserStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Calendar;
 
 /**
  * Internal User Representation
@@ -55,8 +53,13 @@ public class User implements Serializable {
     @NotBlank(message = "Name must not be empty")
     private String name;
 
+    /** TODO: Maybe set constraints for the age */
     @Column
     private int age;
+
+    /** TODO: Maybe set constraints for the date of Birth */
+    @Column
+    private Calendar dateOfBirth;
 
     @Column
     private Gender gender;
@@ -123,6 +126,10 @@ public class User implements Serializable {
     public int getAge() {return age;}
 
     public void setAge(int age) {this.age = age;}
+
+    public Calendar getDateOfBirth() {return dateOfBirth;}
+
+    public void setDateOfBirth(Calendar dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public Gender getGender() {return gender; }
 

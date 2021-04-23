@@ -10,8 +10,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -194,6 +197,26 @@ public class UserServiceIntegrationTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(createdUserWithID.getToken()));
+    }
+
+    @Test
+    public void checkIfAdaptAge_success() {
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        LocalDate now = LocalDate.now();
+        Calendar calendar = new GregorianCalendar(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
+        createdUserWithID.setDateOfBirth(calendar);
+
+        // adapt age
+        userService.adaptAge(createdUserWithID);
+
+        assertEquals(0,createdUserWithID.getAge());
     }
 
 }

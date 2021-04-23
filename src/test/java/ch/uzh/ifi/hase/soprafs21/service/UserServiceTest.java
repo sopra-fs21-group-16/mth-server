@@ -17,12 +17,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -207,7 +205,7 @@ public class UserServiceTest {
 
         boolean valid = userService.checkIfValidToken(userInRepo.getToken());
 
-        assertEquals(true,valid);
+        assertTrue(valid);
     }
 
     @Test
@@ -234,6 +232,39 @@ public class UserServiceTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
+    }
+
+    @Test
+    public void checkIfConvertDateOfBirthToAge_success(){
+        // create user that has a date of birth
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        LocalDate now = LocalDate.now();
+        Calendar calendar = new GregorianCalendar(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
+        testUser.setDateOfBirth(calendar);
+
+        assertEquals(0,userService.convertDateOfBirthToAge(calendar));
+    }
+
+    @Test
+    public void checkIfAdaptAge_success(){
+        // create user that has a date of birth
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        LocalDate now = LocalDate.now();
+        Calendar calendar = new GregorianCalendar(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
+        testUser.setDateOfBirth(calendar);
+
+        // adapt age
+        userService.adaptAge(testUser);
+
+        assertEquals(0,testUser.getAge());
     }
 
 }

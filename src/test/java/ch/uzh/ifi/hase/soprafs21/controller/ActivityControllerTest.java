@@ -38,6 +38,9 @@ public class ActivityControllerTest {
     @MockBean
     private ActivityService activityService;
 
+    @MockBean
+    private UserService userService;
+
     @Test
     public void test_getActivities() throws Exception {
         // given
@@ -60,10 +63,11 @@ public class ActivityControllerTest {
 
         // this mocks the UserService -> we define above what the userService should return when getUsers() is called
         given(activityService.getActivities(user.getId(), user.getToken())).willReturn(activityList);
+        given(activityService.getActivities(user.getId(), user.getToken())).willReturn(activityList);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/activities/"+user.getId())
-                .contentType(MediaType.APPLICATION_JSON).header("x-auth-token", user.getToken());
+                .contentType(MediaType.APPLICATION_JSON).header("Auth-Token", user.getToken());
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())

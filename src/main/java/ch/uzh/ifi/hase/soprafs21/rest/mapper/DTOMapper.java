@@ -3,12 +3,16 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.ActivityGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.ActivityPutDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DTOMapper
@@ -42,5 +46,8 @@ public interface DTOMapper {
 
     @Mapping(source = "userSwipeStatusList", target = "userSwipeStatusList")
     @Mapping(source = "activityPreset", target = "activityPreset")
-    ActivityGetDTO convertEntityToActivityGetDTO(Activity activity);
+    ActivityGetDTO convertEntityActivityGetDTO(Activity activity);
+
+    List<ActivityGetDTO> convertEntityListToActivityGetDTOList(List<Activity> activityList);
 }
+

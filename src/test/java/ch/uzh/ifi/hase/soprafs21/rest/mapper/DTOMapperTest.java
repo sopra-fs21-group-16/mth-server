@@ -86,13 +86,14 @@ public class DTOMapperTest {
 
         // combine user swipe status and activity preset to activity
         Activity activity = new Activity(activityPreset, userSwipeStatusList);
+        List<Activity> activityList = Collections.singletonList(activity);
 
         // map
-        ActivityGetDTO activityGetDTO = DTOMapper.INSTANCE.convertEntityToActivityGetDTO(activity);
+        List <ActivityGetDTO> activityGetDTOList = DTOMapper.INSTANCE.convertEntityListToActivityGetDTOList(activityList);
 
         // check content
-        assertEquals(activity.getUserSwipeStatusList(), activityGetDTO.getUserSwipeStatusList());
-        assertEquals(activity.getActivityPreset(), activityGetDTO.getActivityPreset());
+        assertEquals(activityList.get(0).getActivityPreset(), activityGetDTOList.get(0).getActivityPreset());
+        assertEquals(activityList.get(0).getUserSwipeStatusList(), activityGetDTOList.get(0).getUserSwipeStatusList());
     }
 
     @Test

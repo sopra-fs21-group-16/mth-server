@@ -70,7 +70,6 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
-    //{"userIntersts": {"genderPreference": "MALE"}}
     // cascade option enabled to map objects
     @OneToOne(cascade = {CascadeType.ALL})
     private UserInterests userInterests;

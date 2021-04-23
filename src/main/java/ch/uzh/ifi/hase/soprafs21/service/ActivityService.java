@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
@@ -49,7 +50,7 @@ public class ActivityService {
     }
 
     public List<Activity> generateActivities(long userId) {
-        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(userService.getUserByID(userId));
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(userService.getUserByID(userId), SwipeStatus.INITIAL);
         List<UserSwipeStatus> userSwipeStatusList = Collections.singletonList(userSwipeStatus); // ToDo: This list should contain two users
 
         List<Activity> generatedActivities = new ArrayList<Activity>();

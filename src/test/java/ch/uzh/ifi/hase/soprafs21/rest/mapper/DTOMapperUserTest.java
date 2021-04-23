@@ -57,7 +57,7 @@ public class DTOMapperUserTest {
         userInterests.setGenderPreference(GenderPreference.EVERYONE);
         Set<ActivityCategory> activityInterests =  new HashSet<>();
         activityInterests.add(ActivityCategory.SPORT);
-        activityInterests.add(ActivityCategory.FOOD);
+        activityInterests.add(ActivityCategory.COOKING);
         userInterests.setActivityInterests(activityInterests);
         user.setUserInterests(userInterests);
 
@@ -102,7 +102,7 @@ public class DTOMapperUserTest {
         userInterests.setGenderPreference(GenderPreference.EVERYONE);
         Set<ActivityCategory> activityInterests =  new HashSet<>();
         activityInterests.add(ActivityCategory.SPORT);
-        activityInterests.add(ActivityCategory.FOOD);
+        activityInterests.add(ActivityCategory.COOKING);
         userInterests.setActivityInterests(activityInterests);
         userPutDTO.setUserInterests(userInterests);
 
@@ -145,7 +145,7 @@ public class DTOMapperUserTest {
         userInterests.setGenderPreference(GenderPreference.EVERYONE);
         Set<ActivityCategory> activityInterests =  new HashSet<>();
         activityInterests.add(ActivityCategory.SPORT);
-        activityInterests.add(ActivityCategory.FOOD);
+        activityInterests.add(ActivityCategory.COOKING);
         userInterests.setActivityInterests(activityInterests);
         user.setUserInterests(userInterests);
 

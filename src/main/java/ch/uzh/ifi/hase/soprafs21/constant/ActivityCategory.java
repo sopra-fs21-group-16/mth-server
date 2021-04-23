@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.constant;
 
 public enum ActivityCategory {
-    MAKING_FOOD,
+    COOKING,
     EATING,
     THEATRE,
     MOVIES,

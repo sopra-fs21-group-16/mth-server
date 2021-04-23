@@ -1,11 +1,11 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
+import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ public class ActivityControllerTest {
         user.setToken("token123");
 
         // set user swipe status
-        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user);
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user, SwipeStatus.INITIAL);
         List<UserSwipeStatus> userSwipeStatusList = Collections.singletonList(userSwipeStatus);
 
         // set activity preset
@@ -62,7 +62,6 @@ public class ActivityControllerTest {
         List<Activity> activityList = Collections.singletonList(activity);
 
         // this mocks the UserService -> we define above what the userService should return when getUsers() is called
-        given(activityService.getActivities(user.getId(), user.getToken())).willReturn(activityList);
         given(activityService.getActivities(user.getId(), user.getToken())).willReturn(activityList);
 
         // when

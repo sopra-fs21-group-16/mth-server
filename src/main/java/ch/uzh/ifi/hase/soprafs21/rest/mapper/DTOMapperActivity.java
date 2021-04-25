@@ -5,6 +5,8 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 /**
  * DTOMapper
  * This class is responsible for generating classes that will automatically transform/map the internal representation
@@ -22,4 +24,6 @@ public interface DTOMapperActivity {
     @Mapping(source = "activityPreset", target = "activityPreset")
     @Mapping(source = "userSwipeStatusList", target = "userSwipeStatusList")
     ActivityGetDTO convertEntityToActivityGetDTO(Activity activity);
+
+    List<ActivityGetDTO> convertEntityListToActivityGetDTOList(List<Activity> activityList);
 }

@@ -32,6 +32,13 @@ public class Activity implements Serializable{
     @OneToMany(cascade = {CascadeType.ALL})
     private List<UserSwipeStatus> userSwipeStatusList;
 
+    public Activity(){}
+
+    public Activity(ActivityPreset activityPreset, List<UserSwipeStatus> userSwipeStatusList) {
+        this.setActivityPreset(activityPreset);
+        this.setUserSwipeStatusList(userSwipeStatusList);
+    }
+
     public Long getId() {return id;}
 
     public void setId(Long id) {this.id = id;}

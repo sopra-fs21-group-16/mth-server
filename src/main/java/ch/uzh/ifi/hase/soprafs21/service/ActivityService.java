@@ -64,7 +64,7 @@ public class ActivityService {
         boolean found = false;
         List<UserSwipeStatus> userSwipeStatusList = activity.getUserSwipeStatusList();
         for (UserSwipeStatus userSwipeStatus : userSwipeStatusList){
-            if (userSwipeStatus.getUser().getId() == user.getId()) {
+            if (userSwipeStatus.getUser().getId().equals(user.getId())) {
                 userSwipeStatus.setSwipeStatus(swipeStatus);
                 found = true;
                 break;

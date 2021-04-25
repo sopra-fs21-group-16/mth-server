@@ -66,7 +66,9 @@ class ActivityServiceTest {
         testActivity.setId(5L);
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
-        userSwipeStatus.setUser(new User()); //other user in SwipeStatusList
+        User newUser = new User();
+        newUser.setId(201L);
+        userSwipeStatus.setUser(newUser); //other user in SwipeStatusList
         userSwipeStatus.setSwipeStatus(SwipeStatus.FALSE);
         userSwipeStatusList.add(userSwipeStatus);
         testActivity.setUserSwipeStatusList(userSwipeStatusList);
@@ -76,7 +78,7 @@ class ActivityServiceTest {
         Mockito.when(activityRepository.findById(5L)).thenReturn(testActivity);
 
         //then
-        assertThrows(ResponseStatusException.class, () -> activityService.setSwipingStatus(5L,"testToken", SwipeStatus.TRUE));
+        assertThrows(ResponseStatusException.class, () -> activityService.setSwipingStatus(5L, "testToken", SwipeStatus.TRUE));
 
     }
 }

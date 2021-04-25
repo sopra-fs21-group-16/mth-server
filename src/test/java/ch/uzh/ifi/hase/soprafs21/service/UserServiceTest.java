@@ -242,10 +242,10 @@ public class UserServiceTest {
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
 
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
         testUser.setDateOfBirth(now);
 
-        assertEquals(0,userService.convertDateOfBirthToAge(now));
+        assertEquals(18,userService.convertDateOfBirthToAge(now));
     }
 
     @Test
@@ -256,13 +256,13 @@ public class UserServiceTest {
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
 
-        LocalDate now = LocalDate.now();
-        testUser.setDateOfBirth(now);
+        LocalDate localDate = LocalDate.now().minus(18,ChronoUnit.YEARS) ;
+        testUser.setDateOfBirth(localDate);
 
         // adapt age
         userService.adaptAge(testUser);
 
-        assertEquals(0,testUser.getAge());
+        assertEquals(18,testUser.getAge());
     }
 
 }

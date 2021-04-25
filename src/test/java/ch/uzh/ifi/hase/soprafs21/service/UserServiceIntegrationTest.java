@@ -209,13 +209,13 @@ public class UserServiceIntegrationTest {
         testUser.setPassword("testPassword");
         User createdUserWithID = userService.createUser(testUser);
 
-        LocalDate now = LocalDate.now();
+        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
         createdUserWithID.setDateOfBirth(now);
 
         // adapt age
         userService.adaptAge(createdUserWithID);
 
-        assertEquals(0,createdUserWithID.getAge());
+        assertEquals(18,createdUserWithID.getAge());
     }
 
 }

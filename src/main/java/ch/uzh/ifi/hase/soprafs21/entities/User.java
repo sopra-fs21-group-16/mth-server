@@ -1,17 +1,14 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+
 
 /**
  * Internal User Representation
@@ -61,6 +58,7 @@ public class User implements Serializable {
 
     /** TODO: Maybe set constraints for the date of Birth */
     @Column
+    @Past
     private LocalDate dateOfBirth;
 
     @Column

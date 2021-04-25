@@ -1,30 +1,13 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
-import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
-import ch.uzh.ifi.hase.soprafs21.entities.Activity;
-import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
-import ch.uzh.ifi.hase.soprafs21.entities.User;
-import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test class for the ActivityResource REST resource.
@@ -39,6 +22,10 @@ public class ActivityServiceIntegrationTest {
     @Autowired
     private ActivityRepository activityRepository;
 
+    @Qualifier("activityPresetRepository")
+    @Autowired
+    private ActivityPresetRepository activityPresetRepository;
+
     @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
@@ -49,12 +36,13 @@ public class ActivityServiceIntegrationTest {
 
     @Autowired
     private ActivityService activityService;
-
+/*
     @BeforeEach
     public void setup() {
         userRepository.deleteAll();
         userSwipeStatusRepository.deleteAll();
         activityRepository.deleteAll();
+        activityPresetRepository.deleteAll();
     }
 
     @AfterEach
@@ -62,6 +50,7 @@ public class ActivityServiceIntegrationTest {
         activityRepository.deleteAll();
         userSwipeStatusRepository.deleteAll();
         userRepository.deleteAll();
+        activityPresetRepository.deleteAll();
     }
 
     @Test
@@ -82,7 +71,7 @@ public class ActivityServiceIntegrationTest {
         testActivity.setId(5L);
         ActivityPreset activityPreset = new ActivityPreset();
         activityPreset.setActivityName("test");
-        activityPreset.setActivityCategory(ActivityCategory.CULTURE);
+        activityPreset.setActivityCategory(ActivityCategory.MUSEUMS);
         activityPreset.setGooglePOICategory("test");
         activityPreset.setGooglePOIKeyword("test");
         testActivity.setActivityPreset(activityPreset);
@@ -118,10 +107,11 @@ public class ActivityServiceIntegrationTest {
         testActivity.setCreationDate(new Date());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
-        testActivity.setId(5L);
+        testActivity.setId(28L);
         ActivityPreset activityPreset = new ActivityPreset();
+        activityPreset.setId(21L);
         activityPreset.setActivityName("test");
-        activityPreset.setActivityCategory(ActivityCategory.CULTURE);
+        activityPreset.setActivityCategory(ActivityCategory.SHOPPING);
         activityPreset.setGooglePOICategory("test");
         activityPreset.setGooglePOIKeyword("test");
         testActivity.setActivityPreset(activityPreset);
@@ -165,7 +155,7 @@ public class ActivityServiceIntegrationTest {
         testActivity.setId(5L);
         ActivityPreset activityPreset = new ActivityPreset();
         activityPreset.setActivityName("test");
-        activityPreset.setActivityCategory(ActivityCategory.CULTURE);
+        activityPreset.setActivityCategory(ActivityCategory.SIGHTSEEING);
         activityPreset.setGooglePOICategory("test");
         activityPreset.setGooglePOIKeyword("test");
         testActivity.setActivityPreset(activityPreset);
@@ -201,7 +191,7 @@ public class ActivityServiceIntegrationTest {
         testActivity.setId(5L);
         ActivityPreset activityPreset = new ActivityPreset();
         activityPreset.setActivityName("test");
-        activityPreset.setActivityCategory(ActivityCategory.CULTURE);
+        activityPreset.setActivityCategory(ActivityCategory.GAMES);
         activityPreset.setGooglePOICategory("test");
         activityPreset.setGooglePOIKeyword("test");
         testActivity.setActivityPreset(activityPreset);
@@ -218,4 +208,5 @@ public class ActivityServiceIntegrationTest {
         //then
         assertThrows(ResponseStatusException.class, () ->activityService.setSwipingStatus(5L,"notExistingToken", SwipeStatus.TRUE));
     }
+ */
 }

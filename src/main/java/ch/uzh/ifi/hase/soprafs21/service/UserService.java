@@ -172,6 +172,7 @@ public class UserService {
 
         if (userInput.getDateOfBirth() != null){
             userFromRepo.setDateOfBirth(userInput.getDateOfBirth());
+            /** TODO: do not save age as attribute, instead use method that returns age in controller */
             adaptAge(userFromRepo);
             noNewData = false;
         }

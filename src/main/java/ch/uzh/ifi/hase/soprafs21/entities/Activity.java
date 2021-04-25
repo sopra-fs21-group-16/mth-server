@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * This class is used to save information about activities and its associated user decisions
  */
@@ -29,12 +28,19 @@ public class Activity implements Serializable{
     private ActivityPreset activityPreset;
 
     // since two UserSwipeStatus objects are needed per UserActivity
-    @OneToMany(cascade = {CascadeType.ALL})
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<UserSwipeStatus> userSwipeStatusList;
+
+    public Activity(){}
+
+    public Activity(ActivityPreset activityPreset, List<UserSwipeStatus> userSwipeStatusList) {
+        this.setActivityPreset(activityPreset);
+        this.setUserSwipeStatusList(userSwipeStatusList);
+    }
 
     public Long getId() {return id;}
 
-    public void setId(Long id) {this.id = id;}
+    public void setId(Long id) { this.id = id; }
 
     public Date getCreationDate() {
         return creationDate;

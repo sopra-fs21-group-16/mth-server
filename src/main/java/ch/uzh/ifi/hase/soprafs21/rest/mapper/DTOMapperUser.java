@@ -5,7 +5,8 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**

@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.AgeRange;
-import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
 
 import javax.persistence.*;

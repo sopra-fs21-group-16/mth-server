@@ -17,8 +17,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User Service

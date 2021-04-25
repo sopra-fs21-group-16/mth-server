@@ -1,7 +1,11 @@
 package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs21.constant.*;
-import ch.uzh.ifi.hase.soprafs21.entities.*;
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
+import ch.uzh.ifi.hase.soprafs21.constant.AgeRange;
+import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
+import ch.uzh.ifi.hase.soprafs21.entities.User;
+import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
@@ -11,7 +15,8 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

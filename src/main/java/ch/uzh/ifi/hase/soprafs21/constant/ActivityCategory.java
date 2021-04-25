@@ -13,5 +13,6 @@ public enum ActivityCategory {
     WELLNESS,
     SHOPPING,
     GAMES,
-    SPORT
+    SPORTS,
+    WINTERSPORTS
 }

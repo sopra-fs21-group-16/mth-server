@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
+import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
@@ -9,8 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +30,7 @@ public class ActivityService {
     private final Logger log = LoggerFactory.getLogger(ActivityService.class);
 
     private final ActivityRepository activityRepository;
-
+  
     private final ActivityPresetRepository activityPresetRepository;
 
     private final UserService userService;
@@ -40,11 +43,40 @@ public class ActivityService {
         this.activityPresetRepository = activityPresetRepository;
         this.userService = userService;
     }
-
+  
+  
     public List<Activity> getActivities(long userId, String token) {
         /* ToDo: In the future: check for existing activities that have not been swiped yet (= INITIAL) & add them to returned list */
         userService.isUserAuthenticated(userId, token);
         return generateActivities(userId);
+    }
+
+    public void setSwipingStatus(long activityId, String token, SwipeStatus swipeStatus) {
+        User user = userService.getUserByToken(token);
+        if (user == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User could not be identified");
+        }
+        Activity activity = activityRepository.findById(activityId);
+        if (activity == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Activity does not exists");
+        }
+
+        boolean found = false;
+        List<UserSwipeStatus> userSwipeStatusList = activity.getUserSwipeStatusList();
+        for (UserSwipeStatus userSwipeStatus : userSwipeStatusList){
+            if (userSwipeStatus.getUser().getId().equals(user.getId())) {
+                userSwipeStatus.setSwipeStatus(swipeStatus);
+                found = true;
+                break;
+            }
+        }
+      
+        if (!found){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not part of the match.");
+        }
+        activity.setUserSwipeStatusList(userSwipeStatusList);
+        activityRepository.save(activity);
+        activityRepository.flush();
     }
 
     public List<Activity> generateActivities(long userId) {
@@ -63,5 +95,4 @@ public class ActivityService {
 
         return generatedActivities;
     }
-
 }

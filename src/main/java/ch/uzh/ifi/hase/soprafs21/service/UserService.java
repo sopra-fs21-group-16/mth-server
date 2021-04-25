@@ -40,9 +40,14 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User getUserByID(long userId){
+    public User getUserByID(long userId) {
         User userById = this.userRepository.findById(userId);
         return userById;
+    }
+
+    public User getUserByToken(String token) {
+        User userByToken = this.userRepository.findByToken(token);
+        return userByToken;
     }
 
     public User createUser(User newUser) {

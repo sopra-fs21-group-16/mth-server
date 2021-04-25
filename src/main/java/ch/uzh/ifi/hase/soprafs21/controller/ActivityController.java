@@ -32,10 +32,7 @@ public class ActivityController {
 
     @PutMapping("/activities/swipe/{activityId}")
     @ResponseStatus(HttpStatus.OK)
-    public Boolean updateActivity(@RequestBody SwipeStatus swipeStatus, @PathVariable Long userId, @PathVariable Long activityId, @RequestHeader("Auth-Token")String token){
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
+    public void updateSwipeStatus(@RequestBody SwipeStatus swipeStatus, @PathVariable Long activityId, @RequestHeader("Auth-Token")String token){
+        activityService.setSwipingStatus(activityId,token,swipeStatus);
     }
-
 }

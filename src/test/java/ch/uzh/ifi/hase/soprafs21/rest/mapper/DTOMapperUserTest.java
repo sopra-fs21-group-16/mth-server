@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -45,8 +46,8 @@ public class DTOMapperUserTest {
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setName("test");
         user.setAge(20);
-        Calendar calendar = new GregorianCalendar(2000,2,3);
-        user.setDateOfBirth(calendar);
+        LocalDate dateOfBirth = LocalDate.of(2000,2,3);
+        user.setDateOfBirth(dateOfBirth);
         user.setGender(Gender.MALE);
         user.setBio("asdf");
         user.setToken("1");
@@ -94,8 +95,8 @@ public class DTOMapperUserTest {
         userPutDTO.setEmail("firstname@lastname");
         userPutDTO.setPassword("password");
         userPutDTO.setName("test");
-        Calendar calendar = new GregorianCalendar(2000,2,3);
-        userPutDTO.setDateOfBirth(calendar);
+        LocalDate dateOfBirth = LocalDate.of(2000,2,3);
+        userPutDTO.setDateOfBirth(dateOfBirth);
         userPutDTO.setGender(Gender.MALE);
         userPutDTO.setBio("asdf");
         userPutDTO.setPhone("079 122 34 54");

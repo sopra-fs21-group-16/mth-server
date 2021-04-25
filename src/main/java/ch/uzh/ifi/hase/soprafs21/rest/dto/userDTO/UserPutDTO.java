@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 
 public class UserPutDTO {
@@ -10,7 +11,7 @@ public class UserPutDTO {
     private String email;
     private String password;
     private String name;
-    private Calendar dateOfBirth;
+    private LocalDate dateOfBirth;
     private String bio;
     private String phone;
     private Gender gender;
@@ -21,9 +22,9 @@ public class UserPutDTO {
 
     public void setEmail(String email) {this.email = email;}
 
-    public Calendar getDateOfBirth() {return dateOfBirth;}
+    public LocalDate getDateOfBirth() {return dateOfBirth;}
 
-    public void setDateOfBirth(Calendar dateOfBirth) {this.dateOfBirth = dateOfBirth;}
+    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public String getBio() {return bio;}
 

@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
-import org.apache.tomcat.jni.Local;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,19 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User Service
@@ -267,18 +260,14 @@ public class UserService {
      * @param dateOfBirth
      * @return
      */
-    public int convertDateOfBirthToAge(Calendar dateOfBirth){
+    public int convertDateOfBirthToAge(LocalDate dateOfBirth){
         // if no date of birth is set yet, we return 0
         if (dateOfBirth == null ){
             return 0;
         }
-        // extract data
-        int year = dateOfBirth.get(Calendar.YEAR);
-        int month = dateOfBirth.get(Calendar.MONTH) + 1; // months are defined from 0-11, to make it consistent --> + 1
-        int date = dateOfBirth.get(Calendar.DATE);
 
         // convert extracted data and get local data
-        LocalDate localDateOfDateOfBirth = LocalDate.of(year,month,date);
+        LocalDate localDateOfDateOfBirth = dateOfBirth;
         LocalDate now = LocalDate.now();
         Period differenceOfDates = Period.between(localDateOfDateOfBirth,now);
 

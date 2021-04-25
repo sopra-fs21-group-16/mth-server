@@ -243,10 +243,9 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
 
         LocalDate now = LocalDate.now();
-        Calendar calendar = new GregorianCalendar(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
-        testUser.setDateOfBirth(calendar);
+        testUser.setDateOfBirth(now);
 
-        assertEquals(0,userService.convertDateOfBirthToAge(calendar));
+        assertEquals(0,userService.convertDateOfBirthToAge(now));
     }
 
     @Test
@@ -258,8 +257,7 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
 
         LocalDate now = LocalDate.now();
-        Calendar calendar = new GregorianCalendar(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
-        testUser.setDateOfBirth(calendar);
+        testUser.setDateOfBirth(now);
 
         // adapt age
         userService.adaptAge(testUser);

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 
@@ -59,7 +61,7 @@ public class User implements Serializable {
 
     /** TODO: Maybe set constraints for the date of Birth */
     @Column
-    private Calendar dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column
     private Gender gender;
@@ -126,9 +128,9 @@ public class User implements Serializable {
 
     public void setAge(int age) {this.age = age;}
 
-    public Calendar getDateOfBirth() {return dateOfBirth;}
+    public LocalDate getDateOfBirth() {return dateOfBirth;}
 
-    public void setDateOfBirth(Calendar dateOfBirth) {this.dateOfBirth = dateOfBirth;}
+    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public Gender getGender() {return gender; }
 

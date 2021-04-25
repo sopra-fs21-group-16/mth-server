@@ -210,8 +210,7 @@ public class UserServiceIntegrationTest {
         User createdUserWithID = userService.createUser(testUser);
 
         LocalDate now = LocalDate.now();
-        Calendar calendar = new GregorianCalendar(now.getYear(),now.getMonthValue(),now.getDayOfMonth());
-        createdUserWithID.setDateOfBirth(calendar);
+        createdUserWithID.setDateOfBirth(now);
 
         // adapt age
         userService.adaptAge(createdUserWithID);

@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
@@ -81,10 +83,12 @@ public class UserService {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {
             checkIfUserExistsByEmail(userByEmail);
+
         } catch (ResponseStatusException error) {
             if(userInput.getPassword().equals(userByEmail.getPassword())){
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
+                adaptAge(userByEmail); // update age
                 userRepository.save(userByEmail);
                 userRepository.flush();
                 return userByEmail.getToken();
@@ -166,6 +170,13 @@ public class UserService {
             noNewData = false;
         }
 
+        if (userInput.getDateOfBirth() != null){
+            userFromRepo.setDateOfBirth(userInput.getDateOfBirth());
+            /** TODO: do not save age as attribute, instead use method that returns age in controller */
+            adaptAge(userFromRepo);
+            noNewData = false;
+        }
+
         if (userInput.getBio() != null){
             userFromRepo.setBio(userInput.getBio());
             noNewData = false;
@@ -196,7 +207,7 @@ public class UserService {
         }
 
         try { // saves the given entity but data is only persisted in the database once flush() is called
-            userFromRepo= userRepository.save(userFromRepo);
+            userRepository.save(userFromRepo);
             userRepository.flush(); }
         catch (ConstraintViolationException ex) { handleValidationError(ex);}
     }
@@ -248,5 +259,36 @@ public class UserService {
         ex.getConstraintViolations().forEach(violation -> { exceptions.set(exceptions + violation.getMessage() + "\n "); });
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exceptions.toString());
+    }
+
+    /**
+     * convert is needed for the age attribute of the user
+     * @param dateOfBirth
+     * @return
+     */
+    public int convertDateOfBirthToAge(LocalDate dateOfBirth){
+        // if no date of birth is set yet, we return 0
+        if (dateOfBirth == null ){
+            return 0;
+        }
+
+        // convert extracted data and get local data
+        LocalDate localDateOfDateOfBirth = dateOfBirth;
+        LocalDate now = LocalDate.now();
+        Period differenceOfDates = Period.between(localDateOfDateOfBirth,now);
+
+        // compute age
+        int age = differenceOfDates.getYears();
+
+        return age;
+    }
+
+    /**
+     *   update age, since age is dynamic and changes over time
+     */
+    public void adaptAge(User user){
+        UserService userService = new UserService(userRepository);
+        int newAge = userService.convertDateOfBirthToAge(user.getDateOfBirth());
+        user.setAge(newAge);
     }
 }

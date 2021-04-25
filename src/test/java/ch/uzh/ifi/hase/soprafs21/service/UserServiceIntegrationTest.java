@@ -2,23 +2,20 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.event.annotation.AfterTestClass;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test class for the UserResource REST resource.
@@ -203,6 +200,25 @@ public class UserServiceIntegrationTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(createdUserWithID.getToken()));
+    }
+
+    @Test
+    public void checkIfAdaptAge_success() {
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
+        createdUserWithID.setDateOfBirth(now);
+
+        // adapt age
+        userService.adaptAge(createdUserWithID);
+
+        assertEquals(18,createdUserWithID.getAge());
     }
 
 }

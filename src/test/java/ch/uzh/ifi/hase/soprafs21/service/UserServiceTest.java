@@ -9,22 +9,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import static org.mockito.BDDMockito.doThrow;
-import static org.mockito.BDDMockito.given;
-
 import org.springframework.web.server.ResponseStatusException;
 
-
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 public class UserServiceTest {
 
@@ -207,7 +202,7 @@ public class UserServiceTest {
 
         boolean valid = userService.checkIfValidToken(userInRepo.getToken());
 
-        assertEquals(true,valid);
+        assertTrue(valid);
     }
 
     @Test
@@ -234,6 +229,37 @@ public class UserServiceTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
+    }
+
+    @Test
+    public void checkIfConvertDateOfBirthToAge_success(){
+        // create user that has a date of birth
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
+        testUser.setDateOfBirth(now);
+
+        assertEquals(18,userService.convertDateOfBirthToAge(now));
+    }
+
+    @Test
+    public void checkIfAdaptAge_success(){
+        // create user that has a date of birth
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        LocalDate localDate = LocalDate.now().minus(18,ChronoUnit.YEARS) ;
+        testUser.setDateOfBirth(localDate);
+
+        // adapt age
+        userService.adaptAge(testUser);
+
+        assertEquals(18,testUser.getAge());
     }
 
 }

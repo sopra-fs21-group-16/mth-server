@@ -2,11 +2,9 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
-import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 public class UserGetDTO {
 

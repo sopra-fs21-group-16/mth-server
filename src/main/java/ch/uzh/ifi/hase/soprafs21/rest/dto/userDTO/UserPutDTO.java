@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 
 public class UserPutDTO {
 

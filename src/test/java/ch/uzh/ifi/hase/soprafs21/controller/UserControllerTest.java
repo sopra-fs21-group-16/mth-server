@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,16 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @BeforeEach
+    public void init() {
+        User user = new User();
+        user.setId(1L);
+        user.setEmail("test@uzh.ch");
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setEmail("test@uzh.ch");
+    }
 
     @Test
     public void createUser_validInput_userCreated() throws Exception {

@@ -219,4 +219,3 @@ public class ActivityServiceIntegrationTest {
         assertThrows(ResponseStatusException.class, () ->activityService.setSwipingStatus(5L,"notExistingToken", SwipeStatus.TRUE));
     }
 }
-

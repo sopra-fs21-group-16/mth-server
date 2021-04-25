@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-
 /**
  * This class is used to save information about activities and its associated user decisions
  */
@@ -32,7 +31,14 @@ public class Activity implements Serializable{
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
     private List<UserSwipeStatus> userSwipeStatusList;
 
-    public Long getId() { return id; }
+    public Activity(){}
+
+    public Activity(ActivityPreset activityPreset, List<UserSwipeStatus> userSwipeStatusList) {
+        this.setActivityPreset(activityPreset);
+        this.setUserSwipeStatusList(userSwipeStatusList);
+    }
+
+    public Long getId() {return id;}
 
     public void setId(Long id) { this.id = id; }
 
@@ -66,6 +72,4 @@ public class Activity implements Serializable{
     public Boolean isMatch(){
         return null;
     }
-
-
 }

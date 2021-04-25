@@ -53,7 +53,6 @@ public class User implements Serializable {
     private String name;
 
     /** TODO: Maybe set constraints for the age */
-    @Column
     private int age;
 
     /** TODO: Maybe set constraints for the date of Birth */

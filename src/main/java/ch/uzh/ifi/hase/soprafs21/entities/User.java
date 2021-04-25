@@ -3,7 +3,10 @@ package ch.uzh.ifi.hase.soprafs21.entities;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;

@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ActivityServiceTest {
 
@@ -27,7 +26,7 @@ class ActivityServiceTest {
     private ActivityService activityService;
 
     @Mock
-    private UserRepository userRepository;
+    private UserService userService;
 
     @BeforeEach
     public void setup() {
@@ -49,7 +48,7 @@ class ActivityServiceTest {
         testActivity.setUserSwipeStatusList(userSwipeStatusList);
 
         //when
-        Mockito.when(userRepository.findByToken("testToken")).thenReturn(testUser);
+        Mockito.when(userService.getUserByToken("testToken")).thenReturn(testUser);
         Mockito.when(activityRepository.findById(5L)).thenReturn(testActivity);
 
         //then
@@ -73,7 +72,7 @@ class ActivityServiceTest {
         testActivity.setUserSwipeStatusList(userSwipeStatusList);
 
         //when
-        Mockito.when(userRepository.findByToken("testToken")).thenReturn(testUser);
+        Mockito.when(userService.getUserByToken("testToken")).thenReturn(testUser);
         Mockito.when(activityRepository.findById(5L)).thenReturn(testActivity);
 
         //then

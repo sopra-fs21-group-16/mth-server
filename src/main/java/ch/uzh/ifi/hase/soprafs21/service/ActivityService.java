@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,16 @@ public class ActivityService {
 
     private final ActivityRepository activityRepository;
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public ActivityService(@Qualifier("activityRepository") ActivityRepository activityRepository, @Qualifier("userRepository") UserRepository userRepository ) {
+    public ActivityService(@Qualifier("activityRepository") ActivityRepository activityRepository, @Qualifier("userService") UserService userService) {
         this.activityRepository = activityRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     public void setSwipingStatus(long activityId, String token, SwipeStatus swipeStatus) {
-        User user= userRepository.findByToken(token);
+        User user = userService.getUserByToken(token);
         if (user == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User could not be identified");
         }

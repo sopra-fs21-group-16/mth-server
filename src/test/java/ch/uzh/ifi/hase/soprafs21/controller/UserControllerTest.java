@@ -17,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -25,7 +24,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -116,7 +114,7 @@ public class UserControllerTest {
         userPostDTO.setPassword("testPassword");
 
 
-        given(userService.loginUser(Mockito.any())).willReturn(user.getToken());
+        given(userService.loginUser(Mockito.any())).willReturn(user);
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users/login")
@@ -124,12 +122,10 @@ public class UserControllerTest {
                 .content(asJsonString(userPostDTO));
 
         // then
-        MvcResult result=mockMvc.perform(postRequest)
+        mockMvc.perform(postRequest)
                 .andExpect(status().isOk())
-                .andReturn();
-
-        String content = result.getResponse().getContentAsString();
-        assertEquals(content, user.getToken());
+                .andExpect(jsonPath("$.token", is(user.getToken())))
+                .andExpect(jsonPath("$.email", is(user.getEmail())));
     }
 
     @Test

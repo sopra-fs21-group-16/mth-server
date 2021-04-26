@@ -9,9 +9,8 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 
 /**
  * Internal User Representation

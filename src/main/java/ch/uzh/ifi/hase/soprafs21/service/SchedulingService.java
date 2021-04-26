@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
 import ch.uzh.ifi.hase.soprafs21.entities.SchedulingSession;
+import ch.uzh.ifi.hase.soprafs21.repository.ScheduledActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.SchedulingSessionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +27,19 @@ public class SchedulingService {
 
     private final SchedulingSessionRepository schedulingSessionRepository;
 
+    private final ScheduledActivityRepository scheduledActivityRepository;
+
     @Autowired
-    public SchedulingService(@Qualifier("schedulingSessionRepository") SchedulingSessionRepository schedulingSessionRepository) {
+    public SchedulingService(@Qualifier("schedulingSessionRepository") SchedulingSessionRepository schedulingSessionRepository, @Qualifier("scheduledActivityRepository") ScheduledActivityRepository scheduledActivityRepository) {
         this.schedulingSessionRepository = schedulingSessionRepository;
+        this.scheduledActivityRepository = scheduledActivityRepository;
+    }
+
+    public ScheduledActivity saveScheduledActivity(long sessionId, ScheduledActivity scheduledActivity) {
+        scheduledActivityRepository.save(scheduledActivity);
+        scheduledActivityRepository.flush();
+        schedulingSessionRepository.delete(schedulingSessionRepository.findById(sessionId));
+        return scheduledActivity;
     }
 
     public SchedulingSession getSchedulingSession(long sessionId, String token) {

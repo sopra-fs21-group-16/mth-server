@@ -3,6 +3,8 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
 import ch.uzh.ifi.hase.soprafs21.entities.SchedulingSession;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.ScheduledActivityGetDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.ScheduledActivityPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.SchedulingSessionGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.SchedulingSessionPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperScheduling;
@@ -36,13 +38,10 @@ public class SchedulesController {
     @PostMapping("/schedules/{sessionId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ScheduledActivity getScheduledActivity(@PathVariable Long sessionId, @RequestHeader("Auth-Token") String token) {
-        /*
-        only if the sent token is in the rep, the POST request will be successful
-        userService.authorizationCheck(token);
-        */
+    public ScheduledActivityGetDTO getScheduledActivity(@PathVariable Long sessionId, @PathVariable ScheduledActivityPostDTO scheduledActivityPostDTO, @RequestHeader("Auth-Token") String token) {
+        ScheduledActivity scheduledActivity = DTOMapperScheduling.INSTANCE.convertScheduledActivityPostDTOToEntity(scheduledActivityPostDTO);
 
-        return null;// Json object - scheduledActivity
+        return DTOMapperScheduling.INSTANCE.convertEntityToScheduledActivityGetDTO(schedulingService.saveScheduledActivity(sessionId, scheduledActivity));
     }
 
     //Schedule - To get all matched activities and start a scheduling session

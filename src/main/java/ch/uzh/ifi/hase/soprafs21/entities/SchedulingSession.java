@@ -45,7 +45,6 @@ public class SchedulingSession implements Serializable {
 
     public void setActivityList(List<Activity> activityList) { this.activityList = activityList;}
 
-
     public Activity getChosenActivity() {return chosenActivity;}
 
     public void setChosenActivity(Activity chosenActivity) {this.chosenActivity = chosenActivity;}

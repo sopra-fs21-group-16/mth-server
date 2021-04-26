@@ -41,37 +41,26 @@ public class SchedulingSession implements Serializable {
 
     public void setId(Long id) {this.id = id;}
 
-    public List<Activity> getActivityList() {
-        return activityList;
-    }
+    public List<Activity> getActivityList() {return activityList;}
 
-    public void setActivityList(List<Activity> activityList) {
-        this.activityList = activityList;
-    }
+    public void setActivityList(List<Activity> activityList) { this.activityList = activityList;}
+
 
     public Activity getChosenActivity() {return chosenActivity;}
 
     public void setChosenActivity(Activity chosenActivity) {this.chosenActivity = chosenActivity;}
 
-    public List<String> getLocationList() {
-        return locationList;
-    }
+    public List<String> getLocationList() {return locationList; }
 
-    public void setLocationList(List<String> locationList) {
-        this.locationList = locationList;
-    }
+    public void setLocationList(List<String> locationList) {this.locationList = locationList;}
 
     public String getChosenLocation() {return chosenLocation;}
 
     public void setChosenLocation(String chosenLocation) {this.chosenLocation = chosenLocation;}
 
-    public List<LocalDateTime> getDateList() {
-        return dateList;
-    }
+    public List<LocalDateTime> getDateList() {return dateList;}
 
-    public void setDateList(List<LocalDateTime> dateList) {
-        this.dateList = dateList;
-    }
+    public void setDateList(List<LocalDateTime> dateList) {this.dateList= dateList;}
 
     public LocalDateTime getChosenDate() {return chosenDate;}
 

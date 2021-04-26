@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -201,7 +202,7 @@ public class UserServiceTest {
 
         boolean valid = userService.checkIfValidToken(userInRepo.getToken());
 
-        assertEquals(true,valid);
+        assertTrue(valid);
     }
 
     @Test
@@ -228,6 +229,37 @@ public class UserServiceTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
+    }
+
+    @Test
+    public void checkIfConvertDateOfBirthToAge_success(){
+        // create user that has a date of birth
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
+        testUser.setDateOfBirth(now);
+
+        assertEquals(18,userService.convertDateOfBirthToAge(now));
+    }
+
+    @Test
+    public void checkIfAdaptAge_success(){
+        // create user that has a date of birth
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        LocalDate localDate = LocalDate.now().minus(18,ChronoUnit.YEARS) ;
+        testUser.setDateOfBirth(localDate);
+
+        // adapt age
+        userService.adaptAge(testUser);
+
+        assertEquals(18,testUser.getAge());
     }
 
 }

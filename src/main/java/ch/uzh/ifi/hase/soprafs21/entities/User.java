@@ -5,10 +5,12 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 
 /**
  * Internal User Representation
@@ -52,8 +54,12 @@ public class User implements Serializable {
     @NotBlank(message = "Name must not be empty")
     private String name;
 
-    @Column
     private int age;
+
+    /** TODO: Maybe set constraints for the date of Birth */
+    @Column
+    @Past
+    private LocalDate dateOfBirth;
 
     @Column
     private Gender gender;
@@ -64,7 +70,6 @@ public class User implements Serializable {
     @Column(nullable = false)
     private LocalDateTime lastSeen;
 
-    //{"userIntersts": {"genderPreference": "MALE"}}
     // cascade option enabled to map objects
     @OneToOne(cascade = {CascadeType.ALL})
     private UserInterests userInterests;
@@ -120,6 +125,10 @@ public class User implements Serializable {
     public int getAge() {return age;}
 
     public void setAge(int age) {this.age = age;}
+
+    public LocalDate getDateOfBirth() {return dateOfBirth;}
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public Gender getGender() {return gender; }
 

@@ -25,6 +25,14 @@ public class ScheduledActivity implements Serializable {
     @Column
     private LocalDateTime date;
 
+    public ScheduledActivity(){ }
+
+    public ScheduledActivity(Activity activity, String location, LocalDateTime date){
+        this.activity = activity;
+        this.location = location;
+        this.date = date;
+    }
+
     public Long getId() {
         return id;
     }

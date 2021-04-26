@@ -3,12 +3,14 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
+import java.time.LocalDate;
+
 public class UserPutDTO {
 
     private String email;
     private String password;
     private String name;
-    private int age;
+    private LocalDate dateOfBirth;
     private String bio;
     private String phone;
     private Gender gender;
@@ -19,9 +21,9 @@ public class UserPutDTO {
 
     public void setEmail(String email) {this.email = email;}
 
-    public int getAge() {return age;}
+    public LocalDate getDateOfBirth() {return dateOfBirth;}
 
-    public void setAge(int age) {this.age = age;}
+    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public String getBio() {return bio;}
 

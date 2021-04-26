@@ -12,6 +12,7 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
@@ -50,6 +51,8 @@ public class DTOMapperUserTest {
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setName("test");
         user.setAge(20);
+        LocalDate dateOfBirth = LocalDate.of(2000,2,3);
+        user.setDateOfBirth(dateOfBirth);
         user.setGender(Gender.MALE);
         user.setBio("asdf");
         user.setToken("1");
@@ -61,8 +64,8 @@ public class DTOMapperUserTest {
         userInterests.setAgeRange(new AgeRange(18,23));
         userInterests.setGenderPreference(GenderPreference.EVERYONE);
         Set<ActivityCategory> activityInterests =  new HashSet<>();
-        activityInterests.add(ActivityCategory.SPORT);
-        activityInterests.add(ActivityCategory.FOOD);
+        activityInterests.add(ActivityCategory.SPORTS);
+        activityInterests.add(ActivityCategory.COOKING);
         userInterests.setActivityInterests(activityInterests);
         user.setUserInterests(userInterests);
 
@@ -74,6 +77,8 @@ public class DTOMapperUserTest {
         assertEquals(user.getEmail(), userGetDTO.getEmail());
         assertEquals(user.getLastSeen(), userGetDTO.getLastSeen());
         assertEquals(user.getName(),userGetDTO.getName());
+        assertEquals(user.getAge(),userGetDTO.getAge());
+        assertEquals(user.getDateOfBirth(),userGetDTO.getDateOfBirth());
         assertEquals(user.getGender(),userGetDTO.getGender());
         assertEquals(user.getBio(),userGetDTO.getBio());
         assertEquals(user.getToken(),userGetDTO.getToken());
@@ -95,7 +100,8 @@ public class DTOMapperUserTest {
         userPutDTO.setEmail("firstname@lastname");
         userPutDTO.setPassword("password");
         userPutDTO.setName("test");
-        userPutDTO.setAge(20);
+        LocalDate dateOfBirth = LocalDate.of(2000,2,3);
+        userPutDTO.setDateOfBirth(dateOfBirth);
         userPutDTO.setGender(Gender.MALE);
         userPutDTO.setBio("asdf");
         userPutDTO.setPhone("079 122 34 54");
@@ -106,8 +112,8 @@ public class DTOMapperUserTest {
         userInterests.setAgeRange(new AgeRange(18,23));
         userInterests.setGenderPreference(GenderPreference.EVERYONE);
         Set<ActivityCategory> activityInterests =  new HashSet<>();
-        activityInterests.add(ActivityCategory.SPORT);
-        activityInterests.add(ActivityCategory.FOOD);
+        activityInterests.add(ActivityCategory.SPORTS);
+        activityInterests.add(ActivityCategory.COOKING);
         userInterests.setActivityInterests(activityInterests);
         userPutDTO.setUserInterests(userInterests);
 
@@ -118,7 +124,7 @@ public class DTOMapperUserTest {
         assertEquals(userPutDTO.getEmail(), user.getEmail());
         assertEquals(userPutDTO.getPassword(), user.getPassword());
         assertEquals(userPutDTO.getName(),user.getName());
-        assertEquals(userPutDTO.getAge(), user.getAge());
+        assertEquals(userPutDTO.getDateOfBirth(), user.getDateOfBirth());
         assertEquals(userPutDTO.getGender(),user.getGender());
         assertEquals(userPutDTO.getBio(),user.getBio());
         assertEquals(userPutDTO.getPhone(),user.getPhone());
@@ -149,8 +155,8 @@ public class DTOMapperUserTest {
         userInterests.setAgeRange(new AgeRange(18,23));
         userInterests.setGenderPreference(GenderPreference.EVERYONE);
         Set<ActivityCategory> activityInterests =  new HashSet<>();
-        activityInterests.add(ActivityCategory.SPORT);
-        activityInterests.add(ActivityCategory.FOOD);
+        activityInterests.add(ActivityCategory.SPORTS);
+        activityInterests.add(ActivityCategory.COOKING);
         userInterests.setActivityInterests(activityInterests);
         user.setUserInterests(userInterests);
 

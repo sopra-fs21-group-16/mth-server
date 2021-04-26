@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO;
 
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
+
 import java.time.LocalDateTime;
 
 public class ScheduledActivityPostDTO {

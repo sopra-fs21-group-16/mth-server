@@ -53,8 +53,7 @@ public class ScheduledActivity implements Serializable {
         return date;
     }
 
-    public void setDate(LocalDateTime chosenDate) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
-
 }

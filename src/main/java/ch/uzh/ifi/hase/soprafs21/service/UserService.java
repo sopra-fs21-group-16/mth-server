@@ -17,8 +17,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * User Service
@@ -42,9 +40,8 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User getUserByID(long userId){
-        User userById = this.userRepository.findById(userId);
-        return userById;
+    public User getUserByID(long userId) {
+        return this.userRepository.findById(userId);
     }
 
     public User createUser(User newUser) {

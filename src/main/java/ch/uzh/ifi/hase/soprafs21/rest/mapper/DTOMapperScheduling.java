@@ -27,7 +27,6 @@ public interface DTOMapperScheduling {
     @Mapping(source = "date", target = "date")
     ScheduledActivity convertScheduledActivityPostDTOToEntity(ScheduledActivityPostDTO scheduledActivityPostDTO);
 
-
     @Mapping(source = "chosenActivity", target = "chosenActivity")
     @Mapping(source = "activityList", target = "activityList")
     @Mapping(source = "chosenLocation", target = "chosenLocation")

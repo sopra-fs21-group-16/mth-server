@@ -78,18 +78,19 @@ public class UserService {
         }
     }
 
-    public String loginUser(User userInput) {
+    public User loginUser(User userInput) {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {
             checkIfUserExistsByEmail(userByEmail);
-        } catch (ResponseStatusException error) {
-            if(userInput.getPassword().equals(userByEmail.getPassword())){
+        }
+        catch (ResponseStatusException error) {
+            if (userInput.getPassword().equals(userByEmail.getPassword())) {
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
                 adaptAge(userByEmail); // update age
                 userRepository.save(userByEmail);
                 userRepository.flush();
-                return userByEmail.getToken();
+                return userByEmail;
             }
             else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password is wrong.");

@@ -106,9 +106,9 @@ public class UserServiceTest {
         Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
 
         // then
-        String result = userService.loginUser(testUser);
+        User result = userService.loginUser(testUser);
 
-        assertEquals(testUser.getToken(),result);
+        assertEquals(testUser, result);
     }
 
     @Test
@@ -261,5 +261,4 @@ public class UserServiceTest {
 
         assertEquals(18,testUser.getAge());
     }
-
 }

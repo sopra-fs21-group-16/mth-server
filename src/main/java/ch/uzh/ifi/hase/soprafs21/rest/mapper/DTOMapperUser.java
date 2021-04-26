@@ -62,6 +62,4 @@ public interface DTOMapperUser {
     @Mapping(source = "userInterests", target = "userInterests")
     UserGetDTOProfile convertEntityToUserGetDTOProfile(User user);
 
-
-
 }

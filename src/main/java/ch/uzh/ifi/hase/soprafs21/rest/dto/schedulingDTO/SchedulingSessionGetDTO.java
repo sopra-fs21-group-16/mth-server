@@ -5,8 +5,9 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class SchedulingSessionPutDTO {
+public class SchedulingSessionGetDTO {
 
+    private Long id;
     private List<Activity> activityList;
     private Activity chosenActivity;
     private Activity proposerActivity;
@@ -19,6 +20,14 @@ public class SchedulingSessionPutDTO {
     private LocalDateTime chosenDate;
     private LocalDateTime proposerDate;
     private LocalDateTime receiverDate;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public List<Activity> getActivityList() {
         return activityList;
@@ -40,9 +49,13 @@ public class SchedulingSessionPutDTO {
         return locationList;
     }
 
-    public void setLocationList(List<String> locationList) {this.locationList = locationList;}
+    public void setLocationList(List<String> locationList) {
+        this.locationList = locationList;
+    }
 
-    public String getChosenLocation() {return chosenLocation;}
+    public String getChosenLocation() {
+        return chosenLocation;
+    }
 
     public void setChosenLocation(String chosenLocation) {
         this.chosenLocation = chosenLocation;
@@ -111,5 +124,4 @@ public class SchedulingSessionPutDTO {
     public void setReceiverDate(LocalDateTime receiverDate) {
         this.receiverDate = receiverDate;
     }
-
 }

@@ -35,13 +35,14 @@ public class SchedulesController {
     }
 
     //Schedule - to get ScheduledActivity after a successful session
-    @PostMapping("/schedules/{sessionId}")
+    @PostMapping("/schedules")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ScheduledActivityGetDTO getScheduledActivity(@PathVariable Long sessionId, @PathVariable ScheduledActivityPostDTO scheduledActivityPostDTO, @RequestHeader("Auth-Token") String token) {
-        ScheduledActivity scheduledActivity = DTOMapperScheduling.INSTANCE.convertScheduledActivityPostDTOToEntity(scheduledActivityPostDTO);
+    public SchedulingSessionGetDTO createSchedulingSession(@PathVariable Long userId1, @PathVariable Long userId2, @RequestHeader("Auth-Token") String token) {
+        userService.checkIfValidToken(token);
 
-        return DTOMapperScheduling.INSTANCE.convertEntityToScheduledActivityGetDTO(schedulingService.saveScheduledActivity(sessionId, scheduledActivity));
+        SchedulingSession schedulingSession = schedulingService.createSchedulingSession(userId1, userId2, token);
+        return DTOMapperScheduling.INSTANCE.convertEntityToSchedulingSessionGetDTO(schedulingSession);
     }
 
     //Schedule - To get all matched activities and start a scheduling session
@@ -59,10 +60,17 @@ public class SchedulesController {
         if some paramaters are no longer true e.g. other user went offline etc.
         throw ResponseStatusException "410 GONE"
          */
-
-
         return null; //List<Activity> and sessionId via Header?
+    }
 
+    //Schedule - to get ScheduledActivity after a successful session
+    @PostMapping("/schedules/{sessionId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public ScheduledActivityGetDTO getScheduledActivity(@PathVariable Long sessionId, @PathVariable ScheduledActivityPostDTO scheduledActivityPostDTO, @RequestHeader("Auth-Token") String token) {
+        userService.checkIfValidToken(token);
+        ScheduledActivity scheduledActivity = DTOMapperScheduling.INSTANCE.convertScheduledActivityPostDTOToEntity(scheduledActivityPostDTO);
+        return DTOMapperScheduling.INSTANCE.convertEntityToScheduledActivityGetDTO(schedulingService.saveScheduledActivity(sessionId, scheduledActivity));
     }
 
     //Schedule - To get proposed locations/dates etc. during a Session

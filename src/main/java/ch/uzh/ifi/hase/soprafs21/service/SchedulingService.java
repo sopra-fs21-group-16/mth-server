@@ -36,10 +36,10 @@ public class SchedulingService {
     }
 
     public ScheduledActivity saveScheduledActivity(long sessionId, ScheduledActivity scheduledActivity) {
-        scheduledActivityRepository.save(scheduledActivity);
+        ScheduledActivity newScheduledActivity = scheduledActivityRepository.save(scheduledActivity);
         scheduledActivityRepository.flush();
         schedulingSessionRepository.delete(schedulingSessionRepository.findById(sessionId));
-        return scheduledActivity;
+        return newScheduledActivity;
     }
 
     public SchedulingSession getSchedulingSession(long sessionId, String token) {
@@ -127,5 +127,12 @@ public class SchedulingService {
         });
 
         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exceptions.toString());
+    }
+
+    public SchedulingSession createSchedulingSession(Long userId1, Long userId2, String token) {
+        SchedulingSession schedulingSession = new SchedulingSession();
+        SchedulingSession newSchedulingSession = schedulingSessionRepository.save(schedulingSession);
+        schedulingSessionRepository.flush();
+        return newSchedulingSession;
     }
 }

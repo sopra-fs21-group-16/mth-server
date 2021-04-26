@@ -83,7 +83,6 @@ public class UserService {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {
             checkIfUserExistsByEmail(userByEmail);
-
         } catch (ResponseStatusException error) {
             if(userInput.getPassword().equals(userByEmail.getPassword())){
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
@@ -93,11 +92,15 @@ public class UserService {
                 userRepository.flush();
                 return userByEmail.getToken();
             }
-            else{
+            else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password is wrong.");
             }
+
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username does not exist.");
+        catch (NullPointerException error) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username does not exist.");
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Something went wrong.");
     }
 
     public void logOutUser(long userId){

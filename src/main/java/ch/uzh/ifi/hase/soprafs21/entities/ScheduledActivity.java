@@ -64,5 +64,4 @@ public class ScheduledActivity implements Serializable {
     public void setDate(LocalDateTime date) {
         this.date = date;
     }
-
 }

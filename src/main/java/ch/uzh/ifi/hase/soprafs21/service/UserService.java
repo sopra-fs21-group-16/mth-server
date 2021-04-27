@@ -43,8 +43,7 @@ public class UserService {
     }
 
     public User getUserByID(long userId) {
-        User userById = this.userRepository.findById(userId);
-        return userById;
+        return this.userRepository.findById(userId);
     }
 
     public User getUserByToken(String token) {

@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
 import ch.uzh.ifi.hase.soprafs21.entities.SchedulingSession;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.ScheduledActivityPostDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.SchedulingSessionPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.UserIdsSchedulingPostDTO;
 import ch.uzh.ifi.hase.soprafs21.service.SchedulingService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
@@ -20,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -61,9 +63,11 @@ class SchedulesControllerTest {
                 .andExpect(status().isCreated());
     }
 
+    /*
     @Test
     void getListOfActivitiesAndSessionID() {
     }
+     */
 
     @Test
     void getScheduledActivity() throws Exception {
@@ -87,16 +91,45 @@ class SchedulesControllerTest {
     }
 
     @Test
-    void getProposedInformation() {
+    void getProposedInformation() throws Exception {
+        SchedulingSession schedulingSession = new SchedulingSession();
+
+        // when
+        given(userService.checkIfValidToken("Token")).willReturn(true);
+        given(schedulingService.getSchedulingSession(Mockito.anyLong(), Mockito.any())).willReturn(schedulingSession);
+
+        MockHttpServletRequestBuilder getRequest = get("/schedules/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", "Token");
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
     }
 
     @Test
-    void setProposedInformation() {
+    void setProposedInformation() throws Exception {
+        SchedulingSessionPutDTO schedulingSessionPutDTO = new SchedulingSessionPutDTO();
+        SchedulingSession schedulingSession = new SchedulingSession();
+
+        // when
+        given(userService.checkIfValidToken("Token")).willReturn(true);
+        Mockito.doNothing().when(schedulingService).updateSchedulingSession(Mockito.anyLong(), Mockito.any(), Mockito.any());
+
+        MockHttpServletRequestBuilder getRequest = get("/schedules/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", "Token");
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
     }
 
+    /*
     @Test
-    void deleteScheduledActivity() {
+    void deleteScheduledActivity() throws Exception{
     }
+     */
 
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed

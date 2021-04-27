@@ -97,15 +97,6 @@ public class SchedulingSession implements Serializable {
         this.chosenDate = chosenDate;
     }
 
-    public void proposeLocation(String location) {
-    }
-
-    public void proposeDate(LocalDateTime date) {
-    }
-
-    public void saveScheduledDate() {
-    }
-
     public Activity getProposerActivity() {
         return proposerActivity;
     }

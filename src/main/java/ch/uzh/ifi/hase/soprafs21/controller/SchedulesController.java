@@ -1,19 +1,13 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
-import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ScheduledActivity;
 import ch.uzh.ifi.hase.soprafs21.entities.SchedulingSession;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.ScheduledActivityGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.ScheduledActivityPostDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.SchedulingSessionGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.SchedulingSessionPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.schedulingDTO.*;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperScheduling;
 import ch.uzh.ifi.hase.soprafs21.service.SchedulingService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 /**
@@ -38,14 +32,15 @@ public class SchedulesController {
     @PostMapping("/schedules")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public SchedulingSessionGetDTO createSchedulingSession(@PathVariable Long userId1, @PathVariable Long userId2, @RequestHeader("Auth-Token") String token) {
+    public SchedulingSessionGetDTO createSchedulingSession(@RequestBody UserIdsSchedulingPostDTO userIdsSchedulingPostDTO, @RequestHeader("Auth-Token") String token) {
         userService.checkIfValidToken(token);
 
-        SchedulingSession schedulingSession = schedulingService.createSchedulingSession(userId1, userId2, token);
+        SchedulingSession schedulingSession = schedulingService.createSchedulingSession(userIdsSchedulingPostDTO.getUserId1(), userIdsSchedulingPostDTO.getUserId2(), token);
         return DTOMapperScheduling.INSTANCE.convertEntityToSchedulingSessionGetDTO(schedulingSession);
     }
 
-    //Schedule - To get all matched activities and start a scheduling session
+    /* // old version and not a good solution to crate scheduling session
+    Schedule - To get all matched activities and start a scheduling session
     @GetMapping("/schedules/")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -53,21 +48,20 @@ public class SchedulesController {
         /*
         only if the sent token is in the rep, the GET request will be successful
         userService.authorizationCheck(token);
-        */
 
-        /*
         in UserService:
-        if some paramaters are no longer true e.g. other user went offline etc.
+        if some parameters are no longer true e.g. other user went offline etc.
         throw ResponseStatusException "410 GONE"
-         */
+         *
         return null; //List<Activity> and sessionId via Header?
     }
+    */
 
     //Schedule - to get ScheduledActivity after a successful session
     @PostMapping("/schedules/{sessionId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public ScheduledActivityGetDTO getScheduledActivity(@PathVariable Long sessionId, @PathVariable ScheduledActivityPostDTO scheduledActivityPostDTO, @RequestHeader("Auth-Token") String token) {
+    public ScheduledActivityGetDTO getScheduledActivity(@PathVariable Long sessionId, @RequestBody ScheduledActivityPostDTO scheduledActivityPostDTO, @RequestHeader("Auth-Token") String token) {
         userService.checkIfValidToken(token);
         ScheduledActivity scheduledActivity = DTOMapperScheduling.INSTANCE.convertScheduledActivityPostDTOToEntity(scheduledActivityPostDTO);
         return DTOMapperScheduling.INSTANCE.convertEntityToScheduledActivityGetDTO(schedulingService.saveScheduledActivity(sessionId, scheduledActivity));
@@ -90,7 +84,7 @@ public class SchedulesController {
     @PutMapping("/schedules/{sessionId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void setProposedInformation(@PathVariable Long sessionId, @PathVariable SchedulingSessionPutDTO schedulingSessionPutDTO, @RequestHeader("Auth-Token") String token) {
+    public void setProposedInformation(@PathVariable Long sessionId, @RequestBody SchedulingSessionPutDTO schedulingSessionPutDTO, @RequestHeader("Auth-Token") String token) {
         userService.checkIfValidToken(token);
 
         SchedulingSession schedulingSession = DTOMapperScheduling.INSTANCE.convertSchedulingSessionPutDTOToEntity(schedulingSessionPutDTO);

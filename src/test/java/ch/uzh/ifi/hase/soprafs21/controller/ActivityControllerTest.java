@@ -68,13 +68,14 @@ public class ActivityControllerTest {
         given(activityService.getActivities(user.getId(), user.getToken())).willReturn(activityList);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/activities/"+user.getId())
+        MockHttpServletRequestBuilder getRequest = get("/activities/" + user.getId())
                 .contentType(MediaType.APPLICATION_JSON).header("Auth-Token", user.getToken());
 
         // then
-        mockMvc.perform(getRequest).andExpect(status().isOk())
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)));
-                // ToDo: test more? e.g. from User: .andExpect(jsonPath("$[0].username", is(user.getUsername())));
+        // ToDo: test more? e.g. from User: .andExpect(jsonPath("$[0].username", is(user.getUsername())));
     }
 
     @Test
@@ -94,9 +95,10 @@ public class ActivityControllerTest {
                 .content(asJsonString(SwipeStatus.TRUE));
 
         //then
-        mockMvc.perform(putRequest);
+        mockMvc.perform(putRequest)
+                .andExpect(status().isOk());
 
-        Mockito.verify(activityService, Mockito.times(1)).setSwipingStatus(1L,"123",SwipeStatus.TRUE);
+        Mockito.verify(activityService, Mockito.times(1)).setSwipingStatus(1L, "123", SwipeStatus.TRUE);
 
     }
 

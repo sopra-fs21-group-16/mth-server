@@ -2,8 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,16 +31,6 @@ public class UserServiceIntegrationTest {
     @Autowired
     private UserService userService;
 
-    @BeforeEach
-    public void setup() {
-        userRepository.deleteAll();
-    }
-
-    @AfterEach
-    public void cleanup() {
-        userRepository.deleteAll();
-    }
-
     @Test
     public void createUser_validInputs_success() {
         // given
@@ -60,9 +48,12 @@ public class UserServiceIntegrationTest {
         assertEquals(testUser.getId(), createdUser.getId());
         assertEquals(testUser.getPassword(), createdUser.getPassword());
         assertEquals(testUser.getEmail(), createdUser.getEmail());
-        assertEquals(testUser.getName(),createdUser.getName());
+        assertEquals(testUser.getName(), createdUser.getName());
         assertNotNull(createdUser.getToken());
         assertEquals(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), createdUser.getLastSeen());
+
+        //delete specific user
+        userRepository.delete(createdUser);
     }
 
     @Test
@@ -85,6 +76,9 @@ public class UserServiceIntegrationTest {
 
         // check that an error is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
+
+        //delete specific user
+        userRepository.delete(createdUser);
     }
 
     @Test
@@ -112,6 +106,9 @@ public class UserServiceIntegrationTest {
 
         assertEquals(user.getLastSeen(), userWithDeletedToken.getLastSeen());
         assertEquals(user.getToken(), userWithDeletedToken.getToken());
+
+        //delete specific users
+        userRepository.delete(createdUserWithID);
     }
 
     @Test
@@ -131,6 +128,9 @@ public class UserServiceIntegrationTest {
 
         // then
         assertNotNull(createdUser.getToken());
+
+        //delete specific user
+        userRepository.delete(createdUser);
     }
 
     @Test
@@ -148,10 +148,13 @@ public class UserServiceIntegrationTest {
         newUser.setName("newName");
 
         // when
-        userService.applyUserProfileChange(newUser,testUser);
+        userService.applyUserProfileChange(newUser, testUser);
 
         // then
-        assertEquals(newUser.getName(),testUser.getName());
+        assertEquals(newUser.getName(), testUser.getName());
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 
     @Test
@@ -169,7 +172,10 @@ public class UserServiceIntegrationTest {
         newUser.setName(null);
 
         // check that an error is thrown
-        assertThrows(ResponseStatusException.class, () -> userService.applyUserProfileChange(newUser,testUser));
+        assertThrows(ResponseStatusException.class, () -> userService.applyUserProfileChange(newUser, testUser));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 
     @Test
@@ -184,7 +190,10 @@ public class UserServiceIntegrationTest {
 
         boolean valid = userService.checkIfValidToken(createdUserWithID.getToken());
 
-        assertEquals(true,valid);
+        assertEquals(true, valid);
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 
     @Test
@@ -200,6 +209,9 @@ public class UserServiceIntegrationTest {
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(createdUserWithID.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 
     @Test
@@ -212,13 +224,16 @@ public class UserServiceIntegrationTest {
         testUser.setPassword("testPassword");
         User createdUserWithID = userService.createUser(testUser);
 
-        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
+        LocalDate now = LocalDate.now().minus(18, ChronoUnit.YEARS);
         createdUserWithID.setDateOfBirth(now);
 
         // adapt age
         userService.adaptAge(createdUserWithID);
 
-        assertEquals(18,createdUserWithID.getAge());
+        assertEquals(18, createdUserWithID.getAge());
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 
 }

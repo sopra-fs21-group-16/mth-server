@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,17 @@ public class ActivityService {
 
     private final UserService userService;
 
+    private final UserSwipeStatusRepository userSwipeStatusRepository;
+
     @Autowired
     public ActivityService(@Qualifier("activityRepository") ActivityRepository activityRepository,
                            @Qualifier("activityPresetRepository") ActivityPresetRepository activityPresetRepository,
-                           @Qualifier("userService") UserService userService) {
+                           @Qualifier("userService") UserService userService,
+                           @Qualifier("userSwipeStatusRepository") UserSwipeStatusRepository userSwipeStatusRepository) {
         this.activityRepository = activityRepository;
         this.activityPresetRepository = activityPresetRepository;
         this.userService = userService;
+        this.userSwipeStatusRepository = userSwipeStatusRepository;
     }
   
   
@@ -94,8 +99,24 @@ public class ActivityService {
         return generatedActivities;
     }
 
-    
-    public List<Activity> getActivitiesWithMatchedUsers(){
+
+    public List<Activity> getActivitiesWithMatchedUsers(User user){
+        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService, userSwipeStatusRepository);
+
+;        //List<Activity> allActivitiesOfUser = activityService.getAllActivitiesOfUser(user);
+
         return null;
+    }
+
+    public List<UserSwipeStatus> getAllUserSwipeStatusConnectedToGivenUser(User user){
+        long userId = user.getId();
+         return userSwipeStatusRepository.findByUser(user);
+    }
+
+    public List<UserSwipeStatus> getAllActivitiesOfUser(User user){
+
+        //List<UserSwipeStatus> UserSwipeStatusConnectedToGivenUser = userSwipeStatusRepository.findByUser(user);
+
+        return null;//UserSwipeStatusConnectedToGivenUser;
     }
 }

@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
@@ -381,7 +382,7 @@ public class UserControllerTest {
         activityFromRepo.setId(1L);
         activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
-        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.TRUE);
 
         userSwipeStatusList.add(userSwipeStatus1);
         userSwipeStatusList.add(userSwipeStatus2);
@@ -392,7 +393,7 @@ public class UserControllerTest {
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        given(activityService.getActivitiesWithMatchedUsers()).willReturn(activityListWithMatchedUsers);
+        given(activityService.getActivitiesWithMatchedUsers(userFromRepo)).willReturn(activityListWithMatchedUsers);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/matches")
@@ -423,7 +424,7 @@ public class UserControllerTest {
         activityFromRepo.setId(1L);
         activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.FALSE);
-        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.TRUE);
 
         userSwipeStatusList.add(userSwipeStatus1);
         userSwipeStatusList.add(userSwipeStatus2);
@@ -434,7 +435,7 @@ public class UserControllerTest {
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no matches")).when(activityService).getActivitiesWithMatchedUsers();
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no matches")).when(activityService).getActivitiesWithMatchedUsers(userFromRepo);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/matches")

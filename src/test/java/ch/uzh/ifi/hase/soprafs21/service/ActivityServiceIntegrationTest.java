@@ -170,4 +170,33 @@ public class ActivityServiceIntegrationTest {
         activityRepository.delete(testActivity);
         userSwipeStatusRepository.delete(userSwipeStatus);
     }
+
+    @Test
+    public void getAllActivitiesOfUser_success(){
+        //given
+        User testUser = userRepository.findById(1L);
+        Activity testActivity = new Activity();
+        testActivity.setCreationDate(new Date());
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
+        testActivity.setId(5L);
+        ActivityPreset activityPreset = activityPresetRepository.findById(5L);
+        testActivity.setActivityPreset(activityPreset);
+        userSwipeStatus.setId(1L);
+        userSwipeStatus.setUser(testUser);
+        userSwipeStatus.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatusRepository.save(userSwipeStatus);
+        userSwipeStatusRepository.flush();
+        userSwipeStatusList.add(userSwipeStatus);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+        testActivity = activityRepository.save(testActivity);
+        activityRepository.flush();
+
+        assertEquals(userSwipeStatusList,activityService.getAllUserSwipeStatusConnectedToGivenUser(testUser));
+
+        // delete the specific User, Activity and SwipeStatus
+        activityRepository.delete(testActivity);
+        userSwipeStatusRepository.delete(userSwipeStatus);
+    }
+
 }

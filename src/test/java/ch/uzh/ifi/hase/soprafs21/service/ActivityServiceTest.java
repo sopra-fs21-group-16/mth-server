@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ActivityServiceTest {
@@ -79,6 +80,5 @@ class ActivityServiceTest {
 
         //then
         assertThrows(ResponseStatusException.class, () -> activityService.setSwipingStatus(5L, "testToken", SwipeStatus.TRUE));
-
     }
 }

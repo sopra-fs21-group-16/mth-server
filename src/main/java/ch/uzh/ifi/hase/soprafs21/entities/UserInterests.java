@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 @Entity
-@Table(name = "USER_INTERESTS")
+@Table(name = "UserInterests")
 public class UserInterests implements Serializable {
 
     @Serial
@@ -61,4 +61,11 @@ public class UserInterests implements Serializable {
     }
 
     public void setActivityInterests(Set<ActivityCategory> activityInterests) {this.activityInterests = activityInterests;}
+
+    public void updateUserInterests(UserInterests userInterests){
+        this.genderPreference = userInterests.genderPreference;
+        this.activityInterests = userInterests.activityInterests;
+        this.ageRangeMin = userInterests.ageRangeMin;
+        this.ageRangeMax = userInterests.ageRangeMax;
+    }
 }

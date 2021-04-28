@@ -87,7 +87,6 @@ public class UserService {
             if (userInput.getPassword().equals(userByEmail.getPassword())) {
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
-                adaptAge(userByEmail); // update age
                 userRepository.save(userByEmail);
                 userRepository.flush();
                 return userByEmail;
@@ -175,8 +174,6 @@ public class UserService {
 
         if (userInput.getDateOfBirth() != null){
             userFromRepo.setDateOfBirth(userInput.getDateOfBirth());
-            /** TODO: do not save age as attribute, instead use method that returns age in controller */
-            adaptAge(userFromRepo);
             noNewData = false;
         }
 
@@ -201,7 +198,14 @@ public class UserService {
         }
 
         if (userInput.getUserInterests() != null){
-            userFromRepo.setUserInterests(userInput.getUserInterests());
+            // if user has not yet a userInterests object, set a new one
+            if(userFromRepo.getUserInterests() == null){
+                userFromRepo.setUserInterests(userInput.getUserInterests());
+            }
+            // uf user has already a userInterests object, update the userInterests object
+            else {
+                userFromRepo.getUserInterests().updateUserInterests(userInput.getUserInterests());
+            }
             noNewData = false;
         }
 
@@ -269,7 +273,7 @@ public class UserService {
      * @param dateOfBirth
      * @return
      */
-    public int convertDateOfBirthToAge(LocalDate dateOfBirth){
+    public int computeAge(LocalDate dateOfBirth){
         // if no date of birth is set yet, we return 0
         if (dateOfBirth == null ){
             return 0;
@@ -284,14 +288,5 @@ public class UserService {
         int age = differenceOfDates.getYears();
 
         return age;
-    }
-
-    /**
-     *   update age, since age is dynamic and changes over time
-     */
-    public void adaptAge(User user){
-        UserService userService = new UserService(userRepository);
-        int newAge = userService.convertDateOfBirthToAge(user.getDateOfBirth());
-        user.setAge(newAge);
     }
 }

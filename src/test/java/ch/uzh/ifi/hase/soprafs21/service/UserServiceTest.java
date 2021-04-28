@@ -232,7 +232,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkIfConvertDateOfBirthToAge_success(){
+    public void checkIfComputeAge_success(){
         // create user that has a date of birth
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
@@ -242,23 +242,6 @@ public class UserServiceTest {
         LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
         testUser.setDateOfBirth(now);
 
-        assertEquals(18,userService.convertDateOfBirthToAge(now));
-    }
-
-    @Test
-    public void checkIfAdaptAge_success(){
-        // create user that has a date of birth
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-
-        LocalDate localDate = LocalDate.now().minus(18,ChronoUnit.YEARS) ;
-        testUser.setDateOfBirth(localDate);
-
-        // adapt age
-        userService.adaptAge(testUser);
-
-        assertEquals(18,testUser.getAge());
+        assertEquals(18,userService.computeAge(now));
     }
 }

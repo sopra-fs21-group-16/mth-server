@@ -190,7 +190,7 @@ public class UserServiceIntegrationTest {
 
         boolean valid = userService.checkIfValidToken(createdUserWithID.getToken());
 
-        assertEquals(true, valid);
+        assertTrue(valid);
 
         //delete specific user
         userRepository.delete(createdUserWithID);
@@ -215,25 +215,21 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void checkIfAdaptAge_success() {
+    public void checkIfComputeAge_success(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
-        testUser.setName("Tester");
-        testUser.setPassword("testPassword");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);
 
-        LocalDate now = LocalDate.now().minus(18, ChronoUnit.YEARS);
-        createdUserWithID.setDateOfBirth(now);
+        LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
+        testUser.setDateOfBirth(now);
 
-        // adapt age
-        userService.adaptAge(createdUserWithID);
-
-        assertEquals(18, createdUserWithID.getAge());
+        assertEquals(18,userService.computeAge(now));
 
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
-
 }

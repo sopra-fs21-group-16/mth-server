@@ -22,7 +22,7 @@ public enum ActivityCategory {
         this.icon = icon;
     }
 
-    public String toString() {
+    public String getIcon() {
         return this.icon;
     }
 }

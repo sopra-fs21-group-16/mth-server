@@ -39,7 +39,7 @@ public class ActivityController {
     @ResponseStatus(HttpStatus.OK)
     public Map<ActivityCategory, String> getActivityCategories(){
         return Arrays.stream(ActivityCategory.values())
-                .collect(Collectors.toMap(Function.identity(), ActivityCategory::toString));
+                .collect(Collectors.toMap(Function.identity(), ActivityCategory::getIcon));
     }
 
 

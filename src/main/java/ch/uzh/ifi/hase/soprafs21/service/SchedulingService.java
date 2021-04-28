@@ -175,7 +175,7 @@ public class SchedulingService {
             schedulingSessionById.setReceiverDate(schedulingSession.getReceiverDate());
             noNewData = false;
         }
-        else if (noNewData) {
+        if (noNewData) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No changed data was provided");
         }
 

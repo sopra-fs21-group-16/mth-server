@@ -1,10 +1,16 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.entities.Activity;
+import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
+import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
+import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,6 +51,9 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @MockBean
+    private ActivityService activityService;
 
     @BeforeEach
     public void init() {
@@ -137,12 +147,13 @@ public class UserControllerTest {
         user.setEmail("test@uzh.ch");
 
         // when
-        MockHttpServletRequestBuilder postRequest = post("/users/1/logout")
+        MockHttpServletRequestBuilder postRequest = post("/users/logout")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", user.getToken());
 
-        given(userService.isUserAuthenticated(user.getId(),user.getToken())).willReturn(Boolean.TRUE);
+        given(userService.checkIfValidToken(user.getToken())).willReturn(Boolean.TRUE);
 
+        given(userService.getIdByToken(user.getToken())).willReturn(user.getId());
         // then
         mockMvc.perform(postRequest)
                 .andExpect(status().isOk());
@@ -172,20 +183,22 @@ public class UserControllerTest {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setGender(Gender.MALE);
         String tokenFromHeader = "ssfs";
-        Long idFromURI = 1L;
+        Long userId = 1L;
 
         User userInput = DTOMapperUser.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
 
-        given(userService.isUserAuthenticated(idFromURI,tokenFromHeader)).willReturn(true);
+        given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        given(userService.getUserByID(idFromURI)).willReturn(userFromRepo);
+        given(userService.getIdByToken(tokenFromHeader)).willReturn(userId);
 
-        given(userService.isUserAuthorized(idFromURI,userFromRepo.getId(),tokenFromHeader)).willReturn(true);
+        given(userService.getUserByID(userId)).willReturn(userFromRepo);
+
+        given(userService.isUserAuthorized(userId,userFromRepo.getId(),tokenFromHeader)).willReturn(true);
 
         doNothing().when(userService).applyUserProfileChange(userInput,userFromRepo);
 
         // when
-        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder putRequest = put("/users/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO))
                 .header("Auth-Token", tokenFromHeader);
@@ -207,18 +220,20 @@ public class UserControllerTest {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setGender(null);
         String tokenFromHeader = "ssfs";
-        Long idFromURI = 1L;
+        Long userId = 1L;
 
-        given(userService.isUserAuthenticated(idFromURI,tokenFromHeader)).willReturn(true);
+        given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        given(userService.getUserByID(idFromURI)).willReturn(userFromRepo);
+        given(userService.getIdByToken(tokenFromHeader)).willReturn(userId);
 
-        given(userService.isUserAuthorized(idFromURI,userFromRepo.getId(),tokenFromHeader)).willReturn(true);
+        given(userService.getUserByID(userId)).willReturn(userFromRepo);
+
+        given(userService.isUserAuthorized(userId,userFromRepo.getId(),tokenFromHeader)).willReturn(true);
 
         doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,"No change data was provided")).when(userService).applyUserProfileChange(Mockito.any(),Mockito.any());
 
         // when
-        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder putRequest = put("/users/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO))
                 .header("Auth-Token", tokenFromHeader);
@@ -238,10 +253,10 @@ public class UserControllerTest {
         String tokenFromHeader = "ssfs";
         Long idFromURI = 1L;
 
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"Provided user could not be found.")).when(userService).isUserAuthenticated(idFromURI,tokenFromHeader);
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"Provided user could not be found.")).when(userService).checkIfValidToken(tokenFromHeader);
 
         // when
-        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder putRequest = put("/users/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO))
                 .header("Auth-Token", tokenFromHeader);
@@ -263,12 +278,12 @@ public class UserControllerTest {
         UserPutDTO userPutDTO = new UserPutDTO();
         userPutDTO.setGender(Gender.MALE);
         String tokenFromHeader = "notTheSameTokenAsInRepo";
-        Long idFromURI = 1L;
+        Long userId = 1L;
 
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provided user does not match Auth-Token.")).when(userService).isUserAuthenticated(idFromURI,tokenFromHeader);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Provided user does not match Auth-Token.")).when(userService).checkIfValidToken(tokenFromHeader);
 
         // when
-        MockHttpServletRequestBuilder putRequest = put("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder putRequest = put("/users/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO))
                 .header("Auth-Token", tokenFromHeader);
@@ -290,14 +305,12 @@ public class UserControllerTest {
         String tokenFromHeader = "ssfs";
         Long idFromURI = 1L;
 
-        doNothing().when(userService).checkIfUserExistsWithGivenId(idFromURI);
-
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        given(userService.getUserByID(idFromURI)).willReturn(userFromRepo);
+        given(userService.getUserByToken(tokenFromHeader)).willReturn(userFromRepo);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder getRequest = get("/users/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", tokenFromHeader);
 
@@ -342,7 +355,7 @@ public class UserControllerTest {
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidToken(tokenFromHeader);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/users/" + idFromURI + "/profile")
+        MockHttpServletRequestBuilder getRequest = get("/users/profile")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", tokenFromHeader);
 
@@ -351,61 +364,85 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUserProfiles_Success() throws Exception{
-        // user in repo that should be returned
+    void getActivitiesWithMatchedUsers_Success() throws Exception{
         User userFromRepo = new User();
         userFromRepo.setId(1L);
         userFromRepo.setEmail("test@uzh.ch");
-        userFromRepo.setName("testname");
-        userFromRepo.setBio("bio");
+
+        User userFromRepo2 = new User();
+        userFromRepo.setId(2L);
+        userFromRepo.setEmail("test2@uzh.ch");
 
         String tokenFromHeader = "ssfs";
-        Long idFromURI = 1L;
+        List<UserSwipeStatus> userSwipeStatusList= new ArrayList<>();
+
+        // activity that contains the matched users
+        Activity activityFromRepo = new Activity();
+        activityFromRepo.setId(1L);
+        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
+
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        activityFromRepo.setUserSwipeStatusList(userSwipeStatusList);
 
         // saves a list that contains only one object
-        List<User> allUsers = Collections.singletonList(userFromRepo);
+        List<Activity> activityListWithMatchedUsers = Collections.singletonList(activityFromRepo);
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        // this mocks the UserService -> we define above what the userService should return when getUsers() is called
-        given(userService.getUsers()).willReturn(allUsers);
+        given(activityService.getActivitiesWithMatchedUsers()).willReturn(activityListWithMatchedUsers);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/users/profiles")
+        MockHttpServletRequestBuilder getRequest = get("/users/matches")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", tokenFromHeader);
 
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name", is(userFromRepo.getName())))
-                .andExpect(jsonPath("$[0].bio", is(userFromRepo.getBio())));
+                .andExpect(jsonPath("$[0].activityPreset", is(activityFromRepo.getActivityPreset())))
+                .andExpect(jsonPath("$[0].userSwipeStatusList", is(activityFromRepo.getUserSwipeStatusList())));
     }
 
     @Test
-    void getUserProfiles_Invalid_Token() throws Exception{
-        // user in repo that should be returned
+    void getActivitiesWithMatchedUsers_Invalid_NoMatches() throws Exception{
         User userFromRepo = new User();
         userFromRepo.setId(1L);
         userFromRepo.setEmail("test@uzh.ch");
-        userFromRepo.setName("testname");
-        userFromRepo.setBio("bio");
 
-        // invalid token
-        String tokenFromHeader = "invalid";
-        Long idFromURI = 1L;
+        User userFromRepo2 = new User();
+        userFromRepo.setId(2L);
+        userFromRepo.setEmail("test2@uzh.ch");
+
+        String tokenFromHeader = "ssfs";
+        List<UserSwipeStatus> userSwipeStatusList= new ArrayList<>();
+
+        // activity that contains the matched users
+        Activity activityFromRepo = new Activity();
+        activityFromRepo.setId(1L);
+        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.FALSE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
+
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        activityFromRepo.setUserSwipeStatusList(userSwipeStatusList);
 
         // saves a list that contains only one object
-        List<User> allUsers = Collections.singletonList(userFromRepo);
+        List<Activity> activityListWithMatchedUsers = Collections.singletonList(activityFromRepo);
 
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidToken(tokenFromHeader);
+        given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no matches")).when(activityService).getActivitiesWithMatchedUsers();
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/users/profiles")
+        MockHttpServletRequestBuilder getRequest = get("/users/matches")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", tokenFromHeader);
 
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
-                .andExpect(status().isUnauthorized());
+                .andExpect(status().isNotFound());
     }
 
     @Test

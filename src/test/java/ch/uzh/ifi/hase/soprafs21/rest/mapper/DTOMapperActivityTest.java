@@ -33,10 +33,9 @@ class DTOMapperActivityTest {
         // do the setting twice to test constructor and setters
         List<UserSwipeStatus> userSwipeStatusList= new ArrayList<>();
         User user = new User();
-        /** TODO: Adapt Test to insert UserSwipeStatus.INITIAL instead of null */
-        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user, null);
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user, SwipeStatus.INITIAL);
         userSwipeStatus.setUser(user);
-        userSwipeStatus.setSwipeStatus(null);
+        userSwipeStatus.setSwipeStatus(SwipeStatus.INITIAL);
         userSwipeStatusList.add(userSwipeStatus);
         activity.setUserSwipeStatusList(userSwipeStatusList);
 

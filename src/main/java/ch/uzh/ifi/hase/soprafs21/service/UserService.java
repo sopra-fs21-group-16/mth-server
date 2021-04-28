@@ -51,6 +51,11 @@ public class UserService {
         return userByToken;
     }
 
+    public long getIdByToken(String token){
+        User userByToken = this.userRepository.findByToken(token);
+        return userByToken.getId();
+    }
+
     public User createUser(User newUser) {
 
         checkIfUserExistsByEmail(newUser);
@@ -247,7 +252,7 @@ public class UserService {
             }
         }
 
-        // throw exception if token is not consistent to any user in repo --> meaning that someone external tries to leak data
+        // throw exception if token is not consistent to any user in repo
         if(!validStatus){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
         }

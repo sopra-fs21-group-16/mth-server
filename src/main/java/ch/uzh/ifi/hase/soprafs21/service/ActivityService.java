@@ -93,4 +93,9 @@ public class ActivityService {
 
         return generatedActivities;
     }
+
+    
+    public List<Activity> getActivitiesWithMatchedUsers(){
+        return null;
+    }
 }

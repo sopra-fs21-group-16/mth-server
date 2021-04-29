@@ -62,6 +62,7 @@ public class User implements Serializable {
     private LocalDate dateOfBirth;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     @Column

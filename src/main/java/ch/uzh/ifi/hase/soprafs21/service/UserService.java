@@ -202,7 +202,7 @@ public class UserService {
             if(userFromRepo.getUserInterests() == null){
                 userFromRepo.setUserInterests(userInput.getUserInterests());
             }
-            // uf user has already a userInterests object, update the userInterests object
+            // if user has already a userInterests object, update the userInterests object
             else {
                 userFromRepo.getUserInterests().updateUserInterests(userInput.getUserInterests());
             }

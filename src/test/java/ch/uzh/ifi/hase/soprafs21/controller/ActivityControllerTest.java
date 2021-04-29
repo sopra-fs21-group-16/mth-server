@@ -43,7 +43,13 @@ public class ActivityControllerTest {
     @MockBean
     private UserService userService;
 
-  
+    @Test
+    public void test_getActivityCategories() throws Exception {
+        MockHttpServletRequestBuilder getRequest = get("/activitycategories/");
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$.*", hasSize(ActivityCategory.values().length))); // check that amount of json entries corresponds to enum entries
+    }
+
     @Test
     public void test_getActivities() throws Exception {
         // given

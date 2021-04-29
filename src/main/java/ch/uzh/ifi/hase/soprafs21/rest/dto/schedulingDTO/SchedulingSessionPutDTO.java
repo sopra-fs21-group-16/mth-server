@@ -111,5 +111,4 @@ public class SchedulingSessionPutDTO {
     public void setReceiverDate(LocalDateTime receiverDate) {
         this.receiverDate = receiverDate;
     }
-
 }

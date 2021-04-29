@@ -104,7 +104,6 @@ public class SchedulesController {
         //userService.checkIfValidSession(sessionId);
 
 
-
         //Update User information of A and B (?)
     }
 

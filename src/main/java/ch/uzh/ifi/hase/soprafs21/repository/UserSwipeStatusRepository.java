@@ -10,5 +10,4 @@ import java.util.List;
 @Repository("userSwipeStatusRepository")
 public interface UserSwipeStatusRepository extends JpaRepository<UserSwipeStatus, Long> {
     UserSwipeStatus findById(long id);
-    List<UserSwipeStatus> findByUser(User user);
 }

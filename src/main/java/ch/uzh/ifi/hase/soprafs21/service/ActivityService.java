@@ -34,17 +34,13 @@ public class ActivityService {
 
     private final UserService userService;
 
-    private final UserSwipeStatusRepository userSwipeStatusRepository;
-
     @Autowired
     public ActivityService(@Qualifier("activityRepository") ActivityRepository activityRepository,
                            @Qualifier("activityPresetRepository") ActivityPresetRepository activityPresetRepository,
-                           @Qualifier("userService") UserService userService,
-                           @Qualifier("userSwipeStatusRepository") UserSwipeStatusRepository userSwipeStatusRepository) {
+                           @Qualifier("userService") UserService userService) {
         this.activityRepository = activityRepository;
         this.activityPresetRepository = activityPresetRepository;
         this.userService = userService;
-        this.userSwipeStatusRepository = userSwipeStatusRepository;
     }
   
   
@@ -101,22 +97,17 @@ public class ActivityService {
 
 
     public List<Activity> getActivitiesWithMatchedUsers(User user){
-        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService, userSwipeStatusRepository);
+        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService);
 
 ;        //List<Activity> allActivitiesOfUser = activityService.getAllActivitiesOfUser(user);
 
         return null;
     }
 
-    public List<UserSwipeStatus> getAllUserSwipeStatusConnectedToGivenUser(User user){
-        long userId = user.getId();
-         return userSwipeStatusRepository.findByUser(user);
-    }
+    public List<Activity> getAllActivitiesOfUser(User user){
 
-    public List<UserSwipeStatus> getAllActivitiesOfUser(User user){
+        List<Activity> allActivitiesOfUser = activityRepository.findByUserSwipeStatusListUser(user);
 
-        //List<UserSwipeStatus> UserSwipeStatusConnectedToGivenUser = userSwipeStatusRepository.findByUser(user);
-
-        return null;//UserSwipeStatusConnectedToGivenUser;
+        return allActivitiesOfUser;
     }
 }

@@ -129,14 +129,15 @@ public class UserController {
     @GetMapping("/users/matches")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<ActivityGetDTO> getActivitiesWIthMatchedUsers(@RequestHeader("Auth-Token")String token) {
+    public List<ActivityGetDTO> getActivitiesWithMatchedUsers(@RequestHeader("Auth-Token")String token) {
         // checks if the visitor has a valid token
         userService.checkIfValidToken(token);
 
         // get user profile
         User userFromRepo = userService.getUserByToken(token);
 
-        List<Activity> activityList = activityService.getAllActivitiesOfUser(userFromRepo);
+
+        List<Activity> activityList = activityService.getAllActivitiesWithMatchedUsers(userFromRepo);
 
         List<ActivityGetDTO> activityGetDTOs = new ArrayList<>();
         for (Activity activity : activityList) {

@@ -393,6 +393,8 @@ public class UserControllerTest {
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
+        given(userService.getUserByToken(tokenFromHeader)).willReturn(userFromRepo);
+
         given(activityService.getAllActivitiesWithMatchedUsers(userFromRepo)).willReturn(activityListWithMatchedUsers);
 
         // when
@@ -402,8 +404,9 @@ public class UserControllerTest {
 
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].activityPreset", is(activityFromRepo.getActivityPreset())))
-                .andExpect(jsonPath("$[0].userSwipeStatusList", is(activityFromRepo.getUserSwipeStatusList())));
+                .andExpect(jsonPath("$[0].activityPreset.activityName", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityName())))
+                .andExpect(jsonPath("$[0].activityPreset.activityCategory", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityCategory().toString())))
+                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.email", is(activityListWithMatchedUsers.get(0).getUserSwipeStatusList().get(0).getUser().getEmail())));
     }
 
     @Test
@@ -423,8 +426,8 @@ public class UserControllerTest {
         Activity activityFromRepo = new Activity();
         activityFromRepo.setId(1L);
         activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
-        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.FALSE);
-        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.FALSE); // no match
 
         userSwipeStatusList.add(userSwipeStatus1);
         userSwipeStatusList.add(userSwipeStatus2);
@@ -435,7 +438,9 @@ public class UserControllerTest {
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no matches")).when(activityService).getAllActivitiesWithMatchedUsers(userFromRepo);
+        given(userService.getUserByToken(tokenFromHeader)).willReturn(userFromRepo);
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "No matches found")).when(activityService).getAllActivitiesWithMatchedUsers(userFromRepo);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/matches")
@@ -446,11 +451,9 @@ public class UserControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-
     @Test
     void verifyUserProfile() {
     }
-
 
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed

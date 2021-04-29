@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
@@ -13,7 +12,6 @@ import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;

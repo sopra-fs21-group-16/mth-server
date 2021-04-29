@@ -7,7 +7,6 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;

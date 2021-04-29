@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -64,6 +65,10 @@ public class User implements Serializable {
     @Column
     @Enumerated(EnumType.STRING)
     private Gender gender;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private GenderPreference genderPreference;
 
     @Column
     private String profilePicture;
@@ -152,4 +157,8 @@ public class User implements Serializable {
     public UserInterests getUserInterests() {return userInterests;}
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
+
+    public GenderPreference getGenderPreference() { return genderPreference; }
+
+    public void setGenderPreference(GenderPreference genderPreference) { this.genderPreference = genderPreference; }
 }

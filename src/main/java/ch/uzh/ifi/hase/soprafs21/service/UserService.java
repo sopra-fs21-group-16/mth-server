@@ -38,6 +38,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Returns all users from UserRepository
+     * @return
+     */
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }

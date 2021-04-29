@@ -7,7 +7,9 @@ import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
+import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,11 @@ public class UserController {
 
     private final UserService userService;
 
-    UserController(UserService userService) {
+    private final ActivityService activityService;
+
+    UserController(UserService userService, ActivityService activityService) {
         this.userService = userService;
+        this.activityService = activityService;
     }
 
     @PostMapping("/users")
@@ -128,20 +133,17 @@ public class UserController {
         // checks if the visitor has a valid token
         userService.checkIfValidToken(token);
 
-        // fetch all users in the internal representation
-        //List<Activity> matches = userService.getUsers();
-        List<UserGetDTOProfile> userGetDTOProfiles = new ArrayList<>();
+        // get user profile
+        User userFromRepo = userService.getUserByToken(token);
 
-        // convert each user to the API representation
-        /**
-         *
+        List<Activity> activityList = activityService.getAllActivitiesOfUser(userFromRepo);
 
-        for (User user : users) {
-            userGetDTOProfiles.add(DTOMapperUser.INSTANCE.convertEntityToUserGetDTOProfile(user));
+        List<ActivityGetDTO> activityGetDTOs = new ArrayList<>();
+        for (Activity activity : activityList) {
+            activityGetDTOs.add(DTOMapperActivity.INSTANCE.convertEntityToActivityGetDTO(activity));
         }
-        return userGetDTOProfiles;
-         */
-        return null;
+
+        return activityGetDTOs;
     }
 
     @GetMapping("/users/profile/verify")

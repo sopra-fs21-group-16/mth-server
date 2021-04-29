@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
@@ -179,27 +180,24 @@ public class ActivityServiceIntegrationTest {
 
         Activity testActivity = new Activity();
         testActivity.setCreationDate(new Date());
-        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
-        UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
-        testActivity.setId(6L);
-        ActivityPreset activityPreset = activityPresetRepository.findById(5L);
-        testActivity.setActivityPreset(activityPreset);
-        userSwipeStatus.setId(1L);
-        userSwipeStatus.setUser(testUser);
-        userSwipeStatus.setSwipeStatus(SwipeStatus.TRUE);
 
+        // the expected data
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus);
         userSwipeStatusRepository.save(userSwipeStatus);
         userSwipeStatusRepository.flush();
-
-        userSwipeStatusList.add(userSwipeStatus);
+        testActivity.setId(50L);
         testActivity.setUserSwipeStatusList(userSwipeStatusList);
 
-        Activity savedActivity = activityRepository.save(testActivity);
+        testActivity = activityRepository.save(testActivity);
         activityRepository.flush();
 
         List<Activity> tests = new ArrayList<>();
-        tests.add(savedActivity);
-        assertEquals(savedActivity,testActivity);
+        tests.add(testActivity);
+
+        // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
+        assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
 
         // delete the specific activity and userSwipeStatus
         activityRepository.delete(testActivity);

@@ -95,19 +95,15 @@ public class ActivityService {
         return generatedActivities;
     }
 
-
-    public List<Activity> getActivitiesWithMatchedUsers(User user){
-        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService);
-
-;        //List<Activity> allActivitiesOfUser = activityService.getAllActivitiesOfUser(user);
-
-        return null;
+    public List<Activity> getAllActivitiesOfUser(User user){
+        return activityRepository.findByUserSwipeStatusList_User(user);
     }
 
-    public List<Activity> getAllActivitiesOfUser(User user){
+    public List<Activity> getAllActivitiesWithMatchedUsers(User user){
+        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService);
 
-        List<Activity> allActivitiesOfUser = activityRepository.findByUserSwipeStatusListUser(user);
+        List<Activity> allActivitiesOfUser = activityService.getAllActivitiesWithMatchedUsers(user);
 
-        return allActivitiesOfUser;
+        return null;
     }
 }

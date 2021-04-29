@@ -11,5 +11,5 @@ import java.util.List;
 @Repository("activityRepository")
 public interface ActivityRepository extends JpaRepository<Activity, Long>{
     Activity findById(long id);
-    List<Activity> findByUserSwipeStatusListUser(User user);
+    List<Activity> findByUserSwipeStatusList_User(User user);
 }

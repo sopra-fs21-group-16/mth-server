@@ -393,7 +393,7 @@ public class UserControllerTest {
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        given(activityService.getActivitiesWithMatchedUsers(userFromRepo)).willReturn(activityListWithMatchedUsers);
+        given(activityService.getAllActivitiesWithMatchedUsers(userFromRepo)).willReturn(activityListWithMatchedUsers);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/matches")
@@ -435,7 +435,7 @@ public class UserControllerTest {
 
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no matches")).when(activityService).getActivitiesWithMatchedUsers(userFromRepo);
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no matches")).when(activityService).getAllActivitiesWithMatchedUsers(userFromRepo);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/matches")
@@ -445,6 +445,7 @@ public class UserControllerTest {
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
                 .andExpect(status().isNotFound());
     }
+
 
     @Test
     void verifyUserProfile() {

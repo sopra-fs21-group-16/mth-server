@@ -14,6 +14,7 @@ VALUES (1, 'Play Football', 'SPORTS', '???', '???'),
 
 INSERT INTO USER (ID, EMAIL, PASSWORD, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
                   USER_INTERESTS_ID)
+
 VALUES (101, 'database.user@uzh.ch', 'databasePassword', 'databaseBio', '+41791231111', 'databaseToken', 'databaseTester', NULL, 'MALE', 'TestLink', '2021-04-25', NULL),
        (102, 'database.user2@uzh.ch', 'databasePassword2', 'databaseBio2', '+41791232222', 'databaseToken2','databaseTester2', NULL, 'FEMALE', 'TestLink2', '2021-04-26', NULL);
 

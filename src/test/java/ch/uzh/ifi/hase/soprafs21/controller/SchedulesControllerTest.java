@@ -22,7 +22,10 @@ class SchedulesControllerTest {
     @MockBean
     private UserService userService;
 
-   
+   @Test
+    void deleteScheduledSession_success() throws Exception{
+       
+   }
 
 
 }

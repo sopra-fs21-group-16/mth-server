@@ -47,4 +47,20 @@ public class SchedulingService {
         this.activityRepository = activityRepository;
         this.userRepository = userRepository;
     }
+
+    public void checkIfScheduledSessionExistsWithGivenId(long sessionId){
+        try{
+            schedulingSessionRepository.findById(sessionId);
+        }
+        catch(ResponseStatusException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with " + sessionId + " was not found"));
+        }
+    }
+
+    public void deleteScheduledSession(long sessionId){
+        SchedulingSession schedulingSessionToDelete = schedulingSessionRepository.findById(sessionId);
+
+        schedulingSessionRepository.delete(schedulingSessionToDelete);
+        schedulingSessionRepository.flush();
+    }
 }

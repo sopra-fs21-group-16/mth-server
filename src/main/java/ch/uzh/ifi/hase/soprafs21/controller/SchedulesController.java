@@ -96,10 +96,13 @@ public class SchedulesController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void deleteScheduledActivity(@PathVariable Long sessionId, @RequestHeader("Auth-Token")String token) {
-        /*
-        only if the sent token is in the rep, the DELETE request will be successful
-        userService.authorizationCheck(token);
-         */
+
+        // only if the sent token is in the rep, the DELETE request will be successful
+        userService.checkIfValidToken(token);
+
+        // check if session is valid
+        //userService.checkIfValidSession(sessionId);
+
 
 
         //Update User information of A and B (?)

@@ -54,7 +54,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_validInputs_success(){
         //given
-        User testUser = userRepository.findById(1L);
+        User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(new Date());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();

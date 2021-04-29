@@ -53,7 +53,7 @@ public class SchedulingService {
             schedulingSessionRepository.findById(sessionId);
         }
         catch(ResponseStatusException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with " + sessionId + " was not found"));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with session id " + sessionId + " was not found"));
         }
     }
 

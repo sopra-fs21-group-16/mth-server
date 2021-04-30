@@ -97,7 +97,7 @@ public class UserService {
                 return userByEmail;
             }
             else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password is wrong.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or Password is wrong.");
             }
 
         }

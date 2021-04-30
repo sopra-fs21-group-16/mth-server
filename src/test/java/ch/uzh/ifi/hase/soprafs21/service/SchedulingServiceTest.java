@@ -398,16 +398,10 @@ class SchedulingServiceTest {
         SchedulingSession newSchedulingSession = new SchedulingSession();
         newSchedulingSession.setActivityList(activityList);
         newSchedulingSession.setChosenActivity(testActivity);
-        newSchedulingSession.setProposerActivity(testActivity);
-        newSchedulingSession.setReceiverActivity(testActivity);
         newSchedulingSession.setLocationList(locationList);
         newSchedulingSession.setChosenLocation("TestLocation");
-        newSchedulingSession.setProposerLocation("TestLocation");
-        newSchedulingSession.setReceiverLocation("TestLocation");
         newSchedulingSession.setDateList(dateList);
         newSchedulingSession.setChosenDate(date);
-        newSchedulingSession.setProposerDate(date);
-        newSchedulingSession.setReceiverDate(date);
 
         //when
         Mockito.when(schedulingSessionRepository.findById(1L)).thenReturn(schedulingSession);

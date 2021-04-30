@@ -9,16 +9,10 @@ public class SchedulingSessionPutDTO {
 
     private List<Activity> activityList;
     private Activity chosenActivity;
-    private Activity proposerActivity;
-    private Activity receiverActivity;
     private List<String> locationList;
     private String chosenLocation;
-    private String proposerLocation;
-    private String receiverLocation;
     private List<LocalDateTime> dateList;
     private LocalDateTime chosenDate;
-    private LocalDateTime proposerDate;
-    private LocalDateTime receiverDate;
 
     public List<Activity> getActivityList() {
         return activityList;
@@ -62,54 +56,6 @@ public class SchedulingSessionPutDTO {
 
     public void setChosenDate(LocalDateTime chosenDate) {
         this.chosenDate = chosenDate;
-    }
-
-    public Activity getProposerActivity() {
-        return proposerActivity;
-    }
-
-    public void setProposerActivity(Activity proposerActivity) {
-        this.proposerActivity = proposerActivity;
-    }
-
-    public Activity getReceiverActivity() {
-        return receiverActivity;
-    }
-
-    public void setReceiverActivity(Activity receiverActivity) {
-        this.receiverActivity = receiverActivity;
-    }
-
-    public String getProposerLocation() {
-        return proposerLocation;
-    }
-
-    public void setProposerLocation(String proposerLocation) {
-        this.proposerLocation = proposerLocation;
-    }
-
-    public String getReceiverLocation() {
-        return receiverLocation;
-    }
-
-    public void setReceiverLocation(String receiverLocation) {
-        this.receiverLocation = receiverLocation;
-    }
-
-    public LocalDateTime getProposerDate() {
-        return proposerDate;
-    }
-
-    public void setProposerDate(LocalDateTime proposerDate) {
-        this.proposerDate = proposerDate;
-    }
-
-    public LocalDateTime getReceiverDate() {
-        return receiverDate;
-    }
-
-    public void setReceiverDate(LocalDateTime receiverDate) {
-        this.receiverDate = receiverDate;
     }
 
 }

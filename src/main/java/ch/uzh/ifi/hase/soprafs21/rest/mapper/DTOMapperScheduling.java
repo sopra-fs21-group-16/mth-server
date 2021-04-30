@@ -27,31 +27,19 @@ public interface DTOMapperScheduling {
     ScheduledActivity convertScheduledActivityPostDTOToEntity(ScheduledActivityPostDTO scheduledActivityPostDTO);
 
     @Mapping(source = "chosenActivity", target = "chosenActivity")
-    @Mapping(source = "proposerActivity", target = "proposerActivity")
-    @Mapping(source = "receiverActivity", target = "receiverActivity")
     @Mapping(source = "activityList", target = "activityList")
     @Mapping(source = "chosenLocation", target = "chosenLocation")
-    @Mapping(source = "proposerLocation", target = "proposerLocation")
-    @Mapping(source = "receiverLocation", target = "receiverLocation")
     @Mapping(source = "locationList", target = "locationList")
     @Mapping(source = "chosenDate", target = "chosenDate")
-    @Mapping(source = "proposerDate", target = "proposerDate")
-    @Mapping(source = "receiverDate", target = "receiverDate")
     @Mapping(source = "dateList", target = "dateList")
     SchedulingSession convertSchedulingSessionPutDTOToEntity(SchedulingSessionPutDTO schedulingSessionPutDTO);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "chosenActivity", target = "chosenActivity")
-    @Mapping(source = "proposerActivity", target = "proposerActivity")
-    @Mapping(source = "receiverActivity", target = "receiverActivity")
     @Mapping(source = "activityList", target = "activityList")
     @Mapping(source = "chosenLocation", target = "chosenLocation")
-    @Mapping(source = "proposerLocation", target = "proposerLocation")
-    @Mapping(source = "receiverLocation", target = "receiverLocation")
     @Mapping(source = "locationList", target = "locationList")
     @Mapping(source = "chosenDate", target = "chosenDate")
-    @Mapping(source = "proposerDate", target = "proposerDate")
-    @Mapping(source = "receiverDate", target = "receiverDate")
     @Mapping(source = "dateList", target = "dateList")
     SchedulingSessionGetDTO convertEntityToSchedulingSessionGetDTO(SchedulingSession schedulingSession);
 }

@@ -135,14 +135,6 @@ public class SchedulingService {
             schedulingSessionById.setChosenActivity(schedulingSession.getChosenActivity());
             noNewData = false;
         }
-        if (schedulingSession.getProposerActivity() != null) {
-            schedulingSessionById.setProposerActivity(schedulingSession.getProposerActivity());
-            noNewData = false;
-        }
-        if (schedulingSession.getReceiverActivity() != null) {
-            schedulingSessionById.setReceiverActivity(schedulingSession.getReceiverActivity());
-            noNewData = false;
-        }
         if (schedulingSession.getLocationList() != null) {
             schedulingSessionById.setLocationList(schedulingSession.getLocationList());
             noNewData = false;
@@ -151,28 +143,12 @@ public class SchedulingService {
             schedulingSessionById.setChosenLocation(schedulingSession.getChosenLocation());
             noNewData = false;
         }
-        if (schedulingSession.getProposerLocation() != null) {
-            schedulingSessionById.setProposerLocation(schedulingSession.getProposerLocation());
-            noNewData = false;
-        }
-        if (schedulingSession.getReceiverLocation() != null) {
-            schedulingSessionById.setReceiverLocation(schedulingSession.getReceiverLocation());
-            noNewData = false;
-        }
         if (schedulingSession.getDateList() != null) {
             schedulingSessionById.setDateList(schedulingSession.getDateList());
             noNewData = false;
         }
         if (schedulingSession.getChosenDate() != null) {
             schedulingSessionById.setChosenDate(schedulingSession.getChosenDate());
-            noNewData = false;
-        }
-        if (schedulingSession.getProposerDate() != null) {
-            schedulingSessionById.setProposerDate(schedulingSession.getProposerDate());
-            noNewData = false;
-        }
-        if (schedulingSession.getReceiverDate() != null) {
-            schedulingSessionById.setReceiverDate(schedulingSession.getReceiverDate());
             noNewData = false;
         }
         if (noNewData) {

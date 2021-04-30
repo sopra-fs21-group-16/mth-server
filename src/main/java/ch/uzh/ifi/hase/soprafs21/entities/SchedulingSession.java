@@ -21,12 +21,6 @@ public class SchedulingSession implements Serializable {
     @OneToOne
     private Activity chosenActivity;
 
-    @OneToOne
-    private Activity proposerActivity;
-
-    @OneToOne
-    private Activity receiverActivity;
-
     @ElementCollection
     @CollectionTable(name = "SCHEDULING_SESSION_LOCATION_LIST", joinColumns = @JoinColumn(name = "locationId"))
     @Column
@@ -35,12 +29,6 @@ public class SchedulingSession implements Serializable {
     @Column
     private String chosenLocation;
 
-    @Column
-    private String proposerLocation;
-
-    @Column
-    private String receiverLocation;
-
     @ElementCollection
     @CollectionTable(name = "SCHEDULING_SESSION_DATE_LIST", joinColumns = @JoinColumn(name = "dateId"))
     @Column
@@ -48,12 +36,6 @@ public class SchedulingSession implements Serializable {
 
     @Column
     private LocalDateTime chosenDate;
-
-    @Column
-    private LocalDateTime proposerDate;
-
-    @Column
-    private LocalDateTime receiverDate;
 
     public Long getId() {
         return id;
@@ -97,53 +79,6 @@ public class SchedulingSession implements Serializable {
         this.chosenDate = chosenDate;
     }
 
-    public Activity getProposerActivity() {
-        return proposerActivity;
-    }
-
-    public void setProposerActivity(Activity proposerActivity) {
-        this.proposerActivity = proposerActivity;
-    }
-
-    public Activity getReceiverActivity() {
-        return receiverActivity;
-    }
-
-    public void setReceiverActivity(Activity receiverActivity) {
-        this.receiverActivity = receiverActivity;
-    }
-
-    public String getProposerLocation() {
-        return proposerLocation;
-    }
-
-    public void setProposerLocation(String proposerLocation) {
-        this.proposerLocation = proposerLocation;
-    }
-
-    public String getReceiverLocation() {
-        return receiverLocation;
-    }
-
-    public void setReceiverLocation(String receiverLocation) {
-        this.receiverLocation = receiverLocation;
-    }
-
-    public LocalDateTime getProposerDate() {
-        return proposerDate;
-    }
-
-    public void setProposerDate(LocalDateTime proposerDate) {
-        this.proposerDate = proposerDate;
-    }
-
-    public LocalDateTime getReceiverDate() {
-        return receiverDate;
-    }
-
-    public void setReceiverDate(LocalDateTime receiverDate) {
-        this.receiverDate = receiverDate;
-    }
 }
 
 

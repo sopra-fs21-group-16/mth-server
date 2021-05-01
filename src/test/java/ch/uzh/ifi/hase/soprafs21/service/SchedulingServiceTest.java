@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.*;
-import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ScheduledActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.SchedulingSessionRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -30,10 +29,10 @@ class SchedulingServiceTest {
     private SchedulingSessionRepository schedulingSessionRepository;
 
     @Mock
-    private ActivityRepository activityRepository;
+    private UserRepository userRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private ActivityService activityService;
 
     @InjectMocks
     private SchedulingService schedulingService;
@@ -69,10 +68,11 @@ class SchedulingServiceTest {
         SchedulingSession schedulingSession = new SchedulingSession();
         schedulingSession.setActivityList(activityList);
 
-
         //when
         Mockito.when(userRepository.findByToken("Token")).thenReturn(testUser1);
-        Mockito.when(activityRepository.findAll()).thenReturn(activityList);
+        Mockito.when(userRepository.findById(1L)).thenReturn(testUser1);
+        Mockito.when(userRepository.findById(2L)).thenReturn(testUser2);
+        Mockito.when(activityService.getAllActivitiesWithMatchedUsers(Mockito.any())).thenReturn(activityList);
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
 
         //then
@@ -109,10 +109,13 @@ class SchedulingServiceTest {
         SchedulingSession schedulingSession = new SchedulingSession();
         schedulingSession.setActivityList(activityList);
 
-
         //when
         Mockito.when(userRepository.findByToken("Token")).thenReturn(testUser1);
-        Mockito.when(activityRepository.findAll()).thenReturn(activityList);
+        Mockito.when(userRepository.findById(1L)).thenReturn(testUser1);
+        Mockito.when(userRepository.findById(2L)).thenReturn(null);
+        Mockito.when(userRepository.findById(3L)).thenReturn(testUser2);
+        Mockito.when(activityService.getAllActivitiesWithMatchedUsers(testUser1)).thenReturn(activityList);
+        Mockito.when(activityService.getAllActivitiesWithMatchedUsers(testUser2)).thenReturn(activityList);
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
 
         //then
@@ -148,10 +151,11 @@ class SchedulingServiceTest {
         SchedulingSession schedulingSession = new SchedulingSession();
         schedulingSession.setActivityList(activityList);
 
-
         //when
         Mockito.when(userRepository.findByToken("Token3")).thenReturn(wrongUser);
-        Mockito.when(activityRepository.findAll()).thenReturn(activityList);
+        Mockito.when(userRepository.findById(1L)).thenReturn(testUser1);
+        Mockito.when(userRepository.findById(2L)).thenReturn(testUser2);
+        Mockito.when(activityService.getAllActivitiesWithMatchedUsers(Mockito.any())).thenReturn(activityList);
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
 
         //then

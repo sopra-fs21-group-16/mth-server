@@ -1,8 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.*;
-import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ScheduledActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.SchedulingSessionRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -16,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 /**
  * Scheduling Service.
@@ -33,46 +31,34 @@ public class SchedulingService {
 
     private final ScheduledActivityRepository scheduledActivityRepository;
 
-    private final ActivityRepository activityRepository;
+    private final ActivityService activityService;
 
     private final UserRepository userRepository;
 
     @Autowired
     public SchedulingService(@Qualifier("schedulingSessionRepository") SchedulingSessionRepository schedulingSessionRepository,
                              @Qualifier("scheduledActivityRepository") ScheduledActivityRepository scheduledActivityRepository,
-                             @Qualifier("activityRepository") ActivityRepository activityRepository,
+                             @Qualifier("activityService") ActivityService activityService,
                              @Qualifier("userRepository") UserRepository userRepository) {
         this.schedulingSessionRepository = schedulingSessionRepository;
         this.scheduledActivityRepository = scheduledActivityRepository;
-        this.activityRepository = activityRepository;
+        this.activityService = activityService;
         this.userRepository = userRepository;
     }
 
-    public SchedulingSession createSchedulingSession(Long userId1, Long userId2, String token) {
+    public SchedulingSession createSchedulingSession(long userId1, long userId2, String token) {
         SchedulingSession schedulingSession = new SchedulingSession();
         User user = userRepository.findByToken(token);
+        User user1 = userRepository.findById(userId1);
+        User user2 = userRepository.findById(userId2);
         if (!user.getId().equals(userId1) && !user.getId().equals(userId2)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User can not start scheduling Session of other users.");
         }
 
-        List<Activity> activityList = activityRepository.findAll();
-        List<Activity> sessionActivityList = new ArrayList<Activity>();
-        for (Activity activity : activityList) {
-            boolean userId1Found = false;
-            boolean userId2Found = false;
-            for (UserSwipeStatus userSwipeStatus : activity.getUserSwipeStatusList()) {
-                if (userSwipeStatus.getUser().getId().equals(userId1) && userSwipeStatus.getSwipeStatus().equals(SwipeStatus.TRUE)) {
-                    userId1Found = true;
-                }
-                if (userSwipeStatus.getUser().getId().equals(userId2) && userSwipeStatus.getSwipeStatus().equals(SwipeStatus.TRUE)) {
-                    userId2Found = true;
-                }
-            }
-            if (userId1Found && userId2Found) {
-                sessionActivityList.add(activity);
-            }
-        }
-        if (sessionActivityList.isEmpty()) {
+        List<Activity> User1ActivityList = activityService.getAllActivitiesWithMatchedUsers(user1);
+        List<Activity> User2ActivityList = activityService.getAllActivitiesWithMatchedUsers(user2);
+        List<Activity> sessionActivityList= User1ActivityList.stream().distinct().filter(User2ActivityList::contains).collect(Collectors.toList());
+        if (User1ActivityList.isEmpty() || User2ActivityList.isEmpty() || sessionActivityList.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session not possible for these two users. No common activities.");
         }
         schedulingSession.setActivityList(sessionActivityList);

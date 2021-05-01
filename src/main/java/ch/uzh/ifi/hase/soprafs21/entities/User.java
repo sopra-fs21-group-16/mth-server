@@ -67,10 +67,6 @@ public class User implements Serializable {
     private Gender gender;
 
     @Column
-    @Enumerated(EnumType.STRING)
-    private GenderPreference genderPreference;
-
-    @Column
     private String profilePicture;
 
     @Column(nullable = false)
@@ -158,7 +154,4 @@ public class User implements Serializable {
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
 
-    public GenderPreference getGenderPreference() { return genderPreference; }
-
-    public void setGenderPreference(GenderPreference genderPreference) { this.genderPreference = genderPreference; }
 }

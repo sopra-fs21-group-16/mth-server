@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -56,7 +57,7 @@ public class ActivityServiceIntegrationTest {
         //given
         User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(5L);
@@ -88,7 +89,7 @@ public class ActivityServiceIntegrationTest {
         //given
         User testUser = userRepository.findById(1L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(28L);
@@ -118,7 +119,7 @@ public class ActivityServiceIntegrationTest {
         User testUser = userRepository.findById(1L);
         User wrongUser = userRepository.findById(2L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(5L);
@@ -147,7 +148,7 @@ public class ActivityServiceIntegrationTest {
         //given
         User testUser = userRepository.findById(1L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(5L);

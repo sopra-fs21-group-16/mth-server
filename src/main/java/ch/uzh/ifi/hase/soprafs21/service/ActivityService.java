@@ -3,10 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
-import ch.uzh.ifi.hase.soprafs21.entities.Activity;
-import ch.uzh.ifi.hase.soprafs21.entities.User;
-import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
-import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.entities.*;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import org.slf4j.Logger;
@@ -83,28 +80,35 @@ public class ActivityService {
     public List<Activity> generateActivities(long userId) {
         User user = userService.getUserByID(userId);
         List<User> potentialUsers = sievePotentialUsers(user);
+        List<Activity> activityList = new ArrayList<>();
 
         for(User potentialUser : potentialUsers) {
+            List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+            userSwipeStatusList.add(new UserSwipeStatus(user, SwipeStatus.INITIAL));
+            userSwipeStatusList.add(new UserSwipeStatus(potentialUser, SwipeStatus.INITIAL));
+
             Set<ActivityCategory> overlappingInterests = user.getUserInterests().getActivityInterests();
             overlappingInterests.retainAll(potentialUser.getUserInterests().getActivityInterests());
 
-
-        }
- /*       UserSwipeStatus userSwipeStatus = new UserSwipeStatus(userService.getUserByID(userId), SwipeStatus.INITIAL);
-        List<UserSwipeStatus> userSwipeStatusList = Collections.singletonList(userSwipeStatus); // ToDo: This list should contain two users
-
-        List<Activity> generatedActivities = new ArrayList<Activity>();
-        Random rand = new Random();
-
-        *//* Generate 10 random activities *//*
-        for(int i = 0; i < 10; i++) {
-            // Get random index within activityPresetRepository size
-            long n = rand.nextInt((int)activityPresetRepository.count())+1;
-            generatedActivities.add(new Activity(activityPresetRepository.findById(n),userSwipeStatusList));
+            for(ActivityCategory overlappingInterest : overlappingInterests) {
+                List<ActivityPreset> activityPresets = activityPresetRepository.findByActivityCategory(overlappingInterest);
+                for(ActivityPreset activityPreset : activityPresets) {
+                    activityList.add(new Activity(activityPreset, userSwipeStatusList));
+                }
+            }
         }
 
-        return generatedActivities;*/
-        return null;
+        HashSet<Activity> persistentActivities = new HashSet<Activity>(getAllUnmatchedActivities(user));
+        activityList.removeAll(persistentActivities);
+
+        activityRepository.saveAll(activityList);
+        //if(activityList.size() > 0) {
+        //    log.info("generateActivities: Save activity {} in ActivityRepository", activityList.get(0).getActivityPreset().getActivityName());
+            //activityRepository.save(activityList.get(0));
+            activityRepository.flush();
+        //}
+
+        return new ArrayList<>(getAllUnmatchedActivities(user));
     }
 
     public List<Activity> getAllActivitiesOfUser(User user){
@@ -112,10 +116,8 @@ public class ActivityService {
     }
 
     public List<Activity> getAllActivitiesWithMatchedUsers(User user){
-        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService);
         List<Activity> allActivitiesWithMatchedUsers;
-
-        List<Activity> allActivitiesOfUser = activityService.getAllActivitiesOfUser(user);
+        List<Activity> allActivitiesOfUser = getAllActivitiesOfUser(user);
 
         // for every activity, if in the UserSwipeStatusList both users have swiped TRUE, then we take the activity
         allActivitiesWithMatchedUsers = allActivitiesOfUser.stream().filter(activity -> activity.getUserSwipeStatusList().get(0).getSwipeStatus() == SwipeStatus.TRUE && activity.getUserSwipeStatusList().get(1).getSwipeStatus() == SwipeStatus.TRUE).collect(Collectors.toList());
@@ -124,6 +126,22 @@ public class ActivityService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No matches found");
         }
         return allActivitiesWithMatchedUsers;
+    }
+
+    public Set<Activity> getAllUnmatchedActivities(User user){
+        Set<Activity> allUnmatchedActivites = new HashSet<>();
+
+        for(Activity activity : getAllActivitiesOfUser(user)) {
+            for(UserSwipeStatus userSwipeStatus : activity.getUserSwipeStatusList()) {
+                if (userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() == SwipeStatus.INITIAL) {
+                    allUnmatchedActivites.add(activity); // current user's activity
+                } else if (!userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() != SwipeStatus.FALSE) {
+                    allUnmatchedActivites.add(activity); // potential user's activity
+                }
+            }
+        }
+
+        return allUnmatchedActivites;
     }
 
     /**
@@ -135,15 +153,21 @@ public class ActivityService {
         List<User> potentialUsers = new ArrayList<User>();
 
         for(User potentialUser : userService.getUsers()) {
+            if(potentialUser.getId().equals(user.getId())) {
+                continue;
+            }
+
             /* Gender Sieve */
-            if(!(user.getGenderPreference() == GenderPreference.EVERYONE ||
-                user.getGenderPreference().toString().equals(potentialUser.getGender().toString()))) {
+            if(!(user.getUserInterests().getGenderPreference() == GenderPreference.EVERYONE ||
+                user.getUserInterests().getGenderPreference().toString().equals(potentialUser.getGender().toString()))) {
+                log.info("sievePotentialUsers(): Gender Sieve eliminated potential user: {} vs {}", user.getUserInterests().getGenderPreference().toString(), potentialUser.getGender().toString());
                 continue;
             }
 
             /* Age Sieve */
             if(!(potentialUser.getAge() >= user.getUserInterests().getAgeRange().min
                 && potentialUser.getAge() <= user.getUserInterests().getAgeRange().max)) {
+                log.info("sievePotentialUsers(): Age Sieve eliminated potential user: {} not in range from {} to {}", potentialUser.getAge(), user.getUserInterests().getAgeRange().min, user.getUserInterests().getAgeRange().max);
                 continue; // too old or too young
             }
 
@@ -152,13 +176,14 @@ public class ActivityService {
             Set<ActivityCategory> set2 = potentialUser.getUserInterests().getActivityInterests();
             set1.retainAll(set2);
             if(set1.size() == 0) {
+                log.info("sievePotentialUsers(): Interest Sieve eliminated potential user");
                 continue; // no overlapping interests
             }
 
             potentialUsers.add(potentialUser);
 
         }
-
+        log.info("Tarek Test. Size of Potential Users: {}", potentialUsers.size());
         return potentialUsers;
     }
 

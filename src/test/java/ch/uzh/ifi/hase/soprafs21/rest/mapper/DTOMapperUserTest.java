@@ -50,7 +50,6 @@ public class DTOMapperUserTest {
         user.setEmail("firstname@lastname");
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setName("test");
-        user.setAge(20);
         LocalDate dateOfBirth = LocalDate.of(2000,2,3);
         user.setDateOfBirth(dateOfBirth);
         user.setGender(Gender.MALE);
@@ -77,7 +76,6 @@ public class DTOMapperUserTest {
         assertEquals(user.getEmail(), userGetDTO.getEmail());
         assertEquals(user.getLastSeen(), userGetDTO.getLastSeen());
         assertEquals(user.getName(),userGetDTO.getName());
-        assertEquals(user.getAge(),userGetDTO.getAge());
         assertEquals(user.getDateOfBirth(),userGetDTO.getDateOfBirth());
         assertEquals(user.getGender(),userGetDTO.getGender());
         assertEquals(user.getBio(),userGetDTO.getBio());
@@ -144,7 +142,6 @@ public class DTOMapperUserTest {
         User user = new User();
         user.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         user.setName("test");
-        user.setAge(20);
         user.setGender(Gender.MALE);
         user.setBio("asdf");
         user.setPhone("079 122 34 54");

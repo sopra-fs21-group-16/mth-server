@@ -9,8 +9,8 @@ import javax.validation.constraints.Past;
 import javax.validation.constraints.Pattern;
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * Internal User Representation
@@ -20,7 +20,7 @@ import java.time.LocalDate;
  * - unique = true -> this value must be unqiue across the database -> composes the primary key
  */
 @Entity
-@Table(name = "USER")
+@Table(name = "User")
 public class User implements Serializable {
 
     @Serial
@@ -53,8 +53,6 @@ public class User implements Serializable {
     @Column
     @NotBlank(message = "Name must not be empty")
     private String name;
-
-    private int age;
 
     /** TODO: Maybe set constraints for the date of Birth */
     @Column
@@ -122,10 +120,6 @@ public class User implements Serializable {
     public String getName(){ return name;}
 
     public void setName(String name){ this.name = name;}
-
-    public int getAge() {return age;}
-
-    public void setAge(int age) {this.age = age;}
 
     public LocalDate getDateOfBirth() {return dateOfBirth;}
 

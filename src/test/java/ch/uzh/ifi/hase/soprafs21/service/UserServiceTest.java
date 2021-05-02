@@ -233,7 +233,6 @@ public class UserServiceTest {
 
     @Test
     public void checkIfComputeAge_success(){
-        // create user that has a date of birth
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
@@ -243,5 +242,19 @@ public class UserServiceTest {
         testUser.setDateOfBirth(now);
 
         assertEquals(18,userService.computeAge(now));
+    }
+
+    @Test
+    public void checkIfGetIdByToken_success(){
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User userInRepo = userService.createUser(testUser);
+        userInRepo.setToken("123");
+
+        given(userRepository.findByToken(userInRepo.getToken())).willReturn(userInRepo);
+
+        assertEquals(testUser.getId(),userService.getIdByToken(userInRepo.getToken()));
     }
 }

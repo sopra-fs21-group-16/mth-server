@@ -232,4 +232,20 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
+
+    @Test
+    public void checkIfGetIdByToken_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        assertEquals(testUser.getId(),userService.getIdByToken(createdUserWithID.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
 }

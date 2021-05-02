@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -86,7 +87,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_WrongActivityID_throwsException(){
         //given
-        User testUser = userRepository.findById(1L);
+        User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(new Date());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
@@ -105,7 +106,7 @@ public class ActivityServiceIntegrationTest {
         activityRepository.flush();
 
         //then
-        assertThrows(ResponseStatusException.class, () -> activityService.setSwipingStatus(5L, "databaseToken", SwipeStatus.TRUE));
+        assertThrows(ResponseStatusException.class, () -> activityService.setSwipingStatus(500L, "databaseToken", SwipeStatus.TRUE));
 
         // delete the specific User, Activity and SwipeStatus
         activityRepository.delete(testActivity);
@@ -115,8 +116,8 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_WrongUserID_throwsException() {
         //given
-        User testUser = userRepository.findById(1L);
-        User wrongUser = userRepository.findById(2L);
+        User testUser = userRepository.findById(101L);
+        User wrongUser = userRepository.findById(102L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(new Date());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
@@ -145,7 +146,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_TokenNotExists_throwsException(){
         //given
-        User testUser = userRepository.findById(1L);
+        User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(new Date());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
@@ -169,5 +170,108 @@ public class ActivityServiceIntegrationTest {
         // delete the specific User, Activity and SwipeStatus
         activityRepository.delete(testActivity);
         userSwipeStatusRepository.delete(userSwipeStatus);
+    }
+
+    @Test
+    public void getAllActivitiesOfUser_success(){
+        //given
+        User testUser = userRepository.findById(101L);
+
+        Activity testActivity = new Activity();
+        testActivity.setCreationDate(new Date());
+
+        // the expected data
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus);
+        userSwipeStatusRepository.save(userSwipeStatus);
+        userSwipeStatusRepository.flush();
+        testActivity.setId(50L);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+
+        testActivity = activityRepository.save(testActivity);
+        activityRepository.flush();
+
+        List<Activity> tests = new ArrayList<>();
+        tests.add(testActivity);
+
+        // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
+        assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
+
+        // delete the specific activity and userSwipeStatus
+        activityRepository.delete(testActivity);
+        userSwipeStatusRepository.delete(userSwipeStatus);
+    }
+
+    @Test
+    public void getAllActivitiesWithMatchedUsers_success(){
+        //given
+        User testUser = userRepository.findById(101L);
+        User testUser2 = userRepository.findById(102L);
+
+        Activity testActivity = new Activity();
+        testActivity.setCreationDate(new Date());
+
+        // the expected data
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        userSwipeStatusRepository.save(userSwipeStatus1);
+        userSwipeStatusRepository.save(userSwipeStatus2);
+        userSwipeStatusRepository.flush();
+        testActivity.setId(65L);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+
+        testActivity = activityRepository.save(testActivity);
+        activityRepository.flush();
+
+        List<Activity> tests = new ArrayList<>();
+        tests.add(testActivity);
+
+        // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
+        assertEquals(tests.get(0).getId(),activityService.getAllActivitiesWithMatchedUsers(testUser).get(0).getId());
+
+        // delete the specific activity and userSwipeStatus
+        activityRepository.delete(testActivity);
+        userSwipeStatusRepository.delete(userSwipeStatus1);
+        userSwipeStatusRepository.delete(userSwipeStatus2);
+    }
+
+    @Test
+    public void getAllActivitiesWithMatchedUsers_NoMatches_throwsException(){
+        //given
+        User testUser = userRepository.findById(101L);
+        User testUser2 = userRepository.findById(102L);
+
+        Activity testActivity = new Activity();
+        testActivity.setCreationDate(new Date());
+
+        // the expected data
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.FALSE); // throw exception since no match
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        userSwipeStatusRepository.save(userSwipeStatus1);
+        userSwipeStatusRepository.save(userSwipeStatus2);
+        userSwipeStatusRepository.flush();
+        testActivity.setId(65L);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+
+        testActivity = activityRepository.save(testActivity);
+        activityRepository.flush();
+
+        List<Activity> tests = new ArrayList<>();
+        tests.add(testActivity);
+
+        //then
+        assertThrows(ResponseStatusException.class, () -> activityService.getAllActivitiesWithMatchedUsers(testUser));
+
+        // delete the specific activity and userSwipeStatus
+        activityRepository.delete(testActivity);
+        userSwipeStatusRepository.delete(userSwipeStatus1);
+        userSwipeStatusRepository.delete(userSwipeStatus2);
     }
 }

@@ -175,9 +175,9 @@ public class ActivityService {
             }
 
             /* Age Sieve */
-            if(!(potentialUser.computeAge() >= user.getUserInterests().getAgeRange().min
-                && potentialUser.computeAge() <= user.getUserInterests().getAgeRange().max)) {
-                log.info("sievePotentialUsers(): Age Sieve eliminated potential user: {} not in range from {} to {}", potentialUser.computeAge(), user.getUserInterests().getAgeRange().min, user.getUserInterests().getAgeRange().max);
+            if(!(potentialUser.getAge() >= user.getUserInterests().getAgeRange().min
+                && potentialUser.getAge() <= user.getUserInterests().getAgeRange().max)) {
+                log.info("sievePotentialUsers(): Age Sieve eliminated potential user: {} not in range from {} to {}", potentialUser.getAge(), user.getUserInterests().getAgeRange().min, user.getUserInterests().getAgeRange().max);
                 continue; // too old or too young
             }
 

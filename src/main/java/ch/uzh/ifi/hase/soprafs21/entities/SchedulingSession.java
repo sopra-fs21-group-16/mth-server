@@ -22,7 +22,7 @@ public class SchedulingSession implements Serializable {
     private Activity chosenActivity;
 
     @ElementCollection
-    @CollectionTable(name="SCHEDULING_SESSION_LOCATION_LIST", joinColumns = @JoinColumn(name = "locationId"))
+    @CollectionTable(name = "SCHEDULING_SESSION_LOCATION_LIST", joinColumns = @JoinColumn(name = "locationId"))
     @Column
     private List<String> locationList;
 
@@ -30,22 +30,32 @@ public class SchedulingSession implements Serializable {
     private String chosenLocation;
 
     @ElementCollection
-    @CollectionTable(name="SCHEDULING_SESSION_DATE_LIST", joinColumns = @JoinColumn(name = "dateId"))
+    @CollectionTable(name = "SCHEDULING_SESSION_DATE_LIST", joinColumns = @JoinColumn(name = "dateId"))
     @Column
     private List<LocalDateTime> dateList;
 
     @Column
     private LocalDateTime chosenDate;
 
-    public Long getId() {return id;}
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) {this.id = id;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public List<Activity> getActivityList() {return activityList;}
+    public List<Activity> getActivityList() {
+        return activityList;
+    }
 
-    public void setActivityList(List<Activity> activityList) { this.activityList = activityList;}
+    public void setActivityList(List<Activity> activityList) {
+        this.activityList = activityList;
+    }
 
-    public Activity getChosenActivity() {return chosenActivity;}
+    public Activity getChosenActivity() {
+        return chosenActivity;
+    }
 
     public void setChosenActivity(Activity chosenActivity) {this.chosenActivity = chosenActivity;}
 
@@ -61,15 +71,13 @@ public class SchedulingSession implements Serializable {
 
     public void setDateList(List<LocalDateTime> dateList) {this.dateList= dateList;}
 
-    public LocalDateTime getChosenDate() {return chosenDate;}
+    public LocalDateTime getChosenDate() {
+        return chosenDate;
+    }
 
-    public void setChosenDate(LocalDateTime chosenDate) { this.chosenDate = chosenDate; }
-
-    public void proposeLocation(String location){ }
-
-    public void proposeDate(LocalDateTime date){ }
-
-    public void saveScheduledDate(){ }
+    public void setChosenDate(LocalDateTime chosenDate) {
+        this.chosenDate = chosenDate;
+    }
 
 }
 

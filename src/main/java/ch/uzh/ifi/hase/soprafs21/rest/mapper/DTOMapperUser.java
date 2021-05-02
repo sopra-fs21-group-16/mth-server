@@ -31,7 +31,6 @@ public interface DTOMapperUser {
     @Mapping(source = "email", target = "email")
     @Mapping(source = "lastSeen", target = "lastSeen")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "age", target = "age")
     @Mapping(source = "dateOfBirth", target = "dateOfBirth")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
@@ -54,14 +53,11 @@ public interface DTOMapperUser {
 
     @Mapping(source = "lastSeen", target = "lastSeen")
     @Mapping(source = "name", target = "name")
-    @Mapping(source = "age", target = "age")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "profilePicture", target = "profilePicture")
     @Mapping(source = "userInterests", target = "userInterests")
     UserGetDTOProfile convertEntityToUserGetDTOProfile(User user);
-
-
 
 }

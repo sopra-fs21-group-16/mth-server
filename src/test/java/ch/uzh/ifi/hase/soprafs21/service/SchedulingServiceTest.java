@@ -46,7 +46,7 @@ class SchedulingServiceTest {
 
     @Test
     void createSchedulingSession_validInputs_success() {
-        //given
+        //givensaveScheduledActivity_validInputs_succes
         User testUser1 = new User();
         testUser1.setId(1L);
         testUser1.setToken("Token");
@@ -55,6 +55,7 @@ class SchedulingServiceTest {
         testUser2.setToken("Token2");
         Activity testActivity = new Activity();
         testActivity.setId(11L);
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus();
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus();
@@ -95,8 +96,10 @@ class SchedulingServiceTest {
         testUser2.setId(3L); // ID is set to 3 but but function createSchedulingSession is invoked with 2
         testUser2.setToken("Token2");
         Activity testActivity = new Activity();
+
         testActivity.setId(11L);
         List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus();
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus();
         userSwipeStatus1.setUser(testUser1);
@@ -138,6 +141,7 @@ class SchedulingServiceTest {
         wrongUser.setToken("Token3");
         Activity testActivity = new Activity();
         testActivity.setId(11L);
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus();
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus();
@@ -172,6 +176,7 @@ class SchedulingServiceTest {
         ScheduledActivity scheduledActivity = new ScheduledActivity();
         Activity testActivity = new Activity();
         testActivity.setId(11L);
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         scheduledActivity.setActivity(testActivity);
         scheduledActivity.setLocation("TestLocation");
         LocalDateTime date = LocalDateTime.now();
@@ -195,6 +200,7 @@ class SchedulingServiceTest {
         ScheduledActivity scheduledActivity = new ScheduledActivity();
         Activity testActivity = new Activity();
         testActivity.setId(11L);
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         scheduledActivity.setActivity(testActivity);
         scheduledActivity.setLocation("TestLocation");
         LocalDateTime date = LocalDateTime.now();
@@ -234,6 +240,7 @@ class SchedulingServiceTest {
         ScheduledActivity scheduledActivity = new ScheduledActivity();
         Activity testActivity = new Activity();
         testActivity.setId(11L);
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         scheduledActivity.setActivity(testActivity);
         LocalDateTime date = LocalDateTime.now();
         scheduledActivity.setDate(date);
@@ -254,6 +261,7 @@ class SchedulingServiceTest {
         ScheduledActivity scheduledActivity = new ScheduledActivity();
         Activity testActivity = new Activity();
         testActivity.setId(11L);
+        testActivity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         scheduledActivity.setActivity(testActivity);
         scheduledActivity.setLocation("TestLocation");
 

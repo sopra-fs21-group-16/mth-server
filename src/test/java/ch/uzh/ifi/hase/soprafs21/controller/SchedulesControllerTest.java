@@ -121,6 +121,9 @@ class SchedulesControllerTest {
         Mockito.doNothing().when(schedulingService).updateSchedulingSession(Mockito.anyLong(), Mockito.any(), Mockito.any());
 
         MockHttpServletRequestBuilder getRequest = get("/schedules/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Auth-Token", "Token");
+
         
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk());

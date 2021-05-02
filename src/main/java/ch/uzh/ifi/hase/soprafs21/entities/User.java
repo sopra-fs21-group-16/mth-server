@@ -153,7 +153,7 @@ public class User implements Serializable {
     public int getAge(){
         // if no date of birth is set yet, we throw exception
         if (this.dateOfBirth == null ){
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Date of birth is unknown");
+            return 0;
         }
 
         // convert extracted data and get local data

@@ -232,8 +232,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkIfConvertDateOfBirthToAge_success(){
-        // create user that has a date of birth
+    public void checkIfComputeAge_success(){
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
@@ -242,23 +241,20 @@ public class UserServiceTest {
         LocalDate now = LocalDate.now().minus(18,ChronoUnit.YEARS);
         testUser.setDateOfBirth(now);
 
-        assertEquals(18,userService.convertDateOfBirthToAge(now));
+        assertEquals(18,userService.computeAge(now));
     }
 
     @Test
-    public void checkIfAdaptAge_success(){
-        // create user that has a date of birth
+    public void checkIfGetIdByToken_success(){
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
+        User userInRepo = userService.createUser(testUser);
+        userInRepo.setToken("123");
 
-        LocalDate localDate = LocalDate.now().minus(18,ChronoUnit.YEARS) ;
-        testUser.setDateOfBirth(localDate);
+        given(userRepository.findByToken(userInRepo.getToken())).willReturn(userInRepo);
 
-        // adapt age
-        userService.adaptAge(testUser);
-
-        assertEquals(18,testUser.getAge());
+        assertEquals(testUser.getId(),userService.getIdByToken(userInRepo.getToken()));
     }
 }

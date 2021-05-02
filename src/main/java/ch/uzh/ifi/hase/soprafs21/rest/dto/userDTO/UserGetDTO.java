@@ -12,7 +12,6 @@ public class UserGetDTO {
     private String email;
     private LocalDateTime lastSeen;
     private String name;
-    private int age;
     private LocalDate dateOfBirth;
     private Gender gender;
     private String bio;
@@ -52,10 +51,6 @@ public class UserGetDTO {
     public void setName(String name) {
         this.name = name;
     }
-
-    public int getAge() {return age;}
-
-    public void setAge(int age) {this.age = age;}
 
     public LocalDate getDateOfBirth() {return dateOfBirth;}
 

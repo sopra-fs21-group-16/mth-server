@@ -51,6 +51,11 @@ public class UserService {
         return userByToken;
     }
 
+    public long getIdByToken(String token){
+        User userByToken = this.userRepository.findByToken(token);
+        return userByToken.getId();
+    }
+
     public User createUser(User newUser) {
 
         checkIfUserExistsByEmail(newUser);
@@ -87,13 +92,12 @@ public class UserService {
             if (userInput.getPassword().equals(userByEmail.getPassword())) {
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
-                adaptAge(userByEmail); // update age
                 userRepository.save(userByEmail);
                 userRepository.flush();
                 return userByEmail;
             }
             else {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Password is wrong.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or Password is wrong.");
             }
 
         }
@@ -175,8 +179,6 @@ public class UserService {
 
         if (userInput.getDateOfBirth() != null){
             userFromRepo.setDateOfBirth(userInput.getDateOfBirth());
-            /** TODO: do not save age as attribute, instead use method that returns age in controller */
-            adaptAge(userFromRepo);
             noNewData = false;
         }
 
@@ -201,7 +203,14 @@ public class UserService {
         }
 
         if (userInput.getUserInterests() != null){
-            userFromRepo.setUserInterests(userInput.getUserInterests());
+            // if user has not yet a userInterests object, set a new one
+            if(userFromRepo.getUserInterests() == null){
+                userFromRepo.setUserInterests(userInput.getUserInterests());
+            }
+            // if user has already a userInterests object, update the userInterests object
+            else {
+                userFromRepo.getUserInterests().updateUserInterests(userInput.getUserInterests());
+            }
             noNewData = false;
         }
 
@@ -243,7 +252,7 @@ public class UserService {
             }
         }
 
-        // throw exception if token is not consistent to any user in repo --> meaning that someone external tries to leak data
+        // throw exception if token is not consistent to any user in repo
         if(!validStatus){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
         }
@@ -269,7 +278,7 @@ public class UserService {
      * @param dateOfBirth
      * @return
      */
-    public int convertDateOfBirthToAge(LocalDate dateOfBirth){
+    public int computeAge(LocalDate dateOfBirth){
         // if no date of birth is set yet, we return 0
         if (dateOfBirth == null ){
             return 0;
@@ -284,14 +293,5 @@ public class UserService {
         int age = differenceOfDates.getYears();
 
         return age;
-    }
-
-    /**
-     *   update age, since age is dynamic and changes over time
-     */
-    public void adaptAge(User user){
-        UserService userService = new UserService(userRepository);
-        int newAge = userService.convertDateOfBirthToAge(user.getDateOfBirth());
-        user.setAge(newAge);
     }
 }

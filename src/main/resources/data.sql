@@ -12,12 +12,12 @@ VALUES (1, 'Play Football', 'SPORTS', '???', '???'),
 
 INSERT INTO USER (ID, EMAIL, PASSWORD, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
                   USER_INTERESTS_ID)
-VALUES (101, 'database.user@uzh.ch', 'databasePassword', 'databaseBio', '+41791231111', 'databaseToken', 'databaseTester', NULL, 'MALE', 'TestLink', '2021-04-25', NULL),
-       (102, 'database.user2@uzh.ch', 'databasePassword2', 'databaseBio2', '+41791232222', 'databaseToken2','databaseTester2', NULL, 'FEMALE', 'TestLink2', '2021-04-26', NULL);
+VALUES (101, 'database.user@uzh.ch', 'databasePassword', 'databaseBio', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
+       (102, 'database.user2@uzh.ch', 'databasePassword2', 'databaseBio2', '+41791232222', 'databaseToken2','databaseTester2', '2000-01-01', 'FEMALE', 'TestLink2', '2021-04-26', NULL);
 
 INSERT INTO USER_INTERESTS (ID, AGE_RANGE_MIN, AGE_RANGE_MAX, GENDER_PREFERENCE, USER_ID)
 VALUES (1, 18, 30, 'FEMALE', 101),
-       (2, 21, 26, 'MALE', 102);
+       (2, 19, 26, 'MALE', 102);
 
 INSERT INTO USER_INTERESTS_ACTIVITY (USER_INTERESTS_ID, ACTIVITY_INTERESTS)
 VALUES (1, 'EATING'),

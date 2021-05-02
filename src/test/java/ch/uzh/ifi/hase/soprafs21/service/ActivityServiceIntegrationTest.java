@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -57,7 +58,7 @@ public class ActivityServiceIntegrationTest {
         //given
         User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(5L);
@@ -89,7 +90,7 @@ public class ActivityServiceIntegrationTest {
         //given
         User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(28L);
@@ -119,7 +120,7 @@ public class ActivityServiceIntegrationTest {
         User testUser = userRepository.findById(101L);
         User wrongUser = userRepository.findById(102L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(5L);
@@ -148,7 +149,7 @@ public class ActivityServiceIntegrationTest {
         //given
         User testUser = userRepository.findById(101L);
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus();
         testActivity.setId(5L);
@@ -178,7 +179,7 @@ public class ActivityServiceIntegrationTest {
         User testUser = userRepository.findById(101L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -210,7 +211,7 @@ public class ActivityServiceIntegrationTest {
         User testUser2 = userRepository.findById(102L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -246,7 +247,7 @@ public class ActivityServiceIntegrationTest {
         User testUser2 = userRepository.findById(102L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();

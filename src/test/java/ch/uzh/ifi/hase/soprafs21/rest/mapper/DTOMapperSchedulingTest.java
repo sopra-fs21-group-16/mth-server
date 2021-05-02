@@ -66,9 +66,11 @@ public class DTOMapperSchedulingTest {
         // create activity
         Activity activity = new Activity();
         activity.setId(1L);
+        activity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         scheduledActivityPostDTO.setActivity(activity);
         scheduledActivityPostDTO.setDate(LocalDateTime.now());
         scheduledActivityPostDTO.setLocation("TestLocation");
+
 
 
         // MAP -> Create ScheduledActivityGetDTO
@@ -88,8 +90,10 @@ public class DTOMapperSchedulingTest {
         // create activity
         Activity activity = new Activity();
         activity.setId(1L);
+        activity.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
         Activity activity2 = new Activity();
-        activity.setId(2L);
+        activity2.setId(2L);
+        activity2.setUserSwipeStatusList(new ArrayList<UserSwipeStatus>());
 
         schedulingSessionPutDTO.setChosenActivity(activity);
         schedulingSessionPutDTO.setChosenDate(LocalDateTime.now());

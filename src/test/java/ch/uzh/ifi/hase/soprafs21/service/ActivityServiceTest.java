@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,7 +94,7 @@ class ActivityServiceTest {
 
         Activity testActivity = new Activity();
         testActivity.setId(5L);
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -122,7 +123,7 @@ class ActivityServiceTest {
         testUser2.setId(2L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -153,7 +154,7 @@ class ActivityServiceTest {
         testUser2.setId(2L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();

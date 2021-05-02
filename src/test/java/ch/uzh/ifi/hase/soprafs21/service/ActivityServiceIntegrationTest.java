@@ -179,7 +179,7 @@ public class ActivityServiceIntegrationTest {
         User testUser = userRepository.findById(101L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -211,7 +211,7 @@ public class ActivityServiceIntegrationTest {
         User testUser2 = userRepository.findById(102L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -247,7 +247,7 @@ public class ActivityServiceIntegrationTest {
         User testUser2 = userRepository.findById(102L);
 
         Activity testActivity = new Activity();
-        testActivity.setCreationDate(new Date());
+        testActivity.setCreationDate(LocalDate.now());
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();

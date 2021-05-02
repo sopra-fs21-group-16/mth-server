@@ -150,7 +150,7 @@ public class User implements Serializable {
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
 
-    public int getAge() throws Exception{
+    public int getAge(){
         // if no date of birth is set yet, we throw exception
         if (this.dateOfBirth == null ){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Date of birth is unknown");

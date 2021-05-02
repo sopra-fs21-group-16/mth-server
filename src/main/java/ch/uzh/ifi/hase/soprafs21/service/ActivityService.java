@@ -102,10 +102,9 @@ public class ActivityService {
     }
 
     public List<Activity> getAllActivitiesWithMatchedUsers(User user){
-        ActivityService activityService = new ActivityService(activityRepository,activityPresetRepository,userService);
         List<Activity> allActivitiesWithMatchedUsers;
 
-        List<Activity> allActivitiesOfUser = activityService.getAllActivitiesOfUser(user);
+        List<Activity> allActivitiesOfUser = this.getAllActivitiesOfUser(user);
 
         // for every activity, if in the UserSwipeStatusList both users have swiped TRUE, then we take the activity
         allActivitiesWithMatchedUsers = allActivitiesOfUser.stream().filter(activity -> activity.getUserSwipeStatusList().get(0).getSwipeStatus() == SwipeStatus.TRUE && activity.getUserSwipeStatusList().get(1).getSwipeStatus() == SwipeStatus.TRUE).collect(Collectors.toList());

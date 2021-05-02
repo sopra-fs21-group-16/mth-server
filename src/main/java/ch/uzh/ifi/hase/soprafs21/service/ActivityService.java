@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.*;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,15 +32,19 @@ public class ActivityService {
   
     private final ActivityPresetRepository activityPresetRepository;
 
+    private final UserSwipeStatusRepository userSwipeStatusRepository;
+
     private final UserService userService;
 
     @Autowired
     public ActivityService(@Qualifier("activityRepository") ActivityRepository activityRepository,
                            @Qualifier("activityPresetRepository") ActivityPresetRepository activityPresetRepository,
+                           @Qualifier("userSwipeStatusRepository") UserSwipeStatusRepository userSwipeStatusRepository,
                            @Qualifier("userService") UserService userService) {
         this.activityRepository = activityRepository;
         this.activityPresetRepository = activityPresetRepository;
         this.userService = userService;
+        this.userSwipeStatusRepository = userSwipeStatusRepository;
     }
   
   
@@ -83,9 +88,6 @@ public class ActivityService {
         List<Activity> activityList = new ArrayList<>();
 
         for(User potentialUser : potentialUsers) {
-            List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
-            userSwipeStatusList.add(new UserSwipeStatus(user, SwipeStatus.INITIAL));
-            userSwipeStatusList.add(new UserSwipeStatus(potentialUser, SwipeStatus.INITIAL));
 
             Set<ActivityCategory> overlappingInterests = user.getUserInterests().getActivityInterests();
             overlappingInterests.retainAll(potentialUser.getUserInterests().getActivityInterests());
@@ -93,6 +95,14 @@ public class ActivityService {
             for(ActivityCategory overlappingInterest : overlappingInterests) {
                 List<ActivityPreset> activityPresets = activityPresetRepository.findByActivityCategory(overlappingInterest);
                 for(ActivityPreset activityPreset : activityPresets) {
+                    List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+                    UserSwipeStatus userSwipeStatus1 = userSwipeStatusRepository.save(new UserSwipeStatus(user, SwipeStatus.INITIAL));
+                    UserSwipeStatus userSwipeStatus2 = userSwipeStatusRepository.save(new UserSwipeStatus(potentialUser, SwipeStatus.INITIAL));
+                    userSwipeStatusRepository.flush();
+
+                    userSwipeStatusList.add(userSwipeStatus1);
+                    userSwipeStatusList.add(userSwipeStatus2);
+
                     activityList.add(new Activity(activityPreset, userSwipeStatusList));
                 }
             }
@@ -101,12 +111,12 @@ public class ActivityService {
         HashSet<Activity> persistentActivities = new HashSet<Activity>(getAllUnmatchedActivities(user));
         activityList.removeAll(persistentActivities);
 
-        activityRepository.saveAll(activityList);
-        //if(activityList.size() > 0) {
-        //    log.info("generateActivities: Save activity {} in ActivityRepository", activityList.get(0).getActivityPreset().getActivityName());
-            //activityRepository.save(activityList.get(0));
+        //activityRepository.saveAll(activityList);
+        for(Activity activity : activityList) {
+            log.info("generateActivities: Save activity {} in ActivityRepository", activity.getActivityPreset().getActivityName());
+            activityRepository.save(activity);
             activityRepository.flush();
-        //}
+        }
 
         return new ArrayList<>(getAllUnmatchedActivities(user));
     }

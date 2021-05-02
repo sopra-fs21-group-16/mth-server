@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 @Repository("schedulingSessionRepository")
 public interface SchedulingSessionRepository extends JpaRepository<SchedulingSession, Long> {
     SchedulingSession findById(long id);
-
 }

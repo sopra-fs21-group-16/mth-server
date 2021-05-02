@@ -144,35 +144,4 @@ class ActivityServiceTest {
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
         assertEquals(tests.get(0).getId(),activityService.getAllActivitiesWithMatchedUsers(testUser).get(0).getId());
     }
-
-    @Test
-    public void getAllActivitiesWithMatchedUsers_NoMatches_throwsException(){
-        //given
-        User testUser = new User();
-        testUser.setId(1L);
-        User testUser2 = new User();
-        testUser2.setId(2L);
-
-        Activity testActivity = new Activity();
-        testActivity.setCreationDate(LocalDate.now());
-
-        // the expected data
-        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
-        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
-        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.FALSE); // throw exception since no match
-        userSwipeStatusList.add(userSwipeStatus1);
-        userSwipeStatusList.add(userSwipeStatus2);
-
-        testActivity.setId(65L);
-        testActivity.setUserSwipeStatusList(userSwipeStatusList);
-
-        List<Activity> tests = new ArrayList<>();
-        tests.add(testActivity);
-
-        //when
-        Mockito.when(activityService.getAllActivitiesOfUser(testUser)).thenReturn(tests);
-
-        //then
-        assertThrows(ResponseStatusException.class, () -> activityService.getAllActivitiesWithMatchedUsers(testUser));
-    }
 }

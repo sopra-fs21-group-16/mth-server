@@ -132,9 +132,6 @@ public class ActivityService {
         // for every activity, if in the UserSwipeStatusList both users have swiped TRUE, then we take the activity
         allActivitiesWithMatchedUsers = allActivitiesOfUser.stream().filter(activity -> activity.getUserSwipeStatusList().get(0).getSwipeStatus() == SwipeStatus.TRUE && activity.getUserSwipeStatusList().get(1).getSwipeStatus() == SwipeStatus.TRUE).collect(Collectors.toList());
 
-        if(allActivitiesWithMatchedUsers.isEmpty()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No matches found");
-        }
         return allActivitiesWithMatchedUsers;
     }
 

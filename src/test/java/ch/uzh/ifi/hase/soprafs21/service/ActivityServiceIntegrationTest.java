@@ -239,40 +239,4 @@ public class ActivityServiceIntegrationTest {
         userSwipeStatusRepository.delete(userSwipeStatus1);
         userSwipeStatusRepository.delete(userSwipeStatus2);
     }
-
-    @Test
-    public void getAllActivitiesWithMatchedUsers_NoMatches_throwsException(){
-        //given
-        User testUser = userRepository.findById(101L);
-        User testUser2 = userRepository.findById(102L);
-
-        Activity testActivity = new Activity();
-        testActivity.setCreationDate(LocalDate.now());
-
-        // the expected data
-        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
-        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
-        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.FALSE); // throw exception since no match
-        userSwipeStatusList.add(userSwipeStatus1);
-        userSwipeStatusList.add(userSwipeStatus2);
-        userSwipeStatusRepository.save(userSwipeStatus1);
-        userSwipeStatusRepository.save(userSwipeStatus2);
-        userSwipeStatusRepository.flush();
-        testActivity.setId(65L);
-        testActivity.setUserSwipeStatusList(userSwipeStatusList);
-
-        testActivity = activityRepository.save(testActivity);
-        activityRepository.flush();
-
-        List<Activity> tests = new ArrayList<>();
-        tests.add(testActivity);
-
-        //then
-        assertThrows(ResponseStatusException.class, () -> activityService.getAllActivitiesWithMatchedUsers(testUser));
-
-        // delete the specific activity and userSwipeStatus
-        activityRepository.delete(testActivity);
-        userSwipeStatusRepository.delete(userSwipeStatus1);
-        userSwipeStatusRepository.delete(userSwipeStatus2);
-    }
 }

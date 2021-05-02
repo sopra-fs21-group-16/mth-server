@@ -12,30 +12,30 @@ VALUES (1, 'Play Football', 'SPORTS', '???', '???'),
 
 INSERT INTO USER (ID, EMAIL, PASSWORD, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
                   USER_INTERESTS_ID)
-VALUES (101, 'database.user@uzh.ch', 'databasePassword', 'databaseBio', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
-       (102, 'database.user2@uzh.ch', 'databasePassword2', 'databaseBio2', '+41791232222', 'databaseToken2','databaseTester2', '2000-01-01', 'FEMALE', 'TestLink2', '2021-04-26', NULL);
+VALUES (101, 'database.user@uzh.ch', 'databasePassword', 'I like spending time in nature and watching movies. I am studying Informatics and my favorite subject is Software Engineering!', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
+       (102, 'database.user2@uzh.ch', 'databasePassword2', 'My interests range from outdoor activities to good food. My favorite number is 43.', '+41791232222', 'databaseToken2','databaseTester2', '2000-01-01', 'FEMALE', 'TestLink2', '2021-04-26', NULL);
 
 INSERT INTO USER_INTERESTS (ID, AGE_RANGE_MIN, AGE_RANGE_MAX, GENDER_PREFERENCE, USER_ID)
-VALUES (1, 18, 30, 'FEMALE', 101),
-       (2, 19, 26, 'MALE', 102);
+VALUES (1001, 18, 30, 'FEMALE', 101),
+       (1002, 19, 26, 'MALE', 102);
 
 INSERT INTO USER_INTERESTS_ACTIVITY (USER_INTERESTS_ID, ACTIVITY_INTERESTS)
-VALUES (1, 'EATING'),
-       (1, 'COOKING'),
-       (1, 'MOVIES'),
-       (1, 'OUTDOOR_ACTIVITY'),
-       (1, 'SPORTS'),
-       (1, 'SHOPPING'),
-       (2, 'COOKING'),
-       (2, 'MOVIES'),
-       (2, 'GAMES'),
-       (2, 'WELLNESS'),
-       (2, 'SHOPPING');
+VALUES (1001, 'EATING'),
+       (1001, 'COOKING'),
+       (1001, 'MOVIES'),
+       (1001, 'OUTDOOR_ACTIVITY'),
+       (1001, 'SPORTS'),
+       (1001, 'SHOPPING'),
+       (1002, 'COOKING'),
+       (1002, 'MOVIES'),
+       (1002, 'GAMES'),
+       (1002, 'WELLNESS'),
+       (1002, 'SHOPPING');
 
 UPDATE USER
-SET USER_INTERESTS_ID=1
+SET USER_INTERESTS_ID=1001
 WHERE ID = 101;
 
 UPDATE USER
-SET USER_INTERESTS_ID=2
+SET USER_INTERESTS_ID=1002
 WHERE ID = 102;

@@ -11,6 +11,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -66,8 +67,8 @@ public class UserInterests implements Serializable {
         this.genderPreference = genderPreference;
     }
 
-    public Set<ActivityCategory> getActivityInterests() {
-        return activityInterests;
+    public HashSet<ActivityCategory> getActivityInterests() {
+        return new HashSet<>(activityInterests);
     }
 
     public void setActivityInterests(Set<ActivityCategory> activityInterests) {this.activityInterests = activityInterests;}

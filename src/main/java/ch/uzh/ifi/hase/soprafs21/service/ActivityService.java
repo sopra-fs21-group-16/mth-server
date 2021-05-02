@@ -89,7 +89,7 @@ public class ActivityService {
 
         for(User potentialUser : potentialUsers) {
 
-            Set<ActivityCategory> overlappingInterests = user.getUserInterests().getActivityInterests();
+            Set<ActivityCategory> overlappingInterests = (Set<ActivityCategory>) user.getUserInterests().getActivityInterests().clone();
             overlappingInterests.retainAll(potentialUser.getUserInterests().getActivityInterests());
 
             for(ActivityCategory overlappingInterest : overlappingInterests) {

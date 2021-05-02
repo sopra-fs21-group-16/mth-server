@@ -108,6 +108,7 @@ public class SchedulesController {
         schedulingService.checkIfScheduledSessionExistsWithGivenId(sessionId);
 
         // delete the session
+        /* ToDo: Send token to deleteScheduledSession to check if sessionId fits token */
         schedulingService.deleteScheduledSession(sessionId);
 
         /** TODO: Update User information of A and B (?) */

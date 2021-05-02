@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,6 +13,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 
 /**
  * Internal User Representation
@@ -146,4 +149,19 @@ public class User implements Serializable {
     public UserInterests getUserInterests() {return userInterests;}
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
+
+    public int getAge() throws Exception{
+        // if no date of birth is set yet, we return 0
+        if (this.dateOfBirth == null ){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Date of birth is unknown");
+        }
+
+        // convert extracted data and get local data
+        LocalDate localDateOfDateOfBirth = dateOfBirth;
+        LocalDate now = LocalDate.now();
+        Period differenceOfDates = Period.between(localDateOfDateOfBirth,now);
+
+        // compute age
+        return differenceOfDates.getYears();
+    }
 }

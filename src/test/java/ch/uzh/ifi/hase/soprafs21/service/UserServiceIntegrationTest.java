@@ -123,8 +123,11 @@ public class UserServiceIntegrationTest {
         User createdUser = userService.createUser(testUser);
         userService.logOutUser(createdUser.getId());
 
+        User userToLogin = new User();
+        userToLogin.setEmail("test.user@uzh.ch");
+        userToLogin.setPassword("testPassword");
         // when
-        userService.loginUser(testUser);
+        userService.loginUser(userToLogin);
 
         // then
         assertNotNull(createdUser.getToken());

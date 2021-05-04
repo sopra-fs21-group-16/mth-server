@@ -22,7 +22,7 @@ public class DTOMapperSchedulingTest {
         activity.setId(1L);
 
         // do the setting twice to test constructor and setters
-        ActivityPreset activityPreset = new ActivityPreset("play football", ActivityCategory.SPORTS, "sport", "football");
+        ActivityPreset activityPreset = new ActivityPreset("play football", ActivityCategory.SPORTS, "sport", "football","TestImageURL");
         activityPreset.setActivityName("play football");
         activityPreset.setActivityCategory(ActivityCategory.SPORTS);
         activityPreset.setGooglePOICategory("sport");

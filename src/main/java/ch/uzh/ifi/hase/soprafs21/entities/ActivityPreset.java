@@ -31,6 +31,9 @@ public class ActivityPreset implements Serializable{
     @Column
     private String googlePOIKeyword;
 
+    @Column
+    private String imageURL;
+
     public ActivityPreset(){}
 
     public ActivityPreset(String activityName, ActivityCategory activityCategory){
@@ -38,11 +41,13 @@ public class ActivityPreset implements Serializable{
         this.activityCategory = activityCategory;
     }
 
-    public ActivityPreset(String activityName, ActivityCategory activityCategory, String googlePOICategory, String googlePOIKeyword){
+    public ActivityPreset(String activityName, ActivityCategory activityCategory, String googlePOICategory, String googlePOIKeyword, String imageURL){
         this.activityName = activityName;
         this.activityCategory = activityCategory;
         this.googlePOICategory = googlePOICategory;
         this.googlePOIKeyword = googlePOIKeyword;
+        this.imageURL = imageURL;
+
     }
 
     public Long getId() {return id;}
@@ -64,4 +69,8 @@ public class ActivityPreset implements Serializable{
     public String getGooglePOIKeyword() {return googlePOIKeyword;}
 
     public void setGooglePOIKeyword(String googlePOIKeyword) {this.googlePOIKeyword = googlePOIKeyword;}
+
+    public String getImageURL() { return imageURL; }
+
+    public void setImageURL(String imageURL) { this.imageURL = imageURL; }
 }

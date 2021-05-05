@@ -270,7 +270,7 @@ public class UserServiceTest {
         filteredUser.setId(1L);
         filteredUser.setEmail("Hidden@uzh.ch");
         filteredUser.setName("Tester2");
-        filteredUser.setPassword("Hidden");
+        filteredUser.setPassword("hiddenPassword");
 
         User actualFilteredUser = userService.filterPrivateUserData(testUser,"Hidden@uzh.ch","fakeToken");
 

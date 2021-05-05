@@ -249,7 +249,7 @@ public class ActivityServiceIntegrationTest {
         // filtered users
         User filteredUser1 = new User();
         filteredUser1.setId(1L);
-        filteredUser1.setPassword("Hidden");
+        filteredUser1.setPassword("hiddenPassword");
 
         ActivityGetDTO testActivity = new ActivityGetDTO();
 

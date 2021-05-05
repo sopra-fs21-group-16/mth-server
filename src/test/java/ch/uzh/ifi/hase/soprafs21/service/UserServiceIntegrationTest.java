@@ -264,7 +264,7 @@ public class UserServiceIntegrationTest {
         filteredUser.setId(1L);
         filteredUser.setEmail("Hidden");
         filteredUser.setName("Tester2");
-        filteredUser.setPassword("Hidden");
+        filteredUser.setPassword("hiddenPassword");
 
         User actualFilteredUser = userService.filterPrivateUserData(testUser,"Hidden","fakeToken");
 

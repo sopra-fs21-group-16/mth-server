@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -55,9 +56,10 @@ public class ActivityControllerTest {
         // given
         User user = new User();
         user.setId(1L);
-        user.setEmail("firstname@lastname");
-        user.setPassword("verySafePassword");
-        user.setToken("token123");
+        user.setEmail("");
+        user.setPassword("");
+        user.setToken("");
+        user.setName("testName");
 
         // set user swipe status
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus(user, SwipeStatus.INITIAL);
@@ -80,8 +82,9 @@ public class ActivityControllerTest {
         // then
         mockMvc.perform(getRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)));
-        // ToDo: test more? e.g. from User: .andExpect(jsonPath("$[0].username", is(user.getUsername())));
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.password", is(user.getPassword())))
+                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.name", is(user.getName())));
     }
 
     @Test

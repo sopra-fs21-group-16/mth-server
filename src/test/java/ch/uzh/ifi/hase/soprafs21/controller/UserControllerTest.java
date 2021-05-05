@@ -7,8 +7,10 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
 import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
@@ -390,11 +392,20 @@ public class UserControllerTest {
         // saves a list that contains only one object
         List<Activity> activityListWithMatchedUsers = Collections.singletonList(activityFromRepo);
 
+        // save a converted list containing the filtered private user data
+        List<ActivityGetDTO> activityGetDTOs = new ArrayList<>();
+        for (Activity activity : activityListWithMatchedUsers) {
+            activityGetDTOs.add(DTOMapperActivity.INSTANCE.convertEntityToActivityGetDTO(activity));
+        }
+
         given(userService.checkIfValidToken(tokenFromHeader)).willReturn(true);
 
         given(userService.getUserByToken(tokenFromHeader)).willReturn(userFromRepo);
 
         given(activityService.getAllActivitiesWithMatchedUsers(userFromRepo)).willReturn(activityListWithMatchedUsers);
+
+        // same list is returned, but data of users is filtered
+        given(activityService.filterPrivateUserDataFromGivenActivityGetDTOList(Mockito.anyList())).willReturn(activityGetDTOs);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/matches")
@@ -403,9 +414,9 @@ public class UserControllerTest {
 
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].activityPreset.activityName", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityName())))
-                .andExpect(jsonPath("$[0].activityPreset.activityCategory", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityCategory().toString())))
-                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.email", is(activityListWithMatchedUsers.get(0).getUserSwipeStatusList().get(0).getUser().getEmail())));
+                .andExpect(jsonPath("$[0].activityPreset.activityName", is(activityGetDTOs.get(0).getActivityPreset().getActivityName())))
+                .andExpect(jsonPath("$[0].activityPreset.activityCategory", is(activityGetDTOs.get(0).getActivityPreset().getActivityCategory().toString())))
+                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.email", is(activityGetDTOs.get(0).getUserSwipeStatusList().get(0).getUser().getEmail())));
     }
 
     @Test

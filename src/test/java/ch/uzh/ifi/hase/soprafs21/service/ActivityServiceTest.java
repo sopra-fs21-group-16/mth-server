@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -143,5 +144,40 @@ class ActivityServiceTest {
 
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
         assertEquals(tests.get(0).getId(),activityService.getAllActivitiesWithMatchedUsers(testUser).get(0).getId());
+    }
+
+    @Test
+    public void filterPrivateUserDataFromGivenActivityGetDTOList_success(){
+        //given
+        User testUser = new User();
+        testUser.setId(1L);
+        User testUser2 = new User();
+        testUser2.setId(2L);
+
+        // filtered users
+        User filteredUser1 = new User();
+        filteredUser1.setId(1L);
+        filteredUser1.setPassword("Hidden");
+
+        ActivityGetDTO testActivity = new ActivityGetDTO();
+
+        // the expected data
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+
+        testActivity.setId(75L);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+
+        List<ActivityGetDTO> tests = new ArrayList<>();
+        tests.add(testActivity);
+
+        //when
+        Mockito.when(userService.filterPrivateUserData(Mockito.any())).thenReturn(filteredUser1);
+
+        // test if the users are successfully filtered in the returned list
+        assertEquals(filteredUser1.getPassword(),activityService.filterPrivateUserDataFromGivenActivityGetDTOList(tests).get(0).getUserSwipeStatusList().get(0).getUser().getPassword());
     }
 }

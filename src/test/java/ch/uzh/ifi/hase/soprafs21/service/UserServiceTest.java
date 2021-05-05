@@ -257,4 +257,26 @@ public class UserServiceTest {
 
         assertEquals(testUser.getId(),userService.getIdByToken(userInRepo.getToken()));
     }
+
+    @Test
+    public void filterPrivateUserData_success(){
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User userInRepo = userService.createUser(testUser);
+
+        User filteredUser = new User();
+        filteredUser.setId(1L);
+        filteredUser.setEmail("Hidden");
+        filteredUser.setName("Tester2");
+        filteredUser.setPassword("Hidden");
+
+        User actualFilteredUser = userService.filterPrivateUserData(testUser);
+
+        assertEquals(filteredUser.getId(),actualFilteredUser.getId());
+        assertEquals(filteredUser.getEmail(),actualFilteredUser.getEmail());
+        assertEquals(filteredUser.getName(),actualFilteredUser.getName());
+        assertEquals(filteredUser.getPassword(),actualFilteredUser.getPassword());
+    }
 }

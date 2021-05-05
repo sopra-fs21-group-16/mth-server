@@ -5,8 +5,9 @@ import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
 import java.time.LocalDateTime;
 
-public class UserGetDTOProfile {
+public class UserGetDTOPublic {
 
+    private Long id;
     private LocalDateTime lastSeen;
     private String name;
     private Gender gender;
@@ -14,6 +15,10 @@ public class UserGetDTOProfile {
     private String phone;
     private String profilePicture;
     private UserInterests userInterests;
+
+    public Long getId() {return id;}
+
+    public void setId(Long id) {this.id = id;}
 
     public LocalDateTime getLastSeen() {return lastSeen;}
 

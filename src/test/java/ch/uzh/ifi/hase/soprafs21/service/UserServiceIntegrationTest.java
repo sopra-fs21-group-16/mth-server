@@ -248,4 +248,32 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
+
+    @Test
+    public void filterPrivateUserData_success(){
+        assertNull(userRepository.findByEmail("test.user2@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithId = userService.createUser(testUser);
+
+        User filteredUser = new User();
+        filteredUser.setId(1L);
+        filteredUser.setEmail("Hidden");
+        filteredUser.setName("Tester2");
+        filteredUser.setPassword("Hidden");
+
+        User actualFilteredUser = userService.filterPrivateUserData(testUser);
+
+        assertEquals(filteredUser.getId(),actualFilteredUser.getId());
+        assertEquals(filteredUser.getEmail(),actualFilteredUser.getEmail());
+        assertEquals(filteredUser.getName(),actualFilteredUser.getName());
+        assertEquals(filteredUser.getPassword(),actualFilteredUser.getPassword());
+
+        //delete specific user
+        userRepository.delete(createdUserWithId);
+    }
 }

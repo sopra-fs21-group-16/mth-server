@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs21.entities.*;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,6 +193,22 @@ public class ActivityService {
         }
         log.info("Tarek Test. Size of Potential Users: {}", potentialUsers.size());
         return potentialUsers;
+    }
+
+    /** fetch very user for all activities and filter their data
+     * @param activityGetDTOs
+     * @return
+     */
+    public List<ActivityGetDTO> filterPrivateUserDataFromGivenActivityGetDTOList(List<ActivityGetDTO> activityGetDTOs){
+
+        for (ActivityGetDTO activityGetDTO : activityGetDTOs) {
+            User filteredUser1 = userService.filterPrivateUserData(activityGetDTO.getUserSwipeStatusList().get(0).getUser());
+            User filteredUser2 = userService.filterPrivateUserData(activityGetDTO.getUserSwipeStatusList().get(1).getUser());
+            activityGetDTO.getUserSwipeStatusList().get(0).setUser(filteredUser1);
+            activityGetDTO.getUserSwipeStatusList().get(1).setUser(filteredUser2);
+        }
+
+        return activityGetDTOs;
     }
 
 }

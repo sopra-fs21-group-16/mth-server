@@ -298,4 +298,19 @@ public class UserService {
 
         return age;
     }
+
+    /**
+     * takes a user and hides its private data in order to return only public data of a user
+     * the filtered user is not saved in the repository
+     * @param userToFilter
+     */
+    public User filterPrivateUserData(User userToFilter){
+        // hide private data
+        userToFilter.setEmail("Hidden");
+        userToFilter.setPassword("Hidden");
+        userToFilter.setToken("Hidden");
+        userToFilter.setDateOfBirth(null);
+
+        return userToFilter;
+    }
 }

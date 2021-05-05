@@ -123,7 +123,6 @@ public class UserController {
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
     }
 
-    /** TODO: For the future, the URL has to be changed and specified for getting matched users */
     @GetMapping("/users/matches")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -142,7 +141,9 @@ public class UserController {
             activityGetDTOs.add(DTOMapperActivity.INSTANCE.convertEntityToActivityGetDTO(activity));
         }
 
-        return activityGetDTOs;
+        List<ActivityGetDTO> filteredActivityList = activityService.filterPrivateUserDataFromGivenActivityGetDTOList(activityGetDTOs);
+
+        return filteredActivityList;
     }
 
     @GetMapping("/users/profile/verify")

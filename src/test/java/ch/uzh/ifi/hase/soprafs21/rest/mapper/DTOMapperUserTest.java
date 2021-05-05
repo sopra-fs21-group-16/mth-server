@@ -7,7 +7,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOPublic;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import org.junit.jupiter.api.Test;
@@ -158,21 +158,22 @@ public class DTOMapperUserTest {
         user.setUserInterests(userInterests);
 
         // MAP -> Create UserGetDTOProfile
-        UserGetDTOProfile userGetDTOProfile = DTOMapperUser.INSTANCE.convertEntityToUserGetDTOProfile(user);
+        UserGetDTOPublic userGetDTOPublic = DTOMapperUser.INSTANCE.convertEntityToUserGetDTOProfile(user);
 
         // check content
-        assertEquals(user.getLastSeen(), userGetDTOProfile.getLastSeen());
-        assertEquals(user.getName(),userGetDTOProfile.getName());
-        assertEquals(user.getGender(),userGetDTOProfile.getGender());
-        assertEquals(user.getBio(),userGetDTOProfile.getBio());
-        assertEquals(user.getPhone(),userGetDTOProfile.getPhone());
-        assertEquals(user.getProfilePicture(),userGetDTOProfile.getProfilePicture());
-        assertEquals(user.getUserInterests(),userGetDTOProfile.getUserInterests());
+        assertEquals(user.getId(), userGetDTOPublic.getId());
+        assertEquals(user.getLastSeen(), userGetDTOPublic.getLastSeen());
+        assertEquals(user.getName(), userGetDTOPublic.getName());
+        assertEquals(user.getGender(), userGetDTOPublic.getGender());
+        assertEquals(user.getBio(), userGetDTOPublic.getBio());
+        assertEquals(user.getPhone(), userGetDTOPublic.getPhone());
+        assertEquals(user.getProfilePicture(), userGetDTOPublic.getProfilePicture());
+        assertEquals(user.getUserInterests(), userGetDTOPublic.getUserInterests());
 
         // check user interest content
-        assertEquals(user.getUserInterests().getAgeRange().max,userGetDTOProfile.getUserInterests().getAgeRange().max);
-        assertEquals(user.getUserInterests().getAgeRange().min,userGetDTOProfile.getUserInterests().getAgeRange().min);
-        assertEquals(user.getUserInterests().getGenderPreference(),userGetDTOProfile.getUserInterests().getGenderPreference());
-        assertEquals(user.getUserInterests().getActivityInterests(),userGetDTOProfile.getUserInterests().getActivityInterests());
+        assertEquals(user.getUserInterests().getAgeRange().max, userGetDTOPublic.getUserInterests().getAgeRange().max);
+        assertEquals(user.getUserInterests().getAgeRange().min, userGetDTOPublic.getUserInterests().getAgeRange().min);
+        assertEquals(user.getUserInterests().getGenderPreference(), userGetDTOPublic.getUserInterests().getGenderPreference());
+        assertEquals(user.getUserInterests().getActivityInterests(), userGetDTOPublic.getUserInterests().getActivityInterests());
     }
 }

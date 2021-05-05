@@ -9,7 +9,9 @@ import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -236,6 +238,42 @@ public class ActivityServiceIntegrationTest {
 
         // delete the specific activity and userSwipeStatus
         activityRepository.delete(testActivity);
+        userSwipeStatusRepository.delete(userSwipeStatus1);
+        userSwipeStatusRepository.delete(userSwipeStatus2);
+    }
+
+    @Test
+    public void filterPrivateUserDataFromGivenActivityGetDTOList_success(){
+        //given
+        User testUser = userRepository.findById(101L);
+        User testUser2 = userRepository.findById(102L);
+
+        // filtered users
+        User filteredUser1 = new User();
+        filteredUser1.setId(1L);
+        filteredUser1.setPassword("Hidden");
+
+        ActivityGetDTO testActivity = new ActivityGetDTO();
+
+        // the expected data
+        ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        userSwipeStatusRepository.save(userSwipeStatus1);
+        userSwipeStatusRepository.save(userSwipeStatus2);
+        userSwipeStatusRepository.flush();
+        testActivity.setId(65L);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+
+        List<ActivityGetDTO> tests = new ArrayList<>();
+        tests.add(testActivity);
+
+        // test if the users are successfully filtered in the returned list
+        assertEquals(filteredUser1.getPassword(),activityService.filterPrivateUserDataFromGivenActivityGetDTOList(tests).get(0).getUserSwipeStatusList().get(0).getUser().getPassword());
+
+        // delete the specific activity and userSwipeStatus
         userSwipeStatusRepository.delete(userSwipeStatus1);
         userSwipeStatusRepository.delete(userSwipeStatus2);
     }

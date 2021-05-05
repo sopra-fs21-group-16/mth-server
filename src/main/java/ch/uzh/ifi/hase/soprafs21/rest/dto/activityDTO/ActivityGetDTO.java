@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO;
 
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
-import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userSwipeStatusDTO.UserSwipeStatusGetDTO;
 
 import java.util.List;

@@ -19,7 +19,8 @@ public class Activity implements Serializable{
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false)
+    /** change nullable to false */
+    @Column(nullable = true)
     private LocalDate creationDate;
 
     // OneToOne since every UserActivity object has only one ActivityPreset

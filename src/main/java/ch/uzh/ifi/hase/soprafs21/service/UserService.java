@@ -304,11 +304,11 @@ public class UserService {
      * the filtered user is not saved in the repository
      * @param userToFilter
      */
-    public User filterPrivateUserData(User userToFilter){
+    public User filterPrivateUserData(User userToFilter, String fakeEmail,String fakeToken){
         // hide private data
-        userToFilter.setEmail("Hidden");
-        userToFilter.setPassword("Hidden");
-        userToFilter.setToken("Hidden");
+        userToFilter.setEmail(fakeEmail);
+        userToFilter.setPassword("hiddenPassword");
+        userToFilter.setToken(fakeToken);
         userToFilter.setDateOfBirth(null);
 
         return userToFilter;

@@ -174,7 +174,7 @@ class ActivityServiceTest {
         tests.add(testActivity);
 
         //when
-        Mockito.when(userService.filterPrivateUserData(Mockito.any())).thenReturn(filteredUser1);
+        Mockito.when(userService.filterPrivateUserData(Mockito.any(),Mockito.anyString(),Mockito.anyString())).thenReturn(filteredUser1);
 
         // test if the users are successfully filtered in the returned list
         assertEquals(filteredUser1.getPassword(),activityService.filterPrivateUserDataFromGivenActivityGetDTOList(tests).get(0).getUserSwipeStatusList().get(0).getUser().getPassword());

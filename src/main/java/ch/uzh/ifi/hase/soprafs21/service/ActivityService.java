@@ -208,8 +208,8 @@ public class ActivityService {
     public List<ActivityGetDTO> filterPrivateUserDataFromGivenActivityGetDTOList(List<ActivityGetDTO> activityGetDTOs){
 
         for (ActivityGetDTO activityGetDTO : activityGetDTOs) {
-            User filteredUser1 = userService.filterPrivateUserData(activityGetDTO.getUserSwipeStatusList().get(0).getUser());
-            User filteredUser2 = userService.filterPrivateUserData(activityGetDTO.getUserSwipeStatusList().get(1).getUser());
+            User filteredUser1 = userService.filterPrivateUserData(activityGetDTO.getUserSwipeStatusList().get(0).getUser(),"hiddenEmail" + activityGetDTO.getUserSwipeStatusList().get(0).getUser().getId() + "@uzh.ch","hiddenToken" + activityGetDTO.getUserSwipeStatusList().get(0).getUser().getId());
+            User filteredUser2 = userService.filterPrivateUserData(activityGetDTO.getUserSwipeStatusList().get(1).getUser(),"hiddenEmail" + activityGetDTO.getUserSwipeStatusList().get(1).getUser().getId() + "@uzh.ch","hiddenToken" + activityGetDTO.getUserSwipeStatusList().get(1).getUser().getId());
             activityGetDTO.getUserSwipeStatusList().get(0).setUser(filteredUser1);
             activityGetDTO.getUserSwipeStatusList().get(1).setUser(filteredUser2);
         }

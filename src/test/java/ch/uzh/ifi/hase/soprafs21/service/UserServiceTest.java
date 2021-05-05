@@ -268,11 +268,11 @@ public class UserServiceTest {
 
         User filteredUser = new User();
         filteredUser.setId(1L);
-        filteredUser.setEmail("Hidden");
+        filteredUser.setEmail("Hidden@uzh.ch");
         filteredUser.setName("Tester2");
         filteredUser.setPassword("Hidden");
 
-        User actualFilteredUser = userService.filterPrivateUserData(testUser);
+        User actualFilteredUser = userService.filterPrivateUserData(testUser,"Hidden@uzh.ch","fakeToken");
 
         assertEquals(filteredUser.getId(),actualFilteredUser.getId());
         assertEquals(filteredUser.getEmail(),actualFilteredUser.getEmail());

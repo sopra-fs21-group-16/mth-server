@@ -405,7 +405,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].activityPreset.activityName", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityName())))
                 .andExpect(jsonPath("$[0].activityPreset.activityCategory", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityCategory().toString())))
-                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.email", is(activityListWithMatchedUsers.get(0).getUserSwipeStatusList().get(0).getUser().getEmail())));
+                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.name", is(activityListWithMatchedUsers.get(0).getUserSwipeStatusList().get(0).getUser().getName())));
     }
 
     @Test

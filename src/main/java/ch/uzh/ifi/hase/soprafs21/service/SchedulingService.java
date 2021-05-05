@@ -1,8 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
-import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.*;
-import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ScheduledActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.SchedulingSessionRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;

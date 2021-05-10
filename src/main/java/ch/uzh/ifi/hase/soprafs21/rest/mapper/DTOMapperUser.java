@@ -53,6 +53,7 @@ public interface DTOMapperUser {
 
     @Mapping(source = "lastSeen", target = "lastSeen")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "dateOfBirth", target = "dateOfBirth")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "phone", target = "phone")

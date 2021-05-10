@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class UserGetDTOPublic {
@@ -10,6 +11,7 @@ public class UserGetDTOPublic {
     private Long id;
     private LocalDateTime lastSeen;
     private String name;
+    private LocalDate dateOfBirth;
     private Gender gender;
     private String bio;
     private String phone;
@@ -27,6 +29,10 @@ public class UserGetDTOPublic {
     public String getName() {return name;}
 
     public void setName(String name) {this.name = name;}
+
+    public LocalDate getDateOfBirth() {return dateOfBirth;}
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {this.dateOfBirth = dateOfBirth;}
 
     public Gender getGender() {return gender;}
 

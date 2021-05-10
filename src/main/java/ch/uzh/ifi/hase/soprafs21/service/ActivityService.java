@@ -48,10 +48,10 @@ public class ActivityService {
     }
   
   
-    public List<Activity> getActivities(long userId, String token) {
+    public List<Activity> getActivities(String token) {
         /* ToDo: In the future: check for existing activities that have not been swiped yet (= INITIAL) & add them to returned list */
-        userService.isUserAuthenticated(userId, token);
-        return generateActivities(userId);
+        userService.checkIfValidToken(token);
+        return generateActivities(userService.getIdByToken(token));
     }
 
     public void setSwipingStatus(long activityId, String token, SwipeStatus swipeStatus) {

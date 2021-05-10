@@ -71,10 +71,10 @@ public class ActivityControllerTest {
         List<Activity> activityList = Collections.singletonList(activity);
 
         // this mocks the UserService -> we define above what the userService should return when getUsers() is called
-        given(activityService.getActivities(user.getId(), user.getToken())).willReturn(activityList);
+        given(activityService.getActivities(user.getToken())).willReturn(activityList);
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/activities/" + user.getId())
+        MockHttpServletRequestBuilder getRequest = get("/activities/")
                 .contentType(MediaType.APPLICATION_JSON).header("Auth-Token", user.getToken());
 
         // then

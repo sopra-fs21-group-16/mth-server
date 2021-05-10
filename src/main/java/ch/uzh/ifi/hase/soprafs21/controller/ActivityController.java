@@ -28,10 +28,10 @@ public class ActivityController {
         this.activityService = activityService;
     }
 
-    @GetMapping("/activities/{userId}")
+    @GetMapping("/activities/")
     @ResponseStatus(HttpStatus.OK)
-    public List<ActivityGetDTO> getActivities(@PathVariable Long userId, @RequestHeader("Auth-Token")String token){
-        List<Activity> activitiesToSwipe = activityService.getActivities(userId, token);
+    public List<ActivityGetDTO> getActivities(@RequestHeader("Auth-Token")String token){
+        List<Activity> activitiesToSwipe = activityService.getActivities(token);
         return DTOMapperActivity.INSTANCE.convertEntityListToActivityGetDTOList(activitiesToSwipe);
     }
 

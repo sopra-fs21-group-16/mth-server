@@ -23,7 +23,7 @@ class DTOMapperActivityTest {
         activity.setId(1L);
 
         // do the setting twice to test constructor and setters
-        ActivityPreset activityPreset = new ActivityPreset("play football", ActivityCategory.SPORTS,"sport","football");
+        ActivityPreset activityPreset = new ActivityPreset("play football", ActivityCategory.SPORTS,"sport","football", "TestImageURL");
         activityPreset.setActivityName("play football");
         activityPreset.setActivityCategory(ActivityCategory.SPORTS);
         activityPreset.setGooglePOICategory("sport");
@@ -45,7 +45,7 @@ class DTOMapperActivityTest {
         // check content
         assertEquals(activity.getId(), activityGetDTO.getId());
         assertEquals(activity.getActivityPreset(),activityGetDTO.getActivityPreset());
-        assertEquals(activity.getUserSwipeStatusList(),activity.getUserSwipeStatusList());
+        assertEquals(activity.getUserSwipeStatusList().get(0).getUser().getId(),activityGetDTO.getUserSwipeStatusList().get(0).getUser().getId());
 
         // check activity preset content
         assertEquals(activity.getActivityPreset().getActivityName(),activityGetDTO.getActivityPreset().getActivityName());
@@ -54,7 +54,7 @@ class DTOMapperActivityTest {
         assertEquals(activity.getActivityPreset().getGooglePOIKeyword(),activityGetDTO.getActivityPreset().getGooglePOIKeyword());
 
         // check swipeStatusList content
-        assertEquals(activity.getUserSwipeStatusList().get(0).getUser(),activityGetDTO.getUserSwipeStatusList().get(0).getUser());
+        assertEquals(activity.getUserSwipeStatusList().get(0).getUser().getId(),activityGetDTO.getUserSwipeStatusList().get(0).getUser().getId());
         assertEquals(activity.getUserSwipeStatusList().get(0).getSwipeStatus(),activityGetDTO.getUserSwipeStatusList().get(0).getSwipeStatus());
     }
 
@@ -84,7 +84,7 @@ class DTOMapperActivityTest {
 
         // check content
         assertEquals(activityList.get(0).getActivityPreset(), activityGetDTOList.get(0).getActivityPreset());
-        assertEquals(activityList.get(0).getUserSwipeStatusList(), activityGetDTOList.get(0).getUserSwipeStatusList());
+        assertEquals(activityList.get(0).getUserSwipeStatusList().get(0).getUser().getId(), activityGetDTOList.get(0).getUserSwipeStatusList().get(0).getUser().getId());
     }
 
 }

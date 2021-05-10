@@ -40,7 +40,7 @@ public class UserServiceTest {
         testUser.setId(1L);
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
-        testUser.setPassword("testPassword");
+        testUser.setPassword("$2a$10$L3NRI.iV3cGcGLvEu2sqle3bi5l2l3L01N/rhNtXjaJV.wMzCDqrS");
 
         // when -> any object is being saved in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
@@ -101,12 +101,14 @@ public class UserServiceTest {
 
     @Test
     public void loginUser_validInputs_success(){
-
         // when
         Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
+        User userToLogin = new User();
+        userToLogin.setEmail("test.user@uzh.ch");
+        userToLogin.setPassword("testPassword");
 
         // then
-        User result = userService.loginUser(testUser);
+        User result = userService.loginUser(userToLogin);
 
         assertEquals(testUser, result);
     }

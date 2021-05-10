@@ -3,7 +3,10 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
-import ch.uzh.ifi.hase.soprafs21.entities.*;
+import ch.uzh.ifi.hase.soprafs21.entities.Activity;
+import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
+import ch.uzh.ifi.hase.soprafs21.entities.User;
+import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityPresetRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
@@ -16,7 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -48,10 +54,10 @@ public class ActivityService {
     }
   
   
-    public List<Activity> getActivities(long userId, String token) {
+    public List<Activity> getActivities(String token) {
         /* ToDo: In the future: check for existing activities that have not been swiped yet (= INITIAL) & add them to returned list */
-        userService.isUserAuthenticated(userId, token);
-        return generateActivities(userId);
+        userService.checkIfValidToken(token);
+        return generateActivities(userService.getIdByToken(token));
     }
 
     public void setSwipingStatus(long activityId, String token, SwipeStatus swipeStatus) {

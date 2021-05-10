@@ -379,7 +379,7 @@ public class UserControllerTest {
         // activity that contains the matched users
         Activity activityFromRepo = new Activity();
         activityFromRepo.setId(1L);
-        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
+        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football","TestImageURL"));
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.TRUE);
 
@@ -405,7 +405,7 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].activityPreset.activityName", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityName())))
                 .andExpect(jsonPath("$[0].activityPreset.activityCategory", is(activityListWithMatchedUsers.get(0).getActivityPreset().getActivityCategory().toString())))
-                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.email", is(activityListWithMatchedUsers.get(0).getUserSwipeStatusList().get(0).getUser().getEmail())));
+                .andExpect(jsonPath("$[0].userSwipeStatusList[0].user.name", is(activityListWithMatchedUsers.get(0).getUserSwipeStatusList().get(0).getUser().getName())));
     }
 
     @Test
@@ -424,7 +424,7 @@ public class UserControllerTest {
         // activity that contains the matched users
         Activity activityFromRepo = new Activity();
         activityFromRepo.setId(1L);
-        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
+        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football", "TestImageURL"));
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.FALSE); // no match
 

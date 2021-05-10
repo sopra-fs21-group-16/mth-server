@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,6 +33,8 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
 
     @Autowired
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
@@ -64,6 +67,7 @@ public class UserService {
 
         checkIfUserExistsByEmail(newUser);
 
+        newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
         newUser.setToken(UUID.randomUUID().toString());
 
         // round the LocalDateTime to Minutes using truncatedTo
@@ -92,8 +96,9 @@ public class UserService {
         try {
             checkIfUserExistsByEmail(userByEmail);
         }
+
         catch (ResponseStatusException error) {
-            if (userInput.getPassword().equals(userByEmail.getPassword())) {
+            if (bCryptPasswordEncoder.matches(userInput.getPassword(),userByEmail.getPassword())){
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
                 userRepository.save(userByEmail);
@@ -103,10 +108,9 @@ public class UserService {
             else {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or Password is wrong.");
             }
-
         }
         catch (NullPointerException error) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Username does not exist.");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or Password is wrong.");
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Something went wrong.");
     }
@@ -172,7 +176,7 @@ public class UserService {
 
         if (userInput.getPassword() != null){
             /** TODO: send emailVerification when changing password */
-            userFromRepo.setPassword(userInput.getPassword());
+            userFromRepo.setPassword(bCryptPasswordEncoder.encode(userInput.getPassword()));
             noNewData = false;
         }
 

@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
+import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
@@ -114,7 +116,7 @@ class ActivityServiceTest {
     }
 
     @Test
-    public void getAllActivitiesWithMatchedUsers_success(){
+    public void getAllActivitiesWithMatchedUsers_success() {
         //given
         User testUser = new User();
         testUser.setId(1L);
@@ -126,8 +128,8 @@ class ActivityServiceTest {
 
         // the expected data
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
-        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
-        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2,SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(testUser, SwipeStatus.TRUE);
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(testUser2, SwipeStatus.TRUE);
         userSwipeStatusList.add(userSwipeStatus1);
         userSwipeStatusList.add(userSwipeStatus2);
 
@@ -141,6 +143,6 @@ class ActivityServiceTest {
         Mockito.when(activityService.getAllActivitiesOfUser(testUser)).thenReturn(tests);
 
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
-        assertEquals(tests.get(0).getId(),activityService.getAllActivitiesWithMatchedUsers(testUser).get(0).getId());
+        assertEquals(tests.get(0).getId(), activityService.getAllActivitiesWithMatchedUsers(testUser).get(0).getId());
     }
 }

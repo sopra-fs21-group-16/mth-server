@@ -217,6 +217,22 @@ public class UserServiceIntegrationTest {
         userRepository.delete(createdUserWithID);
     }
 
+    public void checkIfValidToken_WrongToken_NoSuccess(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken("wrong token"));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
     @Test
     public void checkIfComputeAge_success(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));

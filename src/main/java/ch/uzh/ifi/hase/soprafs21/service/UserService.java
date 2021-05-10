@@ -242,25 +242,17 @@ public class UserService {
     }
 
     public boolean checkIfValidToken(String tokenToCheck){
-        boolean validStatus = false;
 
         // token is invalid if token is null
         if(tokenToCheck == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
         }
 
-        // get a list of all registered users
-        List<User> users = this.getUsers();
-
         // and token is invalid if token is not consistent with a token inside the repo
-        for (User user : users){
-            if(tokenToCheck.equals(user.getToken())){
-                validStatus = true;
-            }
-        }
-
         // throw exception if token is not consistent to any user in repo
-        if(!validStatus){
+        try{
+            userRepository.findByToken(tokenToCheck);
+        }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
         }
 

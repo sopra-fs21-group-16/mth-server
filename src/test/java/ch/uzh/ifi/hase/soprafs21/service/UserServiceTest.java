@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doThrow;
 
 public class UserServiceTest {
 
@@ -228,6 +230,8 @@ public class UserServiceTest {
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         testUser.setToken("asdf"); // invalid token that is not in repo
+
+        doThrow(RuntimeException.class).when(userRepository).findByToken(Mockito.any());
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));

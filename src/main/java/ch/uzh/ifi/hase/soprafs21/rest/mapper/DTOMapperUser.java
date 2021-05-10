@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOProfile;
+import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserGetDTOPublic;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.userDTO.UserPutDTO;
 import org.mapstruct.Mapper;
@@ -53,11 +53,12 @@ public interface DTOMapperUser {
 
     @Mapping(source = "lastSeen", target = "lastSeen")
     @Mapping(source = "name", target = "name")
+    @Mapping(source = "dateOfBirth", target = "dateOfBirth")
     @Mapping(source = "gender", target = "gender")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "profilePicture", target = "profilePicture")
     @Mapping(source = "userInterests", target = "userInterests")
-    UserGetDTOProfile convertEntityToUserGetDTOProfile(User user);
+    UserGetDTOPublic convertEntityToUserGetDTOProfile(User user);
 
 }

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
+import ch.uzh.ifi.hase.soprafs21.additionalConstraints.annotationInterfaces.Age;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 
 import javax.persistence.*;
@@ -55,9 +56,9 @@ public class User implements Serializable {
     @NotBlank(message = "Name must not be empty")
     private String name;
 
-    /** TODO: Maybe set constraints for the date of Birth */
     @Column
     @Past
+    @Age(minValue = 18, maxValue = 120)
     private LocalDate dateOfBirth;
 
     @Column

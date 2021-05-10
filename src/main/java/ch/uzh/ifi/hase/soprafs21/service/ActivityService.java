@@ -108,8 +108,11 @@ public class ActivityService {
             }
         }
 
-        HashSet<Activity> persistentActivities = new HashSet<Activity>(getAllUnmatchedActivities(user));
+        List<Activity> persistentActivities = new ArrayList<>(getAllUnmatchedActivities(user)); // all unmatched existing activities
+        persistentActivities.addAll(getAllActivitiesWithMatchedUsers(user)); // all matched activities
+        log.info("generateActivities: activityList size before dup-delete: {}", activityList.size());
         activityList.removeAll(persistentActivities);
+        log.info("generateActivities: activityList size after dup-delete: {}", activityList.size());
 
         //activityRepository.saveAll(activityList);
         for(Activity activity : activityList) {
@@ -165,15 +168,13 @@ public class ActivityService {
             }
 
             /* Gender Sieve */
-            if(!(user.getUserInterests().getGenderPreference() == GenderPreference.EVERYONE ||
-                user.getUserInterests().getGenderPreference().toString().equals(potentialUser.getGender().toString()))) {
+            if(!matchingGenderPreferences(user, potentialUser) || !matchingGenderPreferences(potentialUser, user)) {
                 log.info("sievePotentialUsers(): Gender Sieve eliminated potential user: {} vs {}", user.getUserInterests().getGenderPreference().toString(), potentialUser.getGender().toString());
                 continue;
             }
 
             /* Age Sieve */
-            if(!(potentialUser.getAge() >= user.getUserInterests().getAgeRange().min
-                && potentialUser.getAge() <= user.getUserInterests().getAgeRange().max)) {
+            if(!matchingAgePreferences(user, potentialUser) || !matchingAgePreferences(potentialUser, user)) {
                 log.info("sievePotentialUsers(): Age Sieve eliminated potential user: {} not in range from {} to {}", potentialUser.getAge(), user.getUserInterests().getAgeRange().min, user.getUserInterests().getAgeRange().max);
                 continue; // too old or too young
             }
@@ -192,6 +193,27 @@ public class ActivityService {
         }
         log.info("Tarek Test. Size of Potential Users: {}", potentialUsers.size());
         return potentialUsers;
+    }
+
+    /**
+     * Returns true if gender preferences of user match with potentialUser (not symmetric)
+     * @param user
+     * @param potentialUser
+     * @return true if gender preferences of user match with potentialUser
+     */
+    public boolean matchingGenderPreferences(User user, User potentialUser) {
+        return user.getUserInterests().getGenderPreference() == GenderPreference.EVERYONE || user.getUserInterests().getGenderPreference().toString().equals(potentialUser.getGender().toString());
+    }
+
+    /**
+     * Returns true if potentialUser is in age span of user (not symmetric)
+     * @param user
+     * @param potentialUser
+     * @return true if potentialUser is in age span of user
+     */
+    public boolean matchingAgePreferences(User user, User potentialUser) {
+        return potentialUser.getAge() >= user.getUserInterests().getAgeRange().min
+                && potentialUser.getAge() <= user.getUserInterests().getAgeRange().max;
     }
 
 }

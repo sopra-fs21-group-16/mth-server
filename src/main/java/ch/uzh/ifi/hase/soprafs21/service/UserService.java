@@ -250,8 +250,7 @@ public class UserService {
         }
 
         // get a list of all registered users
-        UserService userService = new UserService(userRepository);
-        List<User> users = userService.getUsers();
+        List<User> users = this.getUsers();
 
         // and token is invalid if token is not consistent with a token inside the repo
         for (User user : users){

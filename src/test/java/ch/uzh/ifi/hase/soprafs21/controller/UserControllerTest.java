@@ -379,7 +379,7 @@ public class UserControllerTest {
         // activity that contains the matched users
         Activity activityFromRepo = new Activity();
         activityFromRepo.setId(1L);
-        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
+        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football","TestImageURL"));
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.TRUE);
 
@@ -424,7 +424,7 @@ public class UserControllerTest {
         // activity that contains the matched users
         Activity activityFromRepo = new Activity();
         activityFromRepo.setId(1L);
-        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football"));
+        activityFromRepo.setActivityPreset(new ActivityPreset("play football", ActivityCategory.SPORTS,"Sport","football", "TestImageURL"));
         UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(userFromRepo, SwipeStatus.TRUE);
         UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(userFromRepo2, SwipeStatus.FALSE); // no match
 

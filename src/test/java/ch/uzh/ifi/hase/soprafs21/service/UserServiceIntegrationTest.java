@@ -245,10 +245,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfGetIdByToken_success(){
-        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+        assertNull(userRepository.findByEmail("test.user2@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);
@@ -289,7 +289,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(11L,createdUser.getToken()));
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(100000L,createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);

@@ -246,8 +246,6 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfGetIdByToken_success(){
-        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
-
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester2");

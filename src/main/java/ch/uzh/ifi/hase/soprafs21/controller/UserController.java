@@ -10,11 +10,15 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
 import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -24,6 +28,9 @@ import java.util.List;
  */
 @RestController
 public class UserController {
+
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
 
     private final UserService userService;
 
@@ -37,15 +44,23 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
+    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO, HttpServletRequest request) {
         // convert API user to internal representation
         User userInput = DTOMapperUser.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        // create user
-        User createdUser = userService.createUser(userInput);
+        /**
+        try {
+            // create user
+            User createdUser = userService.createUser(userInput);
+
+            String appUrl = request.getContextPath();
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
+        }catch()
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        */
+        return null;
     }
 
     @PostMapping("/users/login")

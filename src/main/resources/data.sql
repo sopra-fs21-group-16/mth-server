@@ -1,14 +1,75 @@
+/* SPORTS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
-       (2, 'Play Tennis', 'SPORTS', '???', '???', '???'),
-       (3, 'Listen Concert at Tonhalle Zurich', 'MUSIC', '???', '???', '???'),
-       (4, 'See a play', 'THEATRE', '???', '???', '???'),
-       (5, 'Eat sushi', 'EATING', '???', '???', '???'),
-       (6, 'Explore the city', 'SIGHTSEEING', '???', '???', '???'),
-       (7, 'Make a pizza', 'COOKING', '???', '???', '???'),
-       (8, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
-       (9, 'Watch a horror movie', 'MOVIES', '???', '???', '???'),
-       (10, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???');
+       (2, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???'),
+       (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
+
+/* MUSIC */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (101, 'Listen Concert at Tonhalle Zurich', 'MUSIC', '???', '???', '???'),
+       (200, 'Music Activity', 'MUSIC', '???', '???', '???');
+
+/* THEATRE */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (201, 'See a play', 'THEATRE', '???', '???', '???'),
+       (300, 'Theater Activity', 'THEATRE', '???', '???', '???');
+
+/* EATING */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (301, 'Eat sushi', 'EATING', '???', '???', '???'),
+       (400, 'Eating Activity', 'EATING', '???', '???', '???');
+
+/* COOKING */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (401, 'Make a pizza', 'COOKING', '???', '???', '???'),
+       (500, 'Cooking Activity', 'COOKING', '???', '???', '???');
+
+/* SIGHTSEEING */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (501, 'Explore the city', 'SIGHTSEEING', '???', '???', '???'),
+       (600, 'Sightseeing Activity', 'SIGHTSEEING', '???', '???', '???');
+
+/* OUTDOOR_ACTIVITY */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
+       (700, 'Outdoor Activityr', 'OUTDOOR_ACTIVITY', '???', '???', '???');
+
+/* MOVIES */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (701, 'Watch a horror movie', 'MOVIES', '???', '???', '???'),
+       (800, 'Movies Activity', 'MOVIES', '???', '???', '???');
+
+/* MUSEUMS */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (801, 'Visit the Kunsthaus Zurich', 'MUSEUMS', 'museum', 'kunsthaus', '???'),
+       (900, 'Museum Activity', 'MUSEUMS', 'museum', '???', '???');
+
+/* WELLNESS */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (901, 'Wellness Activity', 'WELLNESS', '???', '???', '???'),
+       (1000, 'Wellness Activity 2', 'WELLNESS', '???', '???', '???');
+
+/* SHOPPING */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (1001, 'Shopping Activity', 'SHOPPING', '???', '???', '???'),
+       (1100, 'Shopping Activity 2', 'SHOPPING', '???', '???', '???');
+
+/* GAMES */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (1101, 'Gaming Activity', 'GAMES', '???', '???', '???'),
+       (1200, 'Gaming Activity 2', 'GAMES', '???', '???', '???');
+
+/* WINTERSPORTS */
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (1201, 'Winter Sports Activity', 'WINTERSPORTS', '???', '???', '???'),
+       (1300, 'Winter Sports Activity 2', 'WINTERSPORTS', '???', '???', '???');
+
+
+/* TRAVEL (maybe a future category since we're only allowing zurich as a location
+INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
+VALUES (1301, 'TRAVEL', 'TRAVEL', '???', '???', '???'),
+       (1400, 'TRAVEL', 'TRAVEL', '???', '???', '???');
+*/
 
 INSERT INTO USER (ID, EMAIL, PASSWORD, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
                   USER_INTERESTS_ID)

@@ -191,7 +191,6 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfValidToken_Success(){
-        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
@@ -246,13 +245,15 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfGetIdByToken_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);
 
-        assertEquals(testUser.getId(),userService.getIdByToken(createdUserWithID.getToken()));
+        assertEquals(createdUserWithID.getId(),userService.getIdByToken(createdUserWithID.getToken()));
 
         //delete specific user
         userRepository.delete(createdUserWithID);
@@ -260,9 +261,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void isUserAuthenticated_success(){
+        assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("authenticated.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
@@ -277,9 +279,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void isUserAuthenticated_WrongID(){
+        assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("authenticated.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
@@ -294,9 +297,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void isUserAuthenticated_WrongToken(){
+        assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("authenticated.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
@@ -311,9 +315,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void isUserAuthorized_success(){
+        assertNull(userRepository.findByEmail("authorized.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("authorized.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 
@@ -328,9 +333,10 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void isUserAuthorized_WrongID(){
+        assertNull(userRepository.findByEmail("authorized.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("authorized.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
 

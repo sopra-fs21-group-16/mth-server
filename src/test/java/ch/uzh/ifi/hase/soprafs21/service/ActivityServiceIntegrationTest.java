@@ -247,9 +247,9 @@ public class ActivityServiceIntegrationTest {
         //when
         List<Activity> returnedActivities = activityService.generateActivities(testUser.getId());
 
+        //then
         assertFalse(returnedActivities.isEmpty());
 
-        //then
         boolean found;
         for (Activity activity : returnedActivities) {
             found = false;

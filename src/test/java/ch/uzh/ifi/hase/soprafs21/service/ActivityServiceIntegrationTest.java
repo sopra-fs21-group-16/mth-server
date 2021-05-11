@@ -240,7 +240,7 @@ public class ActivityServiceIntegrationTest {
     }
 
     @Test
-    public void generateActivities_validInputs() {
+    public void generateActivities_validInputs(){
         //given
         User testUser = userRepository.findById(101L);
 

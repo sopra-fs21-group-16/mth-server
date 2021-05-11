@@ -117,12 +117,13 @@ class SchedulesControllerTest {
         given(userService.checkIfValidToken("Token")).willReturn(true);
         Mockito.doNothing().when(schedulingService).updateSchedulingSession(Mockito.anyLong(), Mockito.any(), Mockito.any());
 
-        MockHttpServletRequestBuilder getRequest = get("/schedules/1")
+        MockHttpServletRequestBuilder putRequest = put("/schedules/1")
             .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(schedulingSessionPutDTO))
             .header("Auth-Token", "Token");
 
         
-        mockMvc.perform(getRequest)
+        mockMvc.perform(putRequest)
                 .andExpect(status().isOk());
    }
           

@@ -75,6 +75,8 @@ public class ActivityService {
         for (UserSwipeStatus userSwipeStatus : userSwipeStatusList){
             if (userSwipeStatus.getUser().getId().equals(user.getId())) {
                 userSwipeStatus.setSwipeStatus(swipeStatus);
+                userSwipeStatusRepository.save(userSwipeStatus);
+                userSwipeStatusRepository.flush();
                 found = true;
                 break;
             }
@@ -83,9 +85,12 @@ public class ActivityService {
         if (!found){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not part of the match.");
         }
+        /* Not necessary because Id of UserSwipeStatusList should stay the same.
         activity.setUserSwipeStatusList(userSwipeStatusList);
         activityRepository.save(activity);
         activityRepository.flush();
+         */
+
     }
 
     public List<Activity> generateActivities(long userId) {
@@ -145,19 +150,19 @@ public class ActivityService {
     }
 
     public Set<Activity> getAllUnmatchedActivities(User user){
-        Set<Activity> allUnmatchedActivites = new HashSet<>();
+        Set<Activity> allUnmatchedActivities = new HashSet<>();
 
         for(Activity activity : getAllActivitiesOfUser(user)) {
             for(UserSwipeStatus userSwipeStatus : activity.getUserSwipeStatusList()) {
                 if (userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() == SwipeStatus.INITIAL) {
-                    allUnmatchedActivites.add(activity); // current user's activity
+                    allUnmatchedActivities.add(activity); // current user's activity
                 } else if (!userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() != SwipeStatus.FALSE) {
-                    allUnmatchedActivites.add(activity); // potential user's activity
+                    allUnmatchedActivities.add(activity); // potential user's activity
                 }
             }
         }
 
-        return allUnmatchedActivites;
+        return allUnmatchedActivities;
     }
 
     /**

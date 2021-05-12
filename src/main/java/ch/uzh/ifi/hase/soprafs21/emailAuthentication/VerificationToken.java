@@ -1,14 +1,10 @@
-package ch.uzh.ifi.hase.soprafs21.accountActivation;
+package ch.uzh.ifi.hase.soprafs21.emailAuthentication;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Calendar;
-import java.util.Date;
 
 @Entity
 public class VerificationToken {

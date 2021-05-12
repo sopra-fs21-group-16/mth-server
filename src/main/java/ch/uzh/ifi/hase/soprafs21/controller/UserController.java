@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.OnRegistrationCompleteEvent;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 /**
@@ -48,19 +48,16 @@ public class UserController {
         // convert API user to internal representation
         User userInput = DTOMapperUser.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        /**
-        try {
-            // create user
-            User createdUser = userService.createUser(userInput);
+        // create user
+        User createdUser = userService.createUser(userInput);
 
-            String appUrl = request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
-        }catch()
+        // sending email that contains VerificationToken to authenticate email address of user
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, request.getLocale(), appUrl));
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
-        */
-        return null;
+
     }
 
     @PostMapping("/users/login")

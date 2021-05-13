@@ -304,7 +304,7 @@ public class UserService {
 
     public void confirmRegistration(VerificationToken verificationToken){
 
-        if(verificationToken == null){
+        if(verificationToken.getToken() == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
         }
 
@@ -323,7 +323,6 @@ public class UserService {
         if(!(user.getEmailVerified())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The email of the user is still not verified");
         }
-
         return true;
     }
 
@@ -331,8 +330,10 @@ public class UserService {
         return verificationTokenRepository.findByToken(verificationToken);
     }
 
-    public void createVerificationToken(User user, String token){
+    public VerificationToken createVerificationToken(User user, String token){
         VerificationToken myToken = new VerificationToken(token,user);
         verificationTokenRepository.save(myToken);
+
+        return myToken;
     }
 }

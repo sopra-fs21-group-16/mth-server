@@ -21,10 +21,6 @@ public class VerificationToken {
 
     private LocalDateTime expiryDate;
 
-    private LocalDateTime calculateExpiryDate(int expiryTimeInHours) {
-        return LocalDateTime.now().plus(expiryTimeInHours, ChronoUnit.HOURS);
-    }
-
     public VerificationToken(String token, User user){
         this.token = token;
         this.user = user;
@@ -44,7 +40,11 @@ public class VerificationToken {
 
     public void setUser(User user) {this.user = user;}
 
-    public LocalDateTime getExpiryDate() {return this.calculateExpiryDate(expirationInHours);}
+    public LocalDateTime getExpiryDate() {return expiryDate;}
 
     public void setExpiryDate(LocalDateTime expiryDate) {this.expiryDate = expiryDate;}
+
+    public LocalDateTime calculateExpiryDate() {
+        return LocalDateTime.now().plus(expirationInHours, ChronoUnit.HOURS);
+    }
 }

@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
@@ -37,6 +38,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.doThrow;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.RETURNS_MOCKS;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -455,7 +457,75 @@ public class UserControllerTest {
     }
 
     @Test
-    void verifyUserProfile() {
+    void confirmRegistration_Success() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = "ssfs";
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doNothing().when(userService).confirmRegistration(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void confirmRegistration_invalid_verificationToken() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = null;
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).confirmRegistration(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void confirmRegistration_expired_verificationToken() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = "ssfs";
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired")).when(userService).confirmRegistration(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
     }
 
     /**

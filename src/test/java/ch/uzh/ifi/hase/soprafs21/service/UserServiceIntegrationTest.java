@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -268,4 +269,74 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
+
+    @Test
+    public void confirmRegistration_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        // when
+        userService.confirmRegistration(verificationToken);
+
+        assertTrue(createdUserWithID.getEmailVerified());
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void confirmRegistrationverification_invalid(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+        createdUserWithID.setToken(null);
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void confirmRegistrationverification_expired(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // expired date
+        LocalDateTime localeDateTimeExpired = LocalDateTime.now().minus(2,ChronoUnit.DAYS);
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        verificationToken.setExpiryDate(localeDateTimeExpired);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+
 }

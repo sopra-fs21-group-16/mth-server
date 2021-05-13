@@ -168,6 +168,7 @@ public class UserController {
      * GET request and will use it to enable the user
      */
     @GetMapping("/users/profile/verify/{token}")
+    @ResponseStatus(HttpStatus.OK)
     public String confirmRegistration(@PathVariable String token){
 
         VerificationToken verificationToken = userService.getVerificationToken(token);

@@ -4,14 +4,12 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
-import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -23,7 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 
 public class UserServiceTest {
 
@@ -318,5 +316,19 @@ public class UserServiceTest {
         verificationToken.setExpiryDate(localeDateTimeExpired);
 
         assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+    }
+
+    @Test
+    public void checkIfEmailVerified_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("ssdf");
+        testUser.setEmailVerified(false);
+
+        // when
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailVerified(testUser));
     }
 }

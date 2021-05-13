@@ -338,5 +338,24 @@ public class UserServiceIntegrationTest {
         userRepository.delete(createdUserWithID);
     }
 
+    @Test
+    public void checkIfEmailVerified_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // when
+        // exception is thrown because initial value of emailVerified is set to false
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailVerified(createdUserWithID));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
 
 }

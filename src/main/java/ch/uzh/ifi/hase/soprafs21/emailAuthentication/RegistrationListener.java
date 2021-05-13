@@ -33,9 +33,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
 
-        VerificationToken verificationToken = userService.createVerificationToken(user, token);
-        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
-        verificationToken.setExpiryDate(expiryDate);
+        userService.createVerificationToken(user, token);
 
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";

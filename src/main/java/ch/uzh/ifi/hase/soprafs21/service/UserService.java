@@ -328,10 +328,12 @@ public class UserService {
         return verificationTokenRepository.findByToken(verificationToken);
     }
 
-    public VerificationToken createVerificationToken(User user, String token){
+    public void createVerificationToken(User user, String token){
         VerificationToken myToken = new VerificationToken(token,user);
-        verificationTokenRepository.save(myToken);
 
-        return myToken;
+        LocalDateTime expiryDate = myToken.calculateExpiryDate();
+        myToken.setExpiryDate(expiryDate);
+
+        verificationTokenRepository.save(myToken);
     }
 }

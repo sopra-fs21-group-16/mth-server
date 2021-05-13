@@ -164,18 +164,16 @@ public class UserController {
 
     /**
      * When the user receives the "Confirm Registration" link they should click on it.
-     * Once they do, the controller will extract the value of the toekn parameter in the resulting
+     * Once they do, the controller will extract the value of the token parameter in the resulting
      * GET request and will use it to enable the user
      */
     @GetMapping("/users/profile/verify/{token}")
-    public String confirmRegistration(WebRequest request, @PathVariable String token){
-
-        Locale locale = request.getLocale();
+    public String confirmRegistration(@PathVariable String token){
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
-        userService.confirmRegistration(verificationToken, request, locale);
+        userService.confirmRegistration(verificationToken);
 
-        return "redirect:/users/login";
+        return "You have successfully verified your email. You can now go to the login and finish your profile creation.";
     }
 }

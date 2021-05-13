@@ -302,7 +302,7 @@ public class UserService {
         return age;
     }
 
-    public void confirmRegistration(VerificationToken verificationToken, WebRequest request, Locale locale){
+    public void confirmRegistration(VerificationToken verificationToken){
 
         if(verificationToken == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");

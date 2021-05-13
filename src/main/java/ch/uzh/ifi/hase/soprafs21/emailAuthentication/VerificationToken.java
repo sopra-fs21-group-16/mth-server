@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit;
 
 @Entity
 public class VerificationToken {
-    private static final int EXPIRATION = 24;
+    private static final int expirationInHours = 24;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,8 +16,7 @@ public class VerificationToken {
 
     private String token;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "id")
+    @OneToOne(cascade = {CascadeType.ALL})
     private User user;
 
     private LocalDateTime expiryDate;
@@ -45,7 +44,7 @@ public class VerificationToken {
 
     public void setUser(User user) {this.user = user;}
 
-    public LocalDateTime getExpiryDate() {return this.calculateExpiryDate(24);}
+    public LocalDateTime getExpiryDate() {return this.calculateExpiryDate(expirationInHours);}
 
     public void setExpiryDate(LocalDateTime expiryDate) {this.expiryDate = expiryDate;}
 }

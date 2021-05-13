@@ -12,6 +12,9 @@ import java.util.Locale;
 @Configuration
 public class AppConfig {
 
+    /**
+     * This method is used to be able to read the messages files in the resources folder
+     */
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
@@ -20,11 +23,13 @@ public class AppConfig {
         return messageSource;
     }
 
+    /**
+     * this method is used to set a default locale if a request has no locale data
+     */
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
-        sessionLocaleResolver.setDefaultLocale(Locale.GERMAN);
+        sessionLocaleResolver.setDefaultLocale(Locale.ENGLISH);
         return sessionLocaleResolver;
     }
-
 }

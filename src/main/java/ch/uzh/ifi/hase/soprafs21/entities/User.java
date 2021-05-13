@@ -43,7 +43,7 @@ public class User implements Serializable {
     private String password;
 
     // this field is used to indicate if a user has verified its email --> initially false
-    @Column(name = "emailVerified")
+    @Column
     private boolean emailVerified = false;
 
     @Column
@@ -111,7 +111,7 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean isEmailVerified() {return emailVerified;}
+    public boolean getEmailVerified() {return emailVerified;}
 
     public void setEmailVerified(boolean emailVerified) {this.emailVerified = emailVerified;}
 

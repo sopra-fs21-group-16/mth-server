@@ -119,6 +119,7 @@ public class UserServiceIntegrationTest {
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
+        testUser.setEmailVerified(true);
 
         User createdUser = userService.createUser(testUser);
         userService.logOutUser(createdUser.getId());

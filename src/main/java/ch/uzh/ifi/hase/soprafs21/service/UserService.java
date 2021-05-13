@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.VerificationTokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
@@ -18,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -34,11 +38,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final VerificationTokenRepository verificationTokenRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
 
     @Autowired
-    public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+    public UserService(@Qualifier("userRepository") UserRepository userRepository, @Qualifier("verificationTokenRepository") VerificationTokenRepository verificationTokenRepository) {
         this.userRepository = userRepository;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     /**
@@ -99,6 +106,7 @@ public class UserService {
 
         catch (ResponseStatusException error) {
             if (bCryptPasswordEncoder.matches(userInput.getPassword(),userByEmail.getPassword())){
+                checkIfEmailVerified(userByEmail);
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
                 userRepository.save(userByEmail);
@@ -292,5 +300,39 @@ public class UserService {
         int age = differenceOfDates.getYears();
 
         return age;
+    }
+
+    public void confirmRegistration(VerificationToken verificationToken, WebRequest request, Locale locale){
+
+        if(verificationToken == null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
+        }
+
+        User user = verificationToken.getUser();
+        LocalDateTime localeDateTime = LocalDateTime.now();
+
+        if((verificationToken.getExpiryDate().isBefore(localeDateTime))){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired");
+        }
+
+        user.setEmailVerified(true);
+        userRepository.save(user);
+    }
+
+    public boolean checkIfEmailVerified(User user){
+        if(!(user.getEmailVerified())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The email of the user is still not verified");
+        }
+
+        return true;
+    }
+
+    public VerificationToken getVerificationToken(String verificationToken){
+        return verificationTokenRepository.findByToken(verificationToken);
+    }
+
+    public void createVerificationToken(User user, String token){
+        VerificationToken myToken = new VerificationToken(token,user);
+        verificationTokenRepository.save(myToken);
     }
 }

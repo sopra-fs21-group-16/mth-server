@@ -8,7 +8,7 @@ import java.time.temporal.ChronoUnit;
 
 @Entity
 public class VerificationToken {
-    private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION = 24;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,6 +26,13 @@ public class VerificationToken {
         return LocalDateTime.now().plus(expiryTimeInHours, ChronoUnit.HOURS);
     }
 
+    public VerificationToken(String token, User user){
+        this.token = token;
+        this.user = user;
+    }
+
+    public VerificationToken(){}
+
     public Long getId() {return id;}
 
     public void setId(Long id) {this.id = id;}
@@ -38,7 +45,7 @@ public class VerificationToken {
 
     public void setUser(User user) {this.user = user;}
 
-    public LocalDateTime getExpiryDate() {return expiryDate;}
+    public LocalDateTime getExpiryDate() {return this.calculateExpiryDate(24);}
 
     public void setExpiryDate(LocalDateTime expiryDate) {this.expiryDate = expiryDate;}
 }

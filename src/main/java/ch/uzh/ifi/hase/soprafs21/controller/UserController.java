@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.OnRegistrationCompleteEvent;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -14,11 +15,16 @@ import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -57,7 +63,6 @@ public class UserController {
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
-
     }
 
     @PostMapping("/users/login")
@@ -157,13 +162,20 @@ public class UserController {
         return activityGetDTOs;
     }
 
-    @GetMapping("/users/profile/verify")
-    @ResponseStatus(HttpStatus.OK)
-    public void verifyUserProfile(@PathVariable Long userId, @RequestBody String verificationToken){
+    /**
+     * When the user receives the "Confirm Registration" link they should click on it.
+     * Once they do, the controller will extract the value of the toekn parameter in the resulting
+     * GET request and will use it to enable the user
+     */
+    @GetMapping("/users/profile/verify/{token}")
+    public String confirmRegistration(WebRequest request, @PathVariable String token){
 
-        throw new UnsupportedOperationException("Not implemented yet");
+        Locale locale = request.getLocale();
 
-        // verifies Email
-        //userService.verifyEmail(verificationToken);
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+
+        userService.confirmRegistration(verificationToken, request, locale);
+
+        return "redirect:/users/login";
     }
 }

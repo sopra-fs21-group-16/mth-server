@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 
 public class UserServiceTest {
@@ -43,6 +44,7 @@ public class UserServiceTest {
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("$2a$10$L3NRI.iV3cGcGLvEu2sqle3bi5l2l3L01N/rhNtXjaJV.wMzCDqrS");
+        testUser.setEmailVerified(true);
 
         // when -> any object is being saved in the userRepository -> return the dummy testUser
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);

@@ -14,6 +14,7 @@ public class UserGetDTO {
     private String name;
     private LocalDate dateOfBirth;
     private Gender gender;
+    private boolean emailVerified;
     private String bio;
     private String token;
     private String phone;
@@ -63,6 +64,10 @@ public class UserGetDTO {
     public void setGender(Gender gender) {
         this.gender = gender;
     }
+
+    public boolean getEmailVerified() {return emailVerified;}
+
+    public void setEmailVerified(boolean emailVerified) {this.emailVerified = emailVerified;}
 
     public String getBio() {return bio;}
 

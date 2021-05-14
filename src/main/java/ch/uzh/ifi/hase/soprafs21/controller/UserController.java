@@ -174,8 +174,7 @@ public class UserController {
 
         userService.confirmRegistration(verificationToken);
 
-        //return "You have successfully verified your email. You can now go to the login and finish your profile creation.";
-
-        response.sendRedirect("localhost:3000/login");
+        // redirect the user to the login after the email verification
+        response.sendRedirect("http://localhost:3000/login");
     }
 }

@@ -16,8 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,14 +166,16 @@ public class UserController {
      * Once they do, the controller will extract the value of the token parameter in the resulting
      * GET request and will use it to enable the user
      */
-    @GetMapping("/users/profile/verify/{token}")
+    @RequestMapping("/users/profile/verify/{token}")
     @ResponseStatus(HttpStatus.OK)
-    public String confirmRegistration(@PathVariable String token){
+    public void confirmRegistration(@PathVariable String token, HttpServletResponse response) throws IOException {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
         userService.confirmRegistration(verificationToken);
 
-        return "You have successfully verified your email. You can now go to the login and finish your profile creation.";
+        //return "You have successfully verified your email. You can now go to the login and finish your profile creation.";
+
+        response.sendRedirect("localhost:3000/login");
     }
 }

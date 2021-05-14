@@ -319,7 +319,7 @@ public class UserService {
 
     public boolean checkIfEmailVerified(User user){
         if(!(user.getEmailVerified())){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The email of the user is still not verified");
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "The email of the user is still not verified");
         }
         return true;
     }

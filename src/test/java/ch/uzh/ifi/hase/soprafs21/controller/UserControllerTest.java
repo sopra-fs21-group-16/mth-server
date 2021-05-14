@@ -472,8 +472,7 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("You have successfully verified your email. You can now go to the login and finish your profile creation.")));
+                .andExpect(status().isOk());
     }
 
     @Test

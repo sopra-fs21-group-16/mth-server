@@ -166,7 +166,7 @@ public class UserController {
      * Once they do, the controller will extract the value of the token parameter in the resulting
      * GET request and will use it to enable the user
      */
-    @RequestMapping("/users/profile/verify/{token}")
+    @GetMapping("/users/profile/verify/{token}")
     @ResponseStatus(HttpStatus.OK)
     public void confirmRegistration(@PathVariable String token, HttpServletResponse response) throws IOException {
 

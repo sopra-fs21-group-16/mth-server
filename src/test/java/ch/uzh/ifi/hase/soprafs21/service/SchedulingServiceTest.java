@@ -79,7 +79,7 @@ class SchedulingServiceTest {
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
 
         //then
-        SchedulingSession cratedSchedulingSession = schedulingService.createSchedulingSession(1L, 2L, "Token");
+        SchedulingSession cratedSchedulingSession = schedulingService.createSchedulingSession(1L, 2L, "offer", "Token");
 
         Mockito.verify(schedulingSessionRepository, Mockito.times(1)).save(Mockito.any());
 
@@ -124,7 +124,7 @@ class SchedulingServiceTest {
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
 
         //then
-        assertThrows(ResponseStatusException.class, () -> schedulingService.createSchedulingSession(1L, 2L, "Token"));
+        assertThrows(ResponseStatusException.class, () -> schedulingService.createSchedulingSession(1L, 2L,"offer", "Token"));
     }
 
     @Test
@@ -165,7 +165,7 @@ class SchedulingServiceTest {
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
 
         //then
-        assertThrows(ResponseStatusException.class, () -> schedulingService.createSchedulingSession(1L, 2L, "Token3"));
+        assertThrows(ResponseStatusException.class, () -> schedulingService.createSchedulingSession(1L, 2L,"offer", "Token3"));
     }
 
     @Test

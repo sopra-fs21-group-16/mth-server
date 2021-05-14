@@ -5,6 +5,8 @@ public class UserIdsSchedulingPostDTO {
 
     private long userId2;
 
+    private String offer;
+
     public long getUserId1() {
         return userId1;
     }
@@ -20,4 +22,8 @@ public class UserIdsSchedulingPostDTO {
     public void setUserId2(long userId2) {
         this.userId2 = userId2;
     }
+
+    public String getOffer() { return offer;}
+
+    public void setOffer(String offer) { this.offer = offer; }
 }

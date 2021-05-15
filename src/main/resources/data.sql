@@ -16,7 +16,11 @@ VALUES (201, 'See a play', 'THEATRE', '???', '???', '???'),
 
 /* EATING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (301, 'Eat sushi', 'EATING', '???', '???', '???'),
+VALUES (301, 'Eat sushi', 'EATING', 'restaurant', 'sushi', 'https://source.unsplash.com/iy_MT2ifklc/1600x900'),
+       (302, 'Eat pizza', 'EATING', 'restaurant', 'pizza', 'https://source.unsplash.com/gJW-pfaqihA/1600x900'),
+       (303, 'Eat hamburger', 'EATING', 'restaurant', 'hamburger', 'https://source.unsplash.com/FlmXvqlD-nI/1600x900'),
+       (304, 'Eat pasta', 'EATING', 'restaurant', 'pasta', 'https://source.unsplash.com/b29Qdj7zc5g/1600x900'),
+       (305, 'Eat ice cream', 'EATING', 'restaurant', 'icecream', 'https://source.unsplash.com/jnWGWSWTVqU/1600x900'),
        (400, 'Eating Activity', 'EATING', '???', '???', '???');
 
 /* COOKING */

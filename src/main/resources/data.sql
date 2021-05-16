@@ -2,6 +2,8 @@
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
        (2, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???'),
+       (3, 'Enjoy a Bike Adventure', 'SPORTS', 'point_of_interest', 'Bikepark%20Zürich', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
+       (4, 'Go Swimming', 'SPORTS', 'point_of_interest', 'Freibad Letzigraben', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
        (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
 
 /* MUSIC */
@@ -31,6 +33,8 @@ VALUES (401, 'Make a pizza', 'COOKING', '???', '???', '???'),
 /* SIGHTSEEING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (501, 'Explore the city', 'SIGHTSEEING', '???', '???', '???'),
+       (502, 'Visit the Grossmünster', 'SIGHTSEEING', 'tourist_attraction', 'Grossmünster', 'https://source.unsplash.com/MSkwgjm9UEw/1600x900'),
+       (503, 'Visit the Lindenhof', 'SIGHTSEEING', '', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
        (600, 'Sightseeing Activity', 'SIGHTSEEING', '???', '???', '???');
 
 /* OUTDOOR_ACTIVITY */
@@ -40,12 +44,22 @@ VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
 
 /* MOVIES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (701, 'Watch a horror movie', 'MOVIES', '???', '???', '???'),
+VALUES (701, 'Watch a horror movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/PbspBt8DOyY/1600x900'),
+       (702, 'Watch a thriller movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/p3m7uRHDFac/1600x900'),
+       (703, 'Watch a action movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/cqtw4QCfbQg'),
+       (704, 'Watch a drama movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/E5bGCHzjpr8/1600x900'),
+       (705, 'Watch a comedy movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/CiUR8zISX60/1600x900'),
+       (706, 'Watch a love movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/Eg5KA2-0lg4/1600x900'),
        (800, 'Movies Activity', 'MOVIES', '???', '???', '???');
 
 /* MUSEUMS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (801, 'Visit the Kunsthaus Zurich', 'MUSEUMS', 'museum', 'kunsthaus', '???'),
+       (802, 'Visit the FIFA World Football Museum', 'MUSEUMS', 'museum', 'FIFA%20World%20Football%20Museum', 'https://source.unsplash.com/Y_upPEyxXN8/1600x900'),
+       (803, 'Visit the zoological Museum of Zurich', 'MUSEUMS', 'museum', 'Zoologisches%20Museum%20Zürich', 'https://source.unsplash.com/BuQ1RZckYW4/1600x900'),
+       (804, 'Visit the Museum Rietberg', 'MUSEUMS', 'museum', 'Museum%20Rietberg%20Museum%20Zürich', 'https://source.unsplash.com/D8NXYiz2uTQ/1600x900'),
+       (805, 'Visit the Museum of Design', 'MUSEUMS', 'museum', 'Museum%20für%20Gestaltung%20Zürich', 'https://source.unsplash.com/56Sbpi_hrqU/1600x900'),
+       (806, 'Visit the Kulturama / Museum of Man', 'MUSEUMS', 'museum', 'Kulturama', 'https://source.unsplash.com/keIjMFXUu0Y/1600x900'),
        (900, 'Museum Activity', 'MUSEUMS', 'museum', '???', '???');
 
 /* WELLNESS */

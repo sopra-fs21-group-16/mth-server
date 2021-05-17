@@ -2,8 +2,9 @@
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
        (2, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???'),
-       (3, 'Enjoy a Bike Adventure', 'SPORTS', 'point_of_interest', 'Bikepark%20Zürich', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
-       (4, 'Go Swimming', 'SPORTS', 'point_of_interest', 'Freibad Letzigraben', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
+       (3, 'Go on a Bike Adventure', 'SPORTS', 'sport', 'bikepark', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
+       (4, 'Go outdoor Swimming', 'SPORTS', 'point_of_interest', 'outdoor%20swimming', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
+       (5, 'Go indoor Swimming', 'SPORTS', 'point_of_interest', 'indoor%20swimming', 'https://source.unsplash.com/N3VEiHD8Sec/1600x900'),
        (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
 
 /* MUSIC */
@@ -16,13 +17,14 @@ INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATE
 VALUES (201, 'See a play', 'THEATRE', '???', '???', '???'),
        (300, 'Theater Activity', 'THEATRE', '???', '???', '???');
 
-/* EATING */
+/* EATING AND DRINKING*/
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (301, 'Eat sushi', 'EATING', 'restaurant', 'sushi', 'https://source.unsplash.com/iy_MT2ifklc/1600x900'),
        (302, 'Eat pizza', 'EATING', 'restaurant', 'pizza', 'https://source.unsplash.com/gJW-pfaqihA/1600x900'),
        (303, 'Eat hamburger', 'EATING', 'restaurant', 'hamburger', 'https://source.unsplash.com/FlmXvqlD-nI/1600x900'),
        (304, 'Eat pasta', 'EATING', 'restaurant', 'pasta', 'https://source.unsplash.com/b29Qdj7zc5g/1600x900'),
        (305, 'Eat ice cream', 'EATING', 'restaurant', 'icecream', 'https://source.unsplash.com/jnWGWSWTVqU/1600x900'),
+       (306, 'Drink a coffee', 'EATING', 'restaurant', 'coffee', 'https://source.unsplash.com/ojju1U9wU7A/1600x900'),
        (400, 'Eating Activity', 'EATING', '???', '???', '???');
 
 /* COOKING */
@@ -40,7 +42,7 @@ VALUES (501, 'Explore the city', 'SIGHTSEEING', '???', '???', '???'),
 /* OUTDOOR_ACTIVITY */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
-       (700, 'Outdoor Activityr', 'OUTDOOR_ACTIVITY', '???', '???', '???');
+       (700, 'Outdoor Activity', 'OUTDOOR_ACTIVITY', '???', '???', '???');
 
 /* MOVIES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
@@ -54,12 +56,10 @@ VALUES (701, 'Watch a horror movie', 'MOVIES', 'movie_theater', '', 'https://sou
 
 /* MUSEUMS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (801, 'Visit the Kunsthaus Zurich', 'MUSEUMS', 'museum', 'kunsthaus', '???'),
-       (802, 'Visit a Football Museum', 'MUSEUMS', 'museum', 'FIFA%20World%20Football%20Museum', 'https://source.unsplash.com/Y_upPEyxXN8/1600x900'),
-       (803, 'Visit a zoological Museum ', 'MUSEUMS', 'museum', 'Zoologisches%20Museum%20Zürich', 'https://source.unsplash.com/BuQ1RZckYW4/1600x900'),
-       (804, 'Visit the Museum Rietberg', 'MUSEUMS', 'museum', 'Museum%20Rietberg%20Museum%20Zürich', 'https://source.unsplash.com/D8NXYiz2uTQ/1600x900'),
-       (805, 'Visit the Museum of Design', 'MUSEUMS', 'museum', 'Museum%20für%20Gestaltung%20Zürich', 'https://source.unsplash.com/56Sbpi_hrqU/1600x900'),
-       (806, 'Visit the Kulturama / Museum of Man', 'MUSEUMS', 'museum', 'Kulturama', 'https://source.unsplash.com/keIjMFXUu0Y/1600x900'),
+VALUES (801, '', 'MUSEUMS', 'museum', '', '???'),
+       (802, 'Visit a football Museum', 'MUSEUMS', 'museum', 'football', 'https://source.unsplash.com/Y_upPEyxXN8/1600x900'),
+       (803, 'Visit a zoological Museum ', 'MUSEUMS', 'museum', 'zoological', 'https://source.unsplash.com/BuQ1RZckYW4/1600x900'),
+       (804, 'Visit an art Museum', 'MUSEUMS', 'museum', 'art', 'https://source.unsplash.com/1rBg5YSi00c/1600x900'),
        (900, 'Museum Activity', 'MUSEUMS', 'museum', '???', '???');
 
 /* WELLNESS */

@@ -44,12 +44,12 @@ VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
 
 /* MOVIES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (701, 'Watch a horror movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/PbspBt8DOyY/1600x900'),
-       (702, 'Watch a thriller movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/p3m7uRHDFac/1600x900'),
-       (703, 'Watch a action movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/cqtw4QCfbQg'),
-       (704, 'Watch a drama movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/E5bGCHzjpr8/1600x900'),
-       (705, 'Watch a comedy movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/CiUR8zISX60/1600x900'),
-       (706, 'Watch a love movie', 'MOVIES', 'movie_theater', 'Arena%20Cinemas', 'https://source.unsplash.com/Eg5KA2-0lg4/1600x900'),
+VALUES (701, 'Watch a horror movie', 'MOVIES', 'movie_theater', 'cinema', 'https://source.unsplash.com/PbspBt8DOyY/1600x900'),
+       (702, 'Watch a thriller movie', 'MOVIES', 'movie_theater', 'cinema', 'https://source.unsplash.com/p3m7uRHDFac/1600x900'),
+       (703, 'Watch a action movie', 'MOVIES', 'movie_theater', 'cinema', 'https://source.unsplash.com/cqtw4QCfbQg'),
+       (704, 'Watch a drama movie', 'MOVIES', 'movie_theater', 'cinema', 'https://source.unsplash.com/E5bGCHzjpr8/1600x900'),
+       (705, 'Watch a comedy movie', 'MOVIES', 'movie_theater', 'cinema', 'https://source.unsplash.com/CiUR8zISX60/1600x900'),
+       (706, 'Watch a love movie', 'MOVIES', 'movie_theater', 'cinema', 'https://source.unsplash.com/Eg5KA2-0lg4/1600x900'),
        (800, 'Movies Activity', 'MOVIES', '???', '???', '???');
 
 /* MUSEUMS */

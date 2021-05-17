@@ -34,7 +34,7 @@ VALUES (401, 'Make a pizza', 'COOKING', '???', '???', '???'),
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (501, 'Explore the city', 'SIGHTSEEING', '???', '???', '???'),
        (502, 'Visit the Grossmünster', 'SIGHTSEEING', 'tourist_attraction', 'Grossmünster', 'https://source.unsplash.com/MSkwgjm9UEw/1600x900'),
-       (503, 'Visit the Lindenhof', 'SIGHTSEEING', '', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
+       (503, 'Visit the Lindenhof', 'SIGHTSEEING', 'tourist_attraction', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
        (600, 'Sightseeing Activity', 'SIGHTSEEING', '???', '???', '???');
 
 /* OUTDOOR_ACTIVITY */

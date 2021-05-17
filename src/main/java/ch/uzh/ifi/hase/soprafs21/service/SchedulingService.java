@@ -72,7 +72,7 @@ public class SchedulingService {
     public ScheduledActivity saveScheduledActivity(long sessionId, ScheduledActivity scheduledActivity) {
         SchedulingSession schedulingSession = schedulingSessionRepository.findById(sessionId);
         if (schedulingSession == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Scheduling session not found");
         }
         if (scheduledActivity.getActivity() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduled activity misses specific activity.");
@@ -93,7 +93,7 @@ public class SchedulingService {
     public SchedulingSession getSchedulingSession(long sessionId, String token) {
         SchedulingSession schedulingSession = schedulingSessionRepository.findById(sessionId);
         if (schedulingSession == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session Not Found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Scheduling session Not Found");
         }
         boolean isPartOfMatch = false;
         List<UserSwipeStatus> userSwipeStatusList = schedulingSession.getActivityList().get(0).getUserSwipeStatusList();

@@ -37,10 +37,10 @@ public class SchedulingSession implements Serializable {
     @Column
     private LocalDateTime chosenDate;
 
-    @Column
+    @Column (length = 1500)
     private String offer;
 
-    @Column
+    @Column (length = 1500)
     private String answer;
 
     public Long getId() {

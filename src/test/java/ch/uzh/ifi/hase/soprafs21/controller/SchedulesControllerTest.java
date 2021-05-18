@@ -52,7 +52,7 @@ class SchedulesControllerTest {
         // when
         given(userService.checkIfValidToken("Token")).willReturn(true);
         SchedulingSession schedulingSession = new SchedulingSession();
-        given(schedulingService.createSchedulingSession(1L, 2L, "Token")).willReturn(schedulingSession);
+        given(schedulingService.createSchedulingSession(1L, 2L, "offer","Token")).willReturn(schedulingSession);
 
         MockHttpServletRequestBuilder postRequest = post("/schedules")
                 .contentType(MediaType.APPLICATION_JSON)

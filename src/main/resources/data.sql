@@ -4,8 +4,8 @@ VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
        (2, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???'),
        (3, 'Enjoy a Bike Adventure', 'SPORTS', 'point_of_interest', 'Bikepark%20Zürich', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
        (4, 'Go Swimming', 'SPORTS', 'point_of_interest', 'Freibad Letzigraben', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
-       (5, 'Play Squash', 'SPORTS', 'point_of_interest', 'squash', 'https://source.unsplash.com/P9y0G14Z7wA/1600x900'),
-       (6, 'Go Bowling', 'SPORTS', 'bowling_alley', 'bowling', 'https://source.unsplash.com/IoBCIosXkH8/1600x900'),
+       (6, 'Play Squash', 'SPORTS', 'point_of_interest', 'squash', 'https://source.unsplash.com/P9y0G14Z7wA/1600x900'),
+       (7, 'Go Bowling', 'SPORTS', 'bowling_alley', 'bowling', 'https://source.unsplash.com/IoBCIosXkH8/1600x900'),
        (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
 
 /* MUSIC */
@@ -29,7 +29,7 @@ VALUES (301, 'Eat sushi', 'EATING', 'restaurant', 'sushi', 'https://source.unspl
        (303, 'Eat hamburger', 'EATING', 'restaurant', 'hamburger', 'https://source.unsplash.com/FlmXvqlD-nI/1600x900'),
        (304, 'Eat pasta', 'EATING', 'restaurant', 'pasta', 'https://source.unsplash.com/b29Qdj7zc5g/1600x900'),
        (305, 'Eat ice cream', 'EATING', 'restaurant', 'icecream', 'https://source.unsplash.com/jnWGWSWTVqU/1600x900'),
-       (306, 'Make a picnic', 'EATING', 'park', 'park', 'https://source.unsplash.com/3m5P_kEykqc/1600x900'),
+       (307, 'Make a picnic', 'EATING', 'park', 'park', 'https://source.unsplash.com/3m5P_kEykqc/1600x900'),
        (400, 'Eating Activity', 'EATING', '???', '???', '???');
 
 /* COOKING */

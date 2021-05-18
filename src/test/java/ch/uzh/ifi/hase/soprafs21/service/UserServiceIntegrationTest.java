@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -148,7 +149,14 @@ public class UserServiceIntegrationTest {
 
         // user with new data
         User newUser = new User();
+        newUser.setEmail("newName@uzh.ch");
         newUser.setName("newName");
+        newUser.setDateOfBirth(LocalDate.of(2000, 1, 8));
+        newUser.setBio("newBio");
+        newUser.setPhone("+41791231212");
+        newUser.setGender(Gender.MALE);
+        newUser.setProfilePicture("FakeLink");
+
 
         // when
         userService.applyUserProfileChange(newUser, testUser);
@@ -183,7 +191,6 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfValidToken_Success(){
-        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
@@ -238,17 +245,107 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfGetIdByToken_success(){
-        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+        assertNull(userRepository.findByEmail("test.user2@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);
 
-        assertEquals(testUser.getId(),userService.getIdByToken(createdUserWithID.getToken()));
+        assertEquals(createdUserWithID.getId(),userService.getIdByToken(createdUserWithID.getToken()));
 
         //delete specific user
         userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void isUserAuthenticated_success(){
+        assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("authenticated.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        // when
+        User createdUser = userService.createUser(testUser);
+
+        assertTrue(userService.isUserAuthenticated(createdUser.getId(),createdUser.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUser);
+    }
+
+    @Test
+    public void isUserAuthenticated_WrongID(){
+        assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("authenticated.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        // when
+        User createdUser = userService.createUser(testUser);
+
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(100000L,createdUser.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUser);
+    }
+
+    @Test
+    public void isUserAuthenticated_WrongToken(){
+        assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("authenticated.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        // when
+        User createdUser = userService.createUser(testUser);
+
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(createdUser.getId(),"WrongToken"));
+
+        //delete specific user
+        userRepository.delete(createdUser);
+    }
+
+    @Test
+    public void isUserAuthorized_success(){
+        assertNull(userRepository.findByEmail("authorized.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("authorized.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        // when
+        User createdUser = userService.createUser(testUser);
+
+        assertTrue(userService.isUserAuthorized(createdUser.getId(), createdUser.getId() ,createdUser.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUser);
+    }
+
+    @Test
+    public void isUserAuthorized_WrongID(){
+        assertNull(userRepository.findByEmail("authorized.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("authorized.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        // when
+        User createdUser = userService.createUser(testUser);
+
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L, createdUser.getId() ,createdUser.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUser);
     }
 }

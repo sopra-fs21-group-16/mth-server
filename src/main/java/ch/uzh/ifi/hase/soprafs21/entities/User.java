@@ -62,7 +62,7 @@ public class User implements Serializable {
 
     @Column
     @Past
-    @Age(minValue = 18, maxValue = 100)
+    @Age(minValue = 18, maxValue = 120)
     private LocalDate dateOfBirth;
 
     @Column

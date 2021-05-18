@@ -20,7 +20,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 /**
@@ -183,8 +184,8 @@ public class ActivityServiceIntegrationTest {
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
         UserSwipeStatus userSwipeStatus = new UserSwipeStatus(testUser,SwipeStatus.TRUE);
         userSwipeStatusList.add(userSwipeStatus);
-        //userSwipeStatusRepository.save(userSwipeStatus);
-        //userSwipeStatusRepository.flush();
+        userSwipeStatusRepository.save(userSwipeStatus);
+        userSwipeStatusRepository.flush();
         testActivity.setId(50L);
         testActivity.setUserSwipeStatusList(userSwipeStatusList);
 
@@ -195,8 +196,7 @@ public class ActivityServiceIntegrationTest {
         tests.add(testActivity);
 
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
-        //assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
-        assertTrue(activityService.getAllActivitiesOfUser(testUser).contains(tests.get(0)));
+        assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
 
         // delete the specific activity and userSwipeStatus
         activityRepository.delete(testActivity);
@@ -237,30 +237,5 @@ public class ActivityServiceIntegrationTest {
         activityRepository.delete(testActivity);
         userSwipeStatusRepository.delete(userSwipeStatus1);
         userSwipeStatusRepository.delete(userSwipeStatus2);
-    }
-
-    @Test
-    public void generateActivities_validInputs(){
-        //given
-        User testUser = userRepository.findById(101L);
-
-        //when
-        List<Activity> returnedActivities = activityService.generateActivities(testUser.getId());
-
-        //then
-        assertFalse(returnedActivities.isEmpty());
-
-        boolean found;
-        for (Activity activity : returnedActivities) {
-            found = false;
-            for (UserSwipeStatus userSwipeStatus : activity.getUserSwipeStatusList()){
-                if(userSwipeStatus.getUser().getId().equals(testUser.getId())){
-                    found = true;
-                    break;
-                }
-            }
-            assertTrue(found);
-            activityRepository.delete(activity);
-        }
     }
 }

@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.entities.UserSwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
-import ch.uzh.ifi.hase.soprafs21.repository.UserSwipeStatusRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,9 +24,6 @@ class ActivityServiceTest {
 
     @Mock
     private ActivityRepository activityRepository;
-
-    @Mock
-    private UserSwipeStatusRepository userSwipeStatusRepository;
 
     @InjectMocks
     private ActivityService activityService;
@@ -61,7 +57,7 @@ class ActivityServiceTest {
         //then
         activityService.setSwipingStatus(5L,"testToken", SwipeStatus.TRUE);
 
-        Mockito.verify(userSwipeStatusRepository, Mockito.times(1)).save(Mockito.any());
+        Mockito.verify(activityRepository, Mockito.times(1)).save(Mockito.any());
     }
 
     @Test
@@ -146,23 +142,5 @@ class ActivityServiceTest {
 
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
         assertEquals(tests.get(0).getId(), activityService.getAllActivitiesWithMatchedUsers(testUser).get(0).getId());
-    }
-
-    @Test
-    public void getActivities_validInputs_success() {
-        //given
-        User testUser = new User();
-        testUser.setId(1L);
-        testUser.setToken("TestToken");
-        List<Activity> generatedActivities = new ArrayList<>();
-        //when
-        Mockito.when(userService.checkIfValidToken("TestToken")).thenReturn(true);
-        Mockito.when(userService.getIdByToken("TestToken")).thenReturn(1L);
-        Mockito.when(activityService.generateActivities(1L)).thenReturn(generatedActivities);
-
-        List<Activity> returnedActivities = activityService.getActivities("TestToken");
-
-        //then
-        assertEquals(generatedActivities,returnedActivities);
     }
 }

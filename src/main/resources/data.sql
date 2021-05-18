@@ -2,6 +2,9 @@
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
        (2, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???'),
+       (3, 'Go on a Bike Adventure', 'SPORTS', 'sport', 'bikepark', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
+       (4, 'Go outdoor Swimming', 'SPORTS', 'point_of_interest', 'outdoor%20swimming', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
+       (5, 'Go indoor Swimming', 'SPORTS', 'point_of_interest', 'indoor%20swimming', 'https://source.unsplash.com/N3VEiHD8Sec/1600x900'),
        (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
 
 /* MUSIC */
@@ -14,9 +17,14 @@ INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATE
 VALUES (201, 'See a play', 'THEATRE', '???', '???', '???'),
        (300, 'Theater Activity', 'THEATRE', '???', '???', '???');
 
-/* EATING */
+/* EATING AND DRINKING*/
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (301, 'Eat sushi', 'EATING', '???', '???', '???'),
+VALUES (301, 'Eat sushi', 'EATING', 'restaurant', 'sushi', 'https://source.unsplash.com/iy_MT2ifklc/1600x900'),
+       (302, 'Eat pizza', 'EATING', 'restaurant', 'pizza', 'https://source.unsplash.com/gJW-pfaqihA/1600x900'),
+       (303, 'Eat hamburger', 'EATING', 'restaurant', 'hamburger', 'https://source.unsplash.com/FlmXvqlD-nI/1600x900'),
+       (304, 'Eat pasta', 'EATING', 'restaurant', 'pasta', 'https://source.unsplash.com/b29Qdj7zc5g/1600x900'),
+       (305, 'Eat ice cream', 'EATING', 'restaurant', 'icecream', 'https://source.unsplash.com/jnWGWSWTVqU/1600x900'),
+       (306, 'Drink a coffee', 'EATING', 'restaurant', 'coffee', 'https://source.unsplash.com/ojju1U9wU7A/1600x900'),
        (400, 'Eating Activity', 'EATING', '???', '???', '???');
 
 /* COOKING */
@@ -27,21 +35,31 @@ VALUES (401, 'Make a pizza', 'COOKING', '???', '???', '???'),
 /* SIGHTSEEING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (501, 'Explore the city', 'SIGHTSEEING', '???', '???', '???'),
+       (502, 'Visit the Grossmünster', 'SIGHTSEEING', 'tourist_attraction', 'Grossmünster', 'https://source.unsplash.com/MSkwgjm9UEw/1600x900'),
+       (503, 'Visit the Lindenhof', 'SIGHTSEEING', 'tourist_attraction', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
        (600, 'Sightseeing Activity', 'SIGHTSEEING', '???', '???', '???');
 
 /* OUTDOOR_ACTIVITY */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
-       (700, 'Outdoor Activityr', 'OUTDOOR_ACTIVITY', '???', '???', '???');
+       (700, 'Outdoor Activity', 'OUTDOOR_ACTIVITY', '???', '???', '???');
 
 /* MOVIES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (701, 'Watch a horror movie', 'MOVIES', '???', '???', '???'),
+VALUES (701, 'Watch a horror movie', 'MOVIES', 'movie_theater', '', 'https://source.unsplash.com/PbspBt8DOyY/1600x900'),
+       (702, 'Watch a thriller movie', 'MOVIES', 'movie_theater', '', 'https://source.unsplash.com/p3m7uRHDFac/1600x900'),
+       (703, 'Watch a action movie', 'MOVIES', 'movie_theater', '', 'https://source.unsplash.com/cqtw4QCfbQg'),
+       (704, 'Watch a drama movie', 'MOVIES', 'movie_theater', '', 'https://source.unsplash.com/E5bGCHzjpr8/1600x900'),
+       (705, 'Watch a comedy movie', 'MOVIES', 'movie_theater', '', 'https://source.unsplash.com/CiUR8zISX60/1600x900'),
+       (706, 'Watch a love movie', 'MOVIES', 'movie_theater', '', 'https://source.unsplash.com/Eg5KA2-0lg4/1600x900'),
        (800, 'Movies Activity', 'MOVIES', '???', '???', '???');
 
 /* MUSEUMS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (801, 'Visit the Kunsthaus Zurich', 'MUSEUMS', 'museum', 'kunsthaus', '???'),
+VALUES (801, '', 'MUSEUMS', 'museum', '', '???'),
+       (802, 'Visit a football Museum', 'MUSEUMS', 'museum', 'football', 'https://source.unsplash.com/Y_upPEyxXN8/1600x900'),
+       (803, 'Visit a zoological Museum ', 'MUSEUMS', 'museum', 'zoological', 'https://source.unsplash.com/BuQ1RZckYW4/1600x900'),
+       (804, 'Visit an art Museum', 'MUSEUMS', 'museum', 'art', 'https://source.unsplash.com/1rBg5YSi00c/1600x900'),
        (900, 'Museum Activity', 'MUSEUMS', 'museum', '???', '???');
 
 /* WELLNESS */

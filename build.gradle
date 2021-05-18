@@ -101,10 +101,6 @@ sonarqube {
     }
 }
 
-processResources {
-    expand(project.properties)
-}
-
 project.tasks["sonarqube"].dependsOn {
     test
 }

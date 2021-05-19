@@ -23,6 +23,7 @@ jobs:
           EMAIL_HOST: smtp.example.com
           EMAIL_ADDRESS: email@example.com
           EMAIL_PASSWORD: ex@mple
+          CLIENT_URL: http://localhost:3000
 
       - name: Test with Gradle
         run: ./gradlew test

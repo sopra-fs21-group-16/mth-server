@@ -10,6 +10,11 @@ VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
        (8, 'Play Ping Pong', 'SPORTS', 'sport', 'pingpong', 'https://source.unsplash.com/i0kB5B9J8Ds/1600x900'),
        (9, 'Play Billard', 'SPORTS', 'sport', 'billard', 'https://source.unsplash.com/L8mclmMuWjg/1600x900'),
        (10, 'Play Dart', 'SPORTS', 'sport', 'dart', 'https://source.unsplash.com/DX3_dXuHVl8/1600x900'),
+       (11, 'Go Climbing', 'SPORTS', 'sport', 'climbing', 'https://source.unsplash.com/NY1D4Zni7fc/1600x900'),
+       (12, 'Go Paragliding', 'SPORTS', 'sport', 'paragliding', 'https://source.unsplash.com/8ZYkjNarn5s/1600x900'),
+       (13, 'Do Stand-Up-Puddling', 'SPORTS', 'sport', 'stand-up-puddling', 'https://source.unsplash.com/yG_kRzUtajU/1600x900'),
+       (14, 'Do Wakeboarding', 'SPORTS', 'sport', 'wakeboarding', 'https://source.unsplash.com/UYJQr5e4id8/1600x900'),
+       (15, 'Do Wakesurfing', 'SPORTS', 'sport', 'wakesurfing', 'https://source.unsplash.com/3Cft95Pim7g/1600x900'),
        (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
 
 /* MUSIC AND DANCING */
@@ -38,6 +43,9 @@ VALUES (301, 'Eat sushi', 'EATING', 'restaurant', 'sushi', 'https://source.unspl
        (307, 'Make a picnic', 'EATING', 'park', 'park', 'https://source.unsplash.com/3m5P_kEykqc/1600x900'),
        (308, 'Have a drink', 'EATING', 'bar', '', 'https://source.unsplash.com/xBFTjrMIC0c/1600x900'),
        (309, 'Have a beer', 'EATING', 'bar', 'beer', 'https://source.unsplash.com/C8eSYwQkwHw/1600x900'),
+       (310, 'Enjoy chinese food', 'EATING', 'restaurant', 'chinese', 'https://source.unsplash.com/Dghn39rncfY/1600x900'),
+       (311, 'Enjoy indian food', 'EATING', 'restaurant', 'indian', 'https://source.unsplash.com/BgvvOFEcHjg/1600x900'),
+       (312, 'Enjoy thai food', 'EATING', 'restaurant', 'thai', 'https://source.unsplash.com/V82GYnR98lY/1600x900'),
        (400, 'Eating Activity', 'EATING', '???', '???', '???');
 
 /* COOKING */
@@ -61,6 +69,7 @@ VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '???', '???', '???'),
        (602, 'Go for a walk', 'OUTDOOR_ACTIVITY', 'park', 'park', 'https://source.unsplash.com/t4aa3L7QLcI/1600x900'),
        (603, 'Do a boat tour', 'OUTDOOR_ACTIVITY', 'point_of_interest', 'boat', 'https://source.unsplash.com/g--YmYxD1a4/1600x900'),
        (604, 'Help at the animal shelter', 'OUTDOOR_ACTIVITY', 'point_of_interest', 'animal shelter', 'https://source.unsplash.com/uNNCs5kL70Q/1600x900'),
+       (605, 'Do a picnic', 'OUTDOOR_ACTIVITY', 'park', 'park', 'https://source.unsplash.com/Ejd2biBmjRM/1600x900'),
        (700, 'Outdoor Activity', 'OUTDOOR_ACTIVITY', '???', '???', '???');
 
 /* MOVIES */
@@ -104,6 +113,8 @@ VALUES (1101, 'Gaming Activity', 'GAMES', '???', '???', '???'),
        (1103, 'Play Mario Kart', 'GAMES', '', '', 'https://source.unsplash.com/2X6rLd40nF0/1600x900'),
        (1104, 'Play FIFA', 'GAMES', '', '', 'https://source.unsplash.com/eCktzGjC-iU/1600x900'),
        (1105, 'Play Chess', 'GAMES', '', '', 'https://source.unsplash.com/7VGzV09YnvA/1600x900'),
+       (1106, 'Play a card game', 'GAMES', '', '', 'https://source.unsplash.com/p1Xx215ooiM/1600x900'),
+       (1107, 'Play a board game', 'GAMES', '', '', 'https://source.unsplash.com/O9Epo1PwX5A/1600x900'),
        (1200, 'Gaming Activity 2', 'GAMES', '???', '???', '???');
 
 /* WINTERSPORTS */

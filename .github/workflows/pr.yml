@@ -19,6 +19,10 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+        env:
+          EMAIL_HOST: smtp.example.com
+          EMAIL_ADDRESS: email@example.com
+          EMAIL_PASSWORD: ex@mple
 
       - name: Test with Gradle
         run: ./gradlew test

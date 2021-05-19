@@ -14,6 +14,7 @@ import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -36,6 +37,9 @@ public class UserController {
 
     @Autowired
     ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private Environment env;
 
     private final UserService userService;
 
@@ -175,6 +179,6 @@ public class UserController {
         userService.confirmRegistration(verificationToken);
 
         // redirect the user to the login after the email verification
-        response.sendRedirect("http://localhost:3000/login");
+        response.sendRedirect(env.getProperty("CLIENT_URL") + "/login");
     }
 }

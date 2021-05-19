@@ -302,16 +302,7 @@ public class UserService {
 
     public void confirmRegistration(VerificationToken verificationToken){
 
-        if(verificationToken.getToken() == null){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
-        }
-
         User user = verificationToken.getUser();
-        LocalDateTime localeDateTime = LocalDateTime.now();
-
-        if((verificationToken.getExpiryDate().isBefore(localeDateTime))){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired");
-        }
 
         user.setEmailVerified(true);
         userRepository.save(user);
@@ -328,12 +319,27 @@ public class UserService {
         return verificationTokenRepository.findByToken(verificationToken);
     }
 
-    public void createVerificationToken(User user, String token){
+    public VerificationToken createVerificationToken(User user, String token){
         VerificationToken myToken = new VerificationToken(token,user);
 
         LocalDateTime expiryDate = myToken.calculateExpiryDate();
         myToken.setExpiryDate(expiryDate);
 
-        verificationTokenRepository.save(myToken);
+        return verificationTokenRepository.save(myToken);
+    }
+
+    public boolean checkIfValidVerificationToken(VerificationToken verificationToken){
+
+        if(verificationToken.getToken() == null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
+        }
+
+        LocalDateTime localeDateTime = LocalDateTime.now();
+
+        if((verificationToken.getExpiryDate().isBefore(localeDateTime))){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired");
+        }
+
+        return true;
     }
 }

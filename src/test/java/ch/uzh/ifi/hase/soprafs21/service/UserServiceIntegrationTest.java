@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +29,10 @@ public class UserServiceIntegrationTest {
     @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
+
+    @Qualifier("verificationTokenRepository")
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     private UserService userService;
@@ -294,7 +299,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void confirmRegistrationverification_invalid(){
+    public void checkIfValidVerificationToken_verificationToken_invalid(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
@@ -309,14 +314,14 @@ public class UserServiceIntegrationTest {
         verificationToken.setExpiryDate(expiryDate);
 
         // then
-        assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidVerificationToken(verificationToken));
 
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
 
     @Test
-    public void confirmRegistrationverification_expired(){
+    public void checkIFValidVerificationToken_verificationToken_expired(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
@@ -332,7 +337,7 @@ public class UserServiceIntegrationTest {
         verificationToken.setExpiryDate(localeDateTimeExpired);
 
         // then
-        assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidVerificationToken(verificationToken));
 
         //delete specific user
         userRepository.delete(createdUserWithID);
@@ -356,6 +361,4 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
-
-
 }

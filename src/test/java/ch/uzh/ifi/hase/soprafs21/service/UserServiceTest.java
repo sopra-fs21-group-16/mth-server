@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -27,6 +28,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private VerificationTokenRepository verificationTokenRepository;
 
     @InjectMocks
     private UserService userService;
@@ -285,7 +289,23 @@ public class UserServiceTest {
     }
 
     @Test
-    public void confirmRegistration_verificationToken_invalid(){
+    public void checkIfValidVerificationToken_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("valid");
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        assertTrue(userService.checkIfValidVerificationToken(verificationToken));
+    }
+
+    @Test
+    public void checkIfValidVerificationToken_verificationToken_invalid(){
         // create user that is in repo
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
@@ -297,11 +317,11 @@ public class UserServiceTest {
         LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
         verificationToken.setExpiryDate(expiryDate);
 
-        assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidVerificationToken(verificationToken));
     }
 
     @Test
-    public void confirmRegistration_verificationToken_expired(){
+    public void checkIFValidVerificationToken_verificationToken_expired(){
         // create user that is in repo
         testUser.setId(1L);
         testUser.setEmail("test.user2@uzh.ch");
@@ -315,7 +335,7 @@ public class UserServiceTest {
         VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
         verificationToken.setExpiryDate(localeDateTimeExpired);
 
-        assertThrows(ResponseStatusException.class, () -> userService.confirmRegistration(verificationToken));
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidVerificationToken(verificationToken));
     }
 
     @Test
@@ -330,5 +350,43 @@ public class UserServiceTest {
 
         // when
         assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailVerified(testUser));
+    }
+
+    @Test
+    public void getVerificationToken_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("token");
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        String verificationTokenToFind = "verificationToken";
+
+        given(verificationTokenRepository.findByToken(verificationTokenToFind)).willReturn(verificationToken);
+
+        assertEquals(verificationToken, userService.getVerificationToken(verificationTokenToFind));
+    }
+
+    @Test
+    public void createVerificationToken_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("token");
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        given(verificationTokenRepository.save(Mockito.any())).willReturn(verificationToken);
+
+        assertEquals(verificationToken,userService.createVerificationToken(testUser, testUser.getToken()));
     }
 }

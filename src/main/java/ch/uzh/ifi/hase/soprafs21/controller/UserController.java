@@ -176,6 +176,9 @@ public class UserController {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
+        // check if the token is not null and is not expired
+        userService.checkIfValidVerificationToken(verificationToken);
+
         userService.confirmRegistration(verificationToken);
 
         // redirect the user to the login after the email verification

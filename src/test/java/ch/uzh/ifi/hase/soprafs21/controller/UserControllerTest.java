@@ -465,6 +465,8 @@ public class UserControllerTest {
 
         given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
 
+        given(userService.checkIfValidVerificationToken(verificationToken)).willReturn(true);
+
         doNothing().when(userService).confirmRegistration(verificationToken);
 
         // when
@@ -489,7 +491,7 @@ public class UserControllerTest {
 
         given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
 
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).confirmRegistration(verificationToken);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidVerificationToken(verificationToken);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
@@ -513,7 +515,7 @@ public class UserControllerTest {
 
         given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
 
-        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired")).when(userService).confirmRegistration(verificationToken);
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired")).when(userService).checkIfValidVerificationToken(verificationToken);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)

@@ -40,7 +40,7 @@ public class PasswordResetListener  implements ApplicationListener<OnPasswordRes
 
         String recipientAddress = user.getEmail();
         String subject = "Password reset Confirmation";
-        String confirmationUrl = "users/password/" + token;
+        String confirmationUrl = "/users/password/" + token;
         String message = messages.getMessage("message.passwordReset", null, event.getLocale());
 
         SimpleMailMessage email = new SimpleMailMessage();

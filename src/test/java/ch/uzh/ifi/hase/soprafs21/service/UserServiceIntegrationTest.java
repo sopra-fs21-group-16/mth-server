@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 /**
  * Test class for the UserResource REST resource.
@@ -357,6 +358,40 @@ public class UserServiceIntegrationTest {
         // when
         // exception is thrown because initial value of emailVerified is set to false
         assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailVerified(createdUserWithID));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void checkIfEmailExists_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        assertTrue(userService.checkIfEmailExists(testUser.getEmail()));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void checkIfEmailExists_emailNotFound(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailExists("EmailNotExisting"));
 
         //delete specific user
         userRepository.delete(createdUserWithID);

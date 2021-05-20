@@ -100,12 +100,12 @@ public class UserService {
     }
 
     public Boolean checkIfEmailExists(String email){
-        try {
-            User userByEmail = userRepository.findByEmail(email);
-            return true;
-        }catch(Exception ex){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The email address does not exist, please use a valid email address");
+        User userByEmail = userRepository.findByEmail(email);
+
+        if(userByEmail == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email address does not exist, please use a valid email address");
         }
+        return true;
     }
 
     public User loginUser(User userInput) {
@@ -193,7 +193,6 @@ public class UserService {
         }
 
         if (userInput.getPassword() != null){
-            /** TODO: send emailVerification when changing password */
             userFromRepo.setPassword(bCryptPasswordEncoder.encode(userInput.getPassword()));
             noNewData = false;
         }

@@ -170,7 +170,7 @@ public class UserController {
      * GET request and will use it to enable the user
      */
     @GetMapping("/users/profile/verify/{token}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.FOUND)
     public void confirmRegistration(@PathVariable String token, HttpServletResponse response) throws IOException {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
@@ -184,10 +184,10 @@ public class UserController {
         response.sendRedirect(env.getProperty("CLIENT_URL") + "/login");
     }
 
-    @PutMapping("users/password")
+    @PutMapping("/users/password")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void SendEmailForResetPassword(@RequestHeader("Email")String email, HttpServletRequest request){
+    public void sendEmailForResetPassword(@RequestHeader("Email")String email, HttpServletRequest request){
         userService.checkIfEmailExists(email);
 
         // get the user that has given email
@@ -198,8 +198,8 @@ public class UserController {
         eventPublisher.publishEvent(new OnPasswordResetEvent(userFromRepo, request.getLocale(), appUrl));
     }
 
-    @GetMapping("users/password/{token}")
-    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/users/password/{token}")
+    @ResponseStatus(HttpStatus.FOUND)
     public void confirmResetPassword(@PathVariable String token, HttpServletResponse response) throws IOException {
         VerificationToken verificationToken = userService.getVerificationToken(token);
 
@@ -207,6 +207,7 @@ public class UserController {
         userService.checkIfValidVerificationToken(verificationToken);
 
         // redirect the user to the password reset page
+        response.addHeader("PasswordReset-VerificationToken",token);
         response.sendRedirect(env.getProperty("CLIENT_URL") + "/users/password");
     }
 }

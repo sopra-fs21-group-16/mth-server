@@ -225,6 +225,7 @@ public class UserServiceIntegrationTest {
         userRepository.delete(createdUserWithID);
     }
 
+    @Test
     public void checkIfValidToken_WrongToken_NoSuccess(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 

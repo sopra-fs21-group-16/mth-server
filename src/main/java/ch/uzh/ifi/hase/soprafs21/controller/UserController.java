@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
-import ch.uzh.ifi.hase.soprafs21.emailAuthentication.OnRegistrationCompleteEvent;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.OnEvent;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
@@ -17,8 +17,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -62,7 +60,7 @@ public class UserController {
 
         // sending email that contains VerificationToken to authenticate email address of user
         String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, request.getLocale(), appUrl));
+        eventPublisher.publishEvent(new OnEvent(createdUser, request.getLocale(), appUrl));
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);

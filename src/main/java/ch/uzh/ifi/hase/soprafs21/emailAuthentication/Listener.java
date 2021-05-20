@@ -5,15 +5,15 @@ import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.MessageSource;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Component
-public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+public class Listener implements ApplicationListener<OnEvent> {
 
     @Autowired
     private UserService userService;
@@ -24,12 +24,15 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private Environment env;
+
     @Override
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
+    public void onApplicationEvent(OnEvent event) {
         this.confirmRegistration(event);
     }
 
-    private void confirmRegistration(OnRegistrationCompleteEvent event) {
+    private void confirmRegistration(OnEvent event) {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
 
@@ -43,7 +46,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + "\r\n" + "http://localhost:8080" + confirmationUrl);
+        email.setText(message + "\r\n" + env.getProperty("SERVER_URL") + confirmationUrl);
         mailSender.send(email);
     }
 }

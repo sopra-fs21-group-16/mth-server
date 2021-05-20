@@ -99,6 +99,15 @@ public class UserService {
         }
     }
 
+    public Boolean checkIfEmailExists(String email){
+        try {
+            User userByEmail = userRepository.findByEmail(email);
+            return true;
+        }catch(Exception ex){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The email address does not exist, please use a valid email address");
+        }
+    }
+
     public User loginUser(User userInput) {
         User userByEmail = userRepository.findByEmail(userInput.getEmail());
         try {

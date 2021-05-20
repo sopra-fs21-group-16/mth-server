@@ -1,16 +1,16 @@
-package ch.uzh.ifi.hase.soprafs21.emailAuthentication;
+package ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;
 
-public class OnEvent extends ApplicationEvent {
+public class OnRegistrationCompleteEvent extends ApplicationEvent {
     private String appURL;
     private Locale locale;
     private User user;
 
-    public OnEvent(User user, Locale locale, String appUrl){
+    public OnRegistrationCompleteEvent(User user, Locale locale, String appUrl){
         // use constructor of ApplicationEvent
         super(user);
 

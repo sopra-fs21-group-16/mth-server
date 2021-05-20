@@ -1,7 +1,8 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
-import ch.uzh.ifi.hase.soprafs21.emailAuthentication.OnEvent;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification.OnRegistrationCompleteEvent;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.passwordReset.OnPasswordResetEvent;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -60,7 +61,7 @@ public class UserController {
 
         // sending email that contains VerificationToken to authenticate email address of user
         String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnEvent(createdUser, request.getLocale(), appUrl));
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, request.getLocale(), appUrl));
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
@@ -187,12 +188,14 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void SendEmailForResetPassword(@RequestHeader("Email")String email, HttpServletRequest request){
+        userService.checkIfEmailExists(email);
+
         // get the user that has given email
         User userFromRepo = userService.getUserByEmail(email);
 
         // sending email that contains VerificationToken to reset password
         String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnEvent(userFromRepo, request.getLocale(), appUrl));
+        eventPublisher.publishEvent(new OnPasswordResetEvent(userFromRepo, request.getLocale(), appUrl));
     }
 
     @GetMapping("users/password/{token}")
@@ -203,7 +206,7 @@ public class UserController {
         // check if the token is not null and is not expired
         userService.checkIfValidVerificationToken(verificationToken);
 
-        userService.
-
+        // redirect the user to the password reset page
+        response.sendRedirect(env.getProperty("CLIENT_URL") + "/users/password");
     }
 }

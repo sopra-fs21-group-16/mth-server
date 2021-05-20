@@ -250,10 +250,7 @@ public class UserService {
     }
 
     public void checkIfUserExistsWithGivenId(long userId){
-        try{
-            userRepository.findById(userId);
-        }
-        catch(ResponseStatusException e){
+        if(userRepository.findById(userId) == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user with " + userId + " was not found"));
         }
     }
@@ -267,9 +264,7 @@ public class UserService {
 
         // and token is invalid if token is not consistent with a token inside the repo
         // throw exception if token is not consistent to any user in repo
-        try{
-            userRepository.findByToken(tokenToCheck);
-        }catch(Exception e){
+        if(userRepository.findByToken(tokenToCheck) == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
         }
 

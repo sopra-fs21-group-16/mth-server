@@ -24,6 +24,7 @@ jobs:
           EMAIL_ADDRESS: email@example.com
           EMAIL_PASSWORD: ex@mple
           CLIENT_URL: http://localhost:3000
+          SERVER_URL: http://localhost:8080
 
       - name: Test with Gradle
         run: ./gradlew test

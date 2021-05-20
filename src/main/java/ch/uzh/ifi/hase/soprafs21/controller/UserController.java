@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
-import ch.uzh.ifi.hase.soprafs21.emailAuthentication.OnEvent;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification.OnRegistrationCompleteEvent;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -60,7 +60,7 @@ public class UserController {
 
         // sending email that contains VerificationToken to authenticate email address of user
         String appUrl = request.getContextPath();
-        eventPublisher.publishEvent(new OnEvent(createdUser, request.getLocale(), appUrl));
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, request.getLocale(), appUrl));
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);

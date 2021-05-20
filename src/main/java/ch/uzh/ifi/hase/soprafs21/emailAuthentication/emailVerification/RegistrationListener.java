@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs21.emailAuthentication;
+package ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification;
 
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-public class Listener implements ApplicationListener<OnEvent> {
+public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
 
     @Autowired
     private UserService userService;
@@ -28,11 +28,11 @@ public class Listener implements ApplicationListener<OnEvent> {
     private Environment env;
 
     @Override
-    public void onApplicationEvent(OnEvent event) {
+    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         this.confirmRegistration(event);
     }
 
-    private void confirmRegistration(OnEvent event) {
+    private void confirmRegistration(OnRegistrationCompleteEvent event) {
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
 

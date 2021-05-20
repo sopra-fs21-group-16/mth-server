@@ -59,13 +59,16 @@ public class UserService {
     }
 
     public User getUserByToken(String token) {
-        User userByToken = this.userRepository.findByToken(token);
-        return userByToken;
+        return this.userRepository.findByToken(token);
     }
 
     public long getIdByToken(String token){
         User userByToken = this.userRepository.findByToken(token);
         return userByToken.getId();
+    }
+
+    public User getUserByEmail(String email){
+        return this.userRepository.findByEmail(email);
     }
 
     public User createUser(User newUser) {

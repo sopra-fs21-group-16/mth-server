@@ -5,12 +5,12 @@ import org.springframework.context.ApplicationEvent;
 
 import java.util.Locale;
 
-public class OnRegistrationCompleteEvent extends ApplicationEvent {
+public class OnEvent extends ApplicationEvent {
     private String appURL;
     private Locale locale;
     private User user;
 
-    public OnRegistrationCompleteEvent(User user, Locale locale, String appUrl){
+    public OnEvent(User user, Locale locale, String appUrl){
         // use constructor of ApplicationEvent
         super(user);
 

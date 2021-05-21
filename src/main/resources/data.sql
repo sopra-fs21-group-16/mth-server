@@ -2,19 +2,19 @@
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1, 'Play Football', 'SPORTS', '???', '???', '???'),
        (2, 'Hiking on the Uetliberg', 'SPORTS', '???', '???', '???'),
-       (3, 'Go on a Bike Adventure', 'SPORTS', 'sport', 'bikepark', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
+       (3, 'Go on a Bike Adventure', 'SPORTS', 'point_of_interest', 'bikepark', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
        (4, 'Go outdoor Swimming', 'SPORTS', 'point_of_interest', 'outdoor%20swimming', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
        (5, 'Go indoor Swimming', 'SPORTS', 'point_of_interest', 'indoor%20swimming', 'https://source.unsplash.com/N3VEiHD8Sec/1600x900'),
        (6, 'Play Squash', 'SPORTS', 'point_of_interest', 'squash', 'https://source.unsplash.com/P9y0G14Z7wA/1600x900'),
        (7, 'Go Bowling', 'SPORTS', 'bowling_alley', 'bowling', 'https://source.unsplash.com/IoBCIosXkH8/1600x900'),
-       (8, 'Play Ping Pong', 'SPORTS', 'sport', 'pingpong', 'https://source.unsplash.com/i0kB5B9J8Ds/1600x900'),
-       (9, 'Play Billard', 'SPORTS', 'sport', 'billard', 'https://source.unsplash.com/L8mclmMuWjg/1600x900'),
-       (10, 'Play Dart', 'SPORTS', 'sport', 'dart', 'https://source.unsplash.com/DX3_dXuHVl8/1600x900'),
-       (11, 'Go Climbing', 'SPORTS', 'sport', 'climbing', 'https://source.unsplash.com/NY1D4Zni7fc/1600x900'),
-       (12, 'Go Paragliding', 'SPORTS', 'sport', 'paragliding', 'https://source.unsplash.com/8ZYkjNarn5s/1600x900'),
-       (13, 'Do Stand-Up-Puddling', 'SPORTS', 'sport', 'stand-up-puddling', 'https://source.unsplash.com/yG_kRzUtajU/1600x900'),
-       (14, 'Do Wakeboarding', 'SPORTS', 'sport', 'wakeboarding', 'https://source.unsplash.com/UYJQr5e4id8/1600x900'),
-       (15, 'Do Wakesurfing', 'SPORTS', 'sport', 'wakesurfing', 'https://source.unsplash.com/3Cft95Pim7g/1600x900'),
+       (8, 'Play Ping Pong', 'SPORTS', 'point_of_interest', 'pingpong', 'https://source.unsplash.com/i0kB5B9J8Ds/1600x900'),
+       (9, 'Play Billard', 'SPORTS', 'point_of_interest', 'billard', 'https://source.unsplash.com/L8mclmMuWjg/1600x900'),
+       (10, 'Play Dart', 'SPORTS', 'point_of_interest', 'dart', 'https://source.unsplash.com/DX3_dXuHVl8/1600x900'),
+       (11, 'Go Climbing', 'SPORTS', 'point_of_interest', 'climbing', 'https://source.unsplash.com/NY1D4Zni7fc/1600x900'),
+       (12, 'Go Paragliding', 'SPORTS', 'point_of_interest', 'paragliding', 'https://source.unsplash.com/8ZYkjNarn5s/1600x900'),
+       (13, 'Do Stand-Up-Puddling', 'SPORTS', 'point_of_interest', 'stand-up-puddling', 'https://source.unsplash.com/yG_kRzUtajU/1600x900'),
+       (14, 'Do Wakeboarding', 'SPORTS', 'point_of_interest', 'wakeboarding', 'https://source.unsplash.com/UYJQr5e4id8/1600x900'),
+       (15, 'Do Wakesurfing', 'SPORTS', 'point_of_interest', 'wakesurfing', 'https://source.unsplash.com/3Cft95Pim7g/1600x900'),
        (100, 'Play Tennis', 'SPORTS', '???', '???', '???');
 
 /* MUSIC AND DANCING */

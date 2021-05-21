@@ -251,7 +251,7 @@ public class UserService {
 
     public void checkIfUserExistsWithGivenId(long userId){
         if(userRepository.findById(userId) == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user with " + userId + " was not found"));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("user with " + userId + " was not found"));
         }
     }
 

@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification.OnRegistrationCompleteEvent;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.passwordReset.OnPasswordResetEvent;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -169,7 +170,7 @@ public class UserController {
      * GET request and will use it to enable the user
      */
     @GetMapping("/users/profile/verify/{token}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.FOUND)
     public void confirmRegistration(@PathVariable String token, HttpServletResponse response) throws IOException {
 
         VerificationToken verificationToken = userService.getVerificationToken(token);
@@ -181,5 +182,32 @@ public class UserController {
 
         // redirect the user to the login after the email verification
         response.sendRedirect(env.getProperty("CLIENT_URL") + "/login");
+    }
+
+    @PutMapping("/users/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void sendEmailForResetPassword(@RequestHeader("Email")String email, HttpServletRequest request){
+        userService.checkIfEmailExists(email);
+
+        // get the user that has given email
+        User userFromRepo = userService.getUserByEmail(email);
+
+        // sending email that contains VerificationToken to reset password
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnPasswordResetEvent(userFromRepo, request.getLocale(), appUrl));
+    }
+
+    @GetMapping("/users/password/{token}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public void confirmResetPassword(@PathVariable String token, HttpServletResponse response) throws IOException {
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+
+        // check if the token is not null and is not expired
+        userService.checkIfValidVerificationToken(verificationToken);
+
+        // redirect the user to the password reset page
+        response.addHeader("PasswordReset-VerificationToken",token);
+        response.sendRedirect(env.getProperty("CLIENT_URL") + "/users/password");
     }
 }

@@ -196,7 +196,6 @@ public class ActivityServiceIntegrationTest {
 
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
         //assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
-
         assertTrue(activityService.getAllActivitiesOfUser(testUser).contains(tests.get(0)));
 
         // delete the specific activity and userSwipeStatus

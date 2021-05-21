@@ -204,10 +204,7 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
         User userInRepo = userService.createUser(testUser);
 
-        List<User> userList = new ArrayList<>();
-        userList.add(userInRepo);
-
-        given(userService.getUsers()).willReturn(userList);
+        given(userRepository.findByToken(userInRepo.getToken())).willReturn(userInRepo);
 
         boolean valid = userService.checkIfValidToken(userInRepo.getToken());
 
@@ -236,7 +233,7 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
         testUser.setToken("asdf"); // invalid token that is not in repo
 
-        doThrow(RuntimeException.class).when(userRepository).findByToken(Mockito.any());
+        given(userRepository.findByToken(testUser.getToken())).willReturn(null);
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));

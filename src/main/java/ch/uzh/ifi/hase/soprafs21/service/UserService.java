@@ -256,9 +256,7 @@ public class UserService {
 
         // and token is invalid if token is not consistent with a token inside the repo
         // throw exception if token is not consistent to any user in repo
-        try{
-            userRepository.findByToken(tokenToCheck);
-        }catch(Exception e){
+        if(userRepository.findByToken(tokenToCheck) == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
         }
 

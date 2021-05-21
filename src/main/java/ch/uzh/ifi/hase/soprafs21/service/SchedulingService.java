@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -46,7 +47,7 @@ public class SchedulingService {
         this.userRepository = userRepository;
     }
 
-    public SchedulingSession createSchedulingSession(long userId1, long userId2, String token) {
+    public SchedulingSession createSchedulingSession(long userId1, long userId2, String offer, String token) {
         SchedulingSession schedulingSession = new SchedulingSession();
         User user = userRepository.findByToken(token);
         User user1 = userRepository.findById(userId1);
@@ -62,6 +63,7 @@ public class SchedulingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session not possible for these two users. No common activities.");
         }
         schedulingSession.setActivityList(sessionActivityList);
+        schedulingSession.setOffer(offer);
         SchedulingSession newSchedulingSession = schedulingSessionRepository.save(schedulingSession);
         schedulingSessionRepository.flush();
         return newSchedulingSession;
@@ -70,7 +72,7 @@ public class SchedulingService {
     public ScheduledActivity saveScheduledActivity(long sessionId, ScheduledActivity scheduledActivity) {
         SchedulingSession schedulingSession = schedulingSessionRepository.findById(sessionId);
         if (schedulingSession == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Scheduling session not found");
         }
         if (scheduledActivity.getActivity() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduled activity misses specific activity.");
@@ -91,7 +93,7 @@ public class SchedulingService {
     public SchedulingSession getSchedulingSession(long sessionId, String token) {
         SchedulingSession schedulingSession = schedulingSessionRepository.findById(sessionId);
         if (schedulingSession == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session Not Found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Scheduling session Not Found");
         }
         boolean isPartOfMatch = false;
         List<UserSwipeStatus> userSwipeStatusList = schedulingSession.getActivityList().get(0).getUserSwipeStatusList();
@@ -137,6 +139,14 @@ public class SchedulingService {
             schedulingSessionById.setChosenDate(schedulingSession.getChosenDate());
             noNewData = false;
         }
+        if (schedulingSession.getOffer() != null) {
+            schedulingSessionById.setOffer(schedulingSession.getOffer());
+            noNewData = false;
+        }
+        if (schedulingSession.getAnswer() != null) {
+            schedulingSessionById.setAnswer(schedulingSession.getAnswer());
+            noNewData = false;
+        }
         if (noNewData) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No changed data was provided");
         }
@@ -180,5 +190,21 @@ public class SchedulingService {
 
         schedulingSessionRepository.delete(schedulingSessionToDelete);
         schedulingSessionRepository.flush();
+    }
+
+    public List<Long> getSchedulingSessionsOfUser(String token) {
+        User user = userRepository.findByToken(token);
+        List<Long> sessionIdList = new ArrayList<Long>();
+        List<SchedulingSession> schedulingSessions = schedulingSessionRepository.findAll();
+        for (SchedulingSession schedulingSession : schedulingSessions){
+            Activity activity = schedulingSession.getActivityList().get(0);
+            if(activity==null){
+                continue;
+            }
+            if (activity.getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId())||activity.getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())){
+                sessionIdList.add(schedulingSession.getId());
+            }
+        }
+        return sessionIdList;
     }
 }

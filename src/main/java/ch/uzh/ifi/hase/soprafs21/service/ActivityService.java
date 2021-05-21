@@ -75,6 +75,8 @@ public class ActivityService {
         for (UserSwipeStatus userSwipeStatus : userSwipeStatusList){
             if (userSwipeStatus.getUser().getId().equals(user.getId())) {
                 userSwipeStatus.setSwipeStatus(swipeStatus);
+                userSwipeStatusRepository.save(userSwipeStatus);
+                userSwipeStatusRepository.flush();
                 found = true;
                 break;
             }
@@ -83,9 +85,11 @@ public class ActivityService {
         if (!found){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not part of the match.");
         }
+        /* Not necessary because Id of UserSwipeStatusList should stay the same.
         activity.setUserSwipeStatusList(userSwipeStatusList);
         activityRepository.save(activity);
         activityRepository.flush();
+        */
     }
 
     public List<Activity> generateActivities(long userId) {

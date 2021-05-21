@@ -9,6 +9,8 @@ import ch.uzh.ifi.hase.soprafs21.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * User Controller
@@ -27,14 +29,25 @@ public class SchedulesController {
         this.schedulingService = schedulingService;
     }
 
-    //Schedule - to get ScheduledActivity after a successful session
+    //Schedule - to get IDs of all Scheduling Sessions with this user
+    @GetMapping("/schedules")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public List<Long> getSchedulingSessionOfUser(@RequestHeader("Auth-Token") String token) {
+        userService.checkIfValidToken(token);
+
+        return schedulingService.getSchedulingSessionsOfUser(token);
+    }
+
+
+    //Schedule - to crate Scheduling Session
     @PostMapping("/schedules")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public SchedulingSessionGetDTO createSchedulingSession(@RequestBody UserIdsSchedulingPostDTO userIdsSchedulingPostDTO, @RequestHeader("Auth-Token") String token) {
         userService.checkIfValidToken(token);
 
-        SchedulingSession schedulingSession = schedulingService.createSchedulingSession(userIdsSchedulingPostDTO.getUserId1(), userIdsSchedulingPostDTO.getUserId2(), token);
+        SchedulingSession schedulingSession = schedulingService.createSchedulingSession(userIdsSchedulingPostDTO.getUserId1(), userIdsSchedulingPostDTO.getUserId2(), userIdsSchedulingPostDTO.getOffer(), token);
         return DTOMapperScheduling.INSTANCE.convertEntityToSchedulingSessionGetDTO(schedulingSession);
     }
 

@@ -37,6 +37,12 @@ public class SchedulingSession implements Serializable {
     @Column
     private LocalDateTime chosenDate;
 
+    @Column (length = 1500)
+    private String offer;
+
+    @Column (length = 1500)
+    private String answer;
+
     public Long getId() {
         return id;
     }
@@ -79,6 +85,13 @@ public class SchedulingSession implements Serializable {
         this.chosenDate = chosenDate;
     }
 
+    public String getOffer() { return offer; }
+
+    public void setOffer(String offer) { this.offer = offer; }
+
+    public String getAnswer() { return answer; }
+
+    public void setAnswer(String answer) { this.answer = answer; }
 }
 
 

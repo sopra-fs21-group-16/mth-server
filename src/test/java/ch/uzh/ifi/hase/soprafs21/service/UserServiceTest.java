@@ -191,8 +191,7 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
 
         // when
-        given(userRepository.findById(Mockito.anyLong())).willReturn(testUser);
-
+        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Mockito.any());
         userService.checkIfUserExistsWithGivenId(testUser.getId());
     }
 
@@ -205,12 +204,11 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
         User userInRepo = userService.createUser(testUser);
 
-        List<User> userList = new ArrayList<>();
-        userList.add(userInRepo);
+        given(userRepository.findByToken(userInRepo.getToken())).willReturn(userInRepo);
 
-        given(userRepository.findByToken(Mockito.anyString())).willReturn(userInRepo);
+        boolean valid = userService.checkIfValidToken(userInRepo.getToken());
 
-        assertTrue(userService.checkIfValidToken(userInRepo.getToken()));
+        assertTrue(valid);
     }
 
     @Test
@@ -235,7 +233,7 @@ public class UserServiceTest {
         testUser.setPassword("testPassword2");
         testUser.setToken("asdf"); // invalid token that is not in repo
 
-        given(userRepository.findByToken(Mockito.anyString())).willReturn(null);
+        given(userRepository.findByToken(testUser.getToken())).willReturn(null);
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken(testUser.getToken()));
@@ -387,46 +385,5 @@ public class UserServiceTest {
         given(verificationTokenRepository.save(Mockito.any())).willReturn(verificationToken);
 
         assertEquals(verificationToken,userService.createVerificationToken(testUser, testUser.getToken()));
-    }
-
-    @Test
-    public void getUserByEmail_success(){
-        // create user that is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("token");
-
-        given(userRepository.findByEmail(testUser.getEmail())).willReturn(testUser);
-
-        assertEquals(testUser, userService.getUserByEmail(testUser.getEmail()));
-    }
-
-    @Test
-    public void checkIfEmailExists_success(){
-        // create user that is in repo
-        testUser.setId(1L);
-        testUser.setEmail("test.user2@uzh.ch");
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("token");
-
-        given(userRepository.findByEmail(testUser.getEmail())).willReturn(testUser);
-
-        assertTrue(userService.checkIfEmailExists(testUser.getEmail()));
-    }
-
-    @Test
-    public void checkIfEmailExists_emailNotFound(){
-        // create user that is in repo --> user has no email
-        testUser.setId(1L);
-        testUser.setName("Tester2");
-        testUser.setPassword("testPassword2");
-        testUser.setToken("token");
-
-        given(userRepository.findByEmail(testUser.getEmail())).willReturn(null);
-
-        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailExists(testUser.getEmail()));
     }
 }

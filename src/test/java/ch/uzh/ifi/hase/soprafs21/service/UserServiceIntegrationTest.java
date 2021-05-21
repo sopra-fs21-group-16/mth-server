@@ -324,7 +324,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void isUserAuthenticated_WrongID() {
+    public void isUserAuthenticated_WrongID(){
         assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
 
         User testUser = new User();
@@ -335,7 +335,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(100000L, createdUser.getToken()));
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(100000L,createdUser.getToken()));
 
 
         //delete specific user
@@ -343,7 +343,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void isUserAuthenticated_WrongToken() {
+    public void isUserAuthenticated_WrongToken(){
         assertNull(userRepository.findByEmail("authenticated.user@uzh.ch"));
 
         User testUser = new User();
@@ -354,7 +354,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(createdUser.getId(), "WrongToken"));
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(createdUser.getId(),"WrongToken"));
 
 
         //delete specific user
@@ -362,7 +362,7 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
-    public void isUserAuthorized_success() {
+    public void isUserAuthorized_success(){
         assertNull(userRepository.findByEmail("authorized.user@uzh.ch"));
 
         User testUser = new User();
@@ -373,14 +373,14 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertTrue(userService.isUserAuthorized(createdUser.getId(), createdUser.getId(), createdUser.getToken()));
+        assertTrue(userService.isUserAuthorized(createdUser.getId(),createdUser.getId(), createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);
     }
 
     @Test
-    public void isUserAuthorized_WrongID() {
+    public void isUserAuthorized_WrongID(){
         assertNull(userRepository.findByEmail("authorized.user@uzh.ch"));
 
         User testUser = new User();
@@ -391,7 +391,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L, createdUser.getId(), createdUser.getToken()));
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L,createdUser.getId(), createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);

@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -98,7 +95,14 @@ public class ActivityService {
         List<User> potentialUsers = sievePotentialUsers(user);
         List<Activity> activityList = new ArrayList<>();
 
+        potentialUsers.sort(Comparator.comparing(potentialUser -> getAmountOfOverlappingUserActivityInterests(user.getActivityInterests(), potentialUser.getActivityInterests())));
+        Collections.reverse(potentialUsers);
+
+        int MAX = 10;
+        int i = 1;
+        log.info("Profile Ranking:");
         for(User potentialUser : potentialUsers) {
+            log.info("{}. Profile: {} (with {} overlapping interests)",i,potentialUser.getName(),getAmountOfOverlappingUserActivityInterests(user.getActivityInterests(), potentialUser.getActivityInterests()));
 
             Set<ActivityCategory> overlappingInterests = (Set<ActivityCategory>) user.getUserInterests().getActivityInterests().clone();
             overlappingInterests.retainAll(potentialUser.getUserInterests().getActivityInterests());
@@ -117,6 +121,12 @@ public class ActivityService {
                     activityList.add(new Activity(activityPreset, userSwipeStatusList));
                 }
             }
+
+            if(i >= MAX) {
+                break;
+            }
+
+            i++;
         }
 
         List<Activity> persistentActivities = new ArrayList<>(getAllUnmatchedActivities(user)); // all unmatched existing activities
@@ -132,7 +142,9 @@ public class ActivityService {
             activityRepository.flush();
         }
 
-        return new ArrayList<>(getAllUnmatchedActivities(user));
+        ArrayList<Activity> returnList = new ArrayList<Activity>(getAllUnmatchedActivities(user));
+        Collections.shuffle(returnList);
+        return returnList;
     }
 
     public List<Activity> getAllActivitiesOfUser(User user){
@@ -191,10 +203,7 @@ public class ActivityService {
             }
 
             /* Interest Sieve (passed with at least one common interest) */
-            Set<ActivityCategory> set1 = user.getUserInterests().getActivityInterests();
-            Set<ActivityCategory> set2 = potentialUser.getUserInterests().getActivityInterests();
-            set1.retainAll(set2);
-            if(set1.size() == 0) {
+            if(getAmountOfOverlappingUserActivityInterests(user.getUserInterests().getActivityInterests(),potentialUser.getUserInterests().getActivityInterests()) == 0) {
                 log.info("sievePotentialUsers(): Interest Sieve eliminated potential user");
                 continue; // no overlapping interests
             }
@@ -225,6 +234,17 @@ public class ActivityService {
     public boolean matchingAgePreferences(User user, User potentialUser) {
         return potentialUser.getAge() >= user.getUserInterests().getAgeRange().min
                 && potentialUser.getAge() <= user.getUserInterests().getAgeRange().max;
+    }
+
+    /**
+     * Helper Function to determine amount of overlapping UserActivityInterests
+     * @param set1 of first user
+     * @param set2 of second user
+     * @return amount of overlapping UserActivityInterests
+     */
+    public int getAmountOfOverlappingUserActivityInterests(Set<ActivityCategory> set1, Set<ActivityCategory> set2) {
+        set1.retainAll(set2);
+        return set1.size();
     }
 
 }

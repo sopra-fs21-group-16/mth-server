@@ -145,19 +145,19 @@ public class ActivityService {
     }
 
     public Set<Activity> getAllUnmatchedActivities(User user){
-        Set<Activity> allUnmatchedActivites = new HashSet<>();
+        Set<Activity> allUnmatchedActivities = new HashSet<>();
 
         for(Activity activity : getAllActivitiesOfUser(user)) {
             for(UserSwipeStatus userSwipeStatus : activity.getUserSwipeStatusList()) {
                 if (userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() == SwipeStatus.INITIAL) {
-                    allUnmatchedActivites.add(activity); // current user's activity
+                    allUnmatchedActivities.add(activity); // current user's activity
                 } else if (!userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() != SwipeStatus.FALSE) {
-                    allUnmatchedActivites.add(activity); // potential user's activity
+                    allUnmatchedActivities.add(activity); // potential user's activity
                 }
             }
         }
 
-        return allUnmatchedActivites;
+        return allUnmatchedActivities;
     }
 
     /**

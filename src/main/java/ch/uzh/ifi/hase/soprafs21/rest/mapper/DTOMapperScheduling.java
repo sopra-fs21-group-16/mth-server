@@ -32,6 +32,8 @@ public interface DTOMapperScheduling {
     @Mapping(source = "locationList", target = "locationList")
     @Mapping(source = "chosenDate", target = "chosenDate")
     @Mapping(source = "dateList", target = "dateList")
+    @Mapping(source = "offer", target = "offer")
+    @Mapping(source = "answer", target = "answer")
     SchedulingSession convertSchedulingSessionPutDTOToEntity(SchedulingSessionPutDTO schedulingSessionPutDTO);
 
     @Mapping(source = "id", target = "id")
@@ -41,5 +43,7 @@ public interface DTOMapperScheduling {
     @Mapping(source = "locationList", target = "locationList")
     @Mapping(source = "chosenDate", target = "chosenDate")
     @Mapping(source = "dateList", target = "dateList")
+    @Mapping(source = "offer", target = "offer")
+    @Mapping(source = "answer", target = "answer")
     SchedulingSessionGetDTO convertEntityToSchedulingSessionGetDTO(SchedulingSession schedulingSession);
 }

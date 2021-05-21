@@ -13,6 +13,8 @@ public class SchedulingSessionPutDTO {
     private String chosenLocation;
     private List<LocalDateTime> dateList;
     private LocalDateTime chosenDate;
+    private String offer;
+    private String answer;
 
     public List<Activity> getActivityList() {
         return activityList;
@@ -58,4 +60,11 @@ public class SchedulingSessionPutDTO {
         this.chosenDate = chosenDate;
     }
 
+    public String getOffer() { return offer; }
+
+    public void setOffer(String offer) { this.offer = offer; }
+
+    public String getAnswer() { return answer; }
+
+    public void setAnswer(String answer) { this.answer = answer; }
 }

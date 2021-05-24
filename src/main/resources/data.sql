@@ -2,7 +2,7 @@
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1, 'Play Football', 'SPORTS', 'point_of_interest', 'football', 'https://source.unsplash.com/t5ny_JdGxJc/1600x900'),
        (2, 'Hiking on the Uetliberg', 'SPORTS', '', '', 'https://source.unsplash.com/_r19nfvS3wY/1600x900'),
-       (3, 'Go on a Bike Adventure', 'SPORTS', 'sport', 'bikepark', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
+       (3, 'Go on a Bike Adventure', 'SPORTS', 'point_of_interest', 'bikepark', 'https://source.unsplash.com/n13ABwV-Pic/1600x900'),
        (4, 'Go outdoor Swimming', 'SPORTS', 'point_of_interest', 'outdoor%20swimming', 'https://source.unsplash.com/TVOAbbLL050/1600x900'),
        (5, 'Go indoor Swimming', 'SPORTS', 'point_of_interest', 'indoor%20swimming', 'https://source.unsplash.com/N3VEiHD8Sec/1600x900'),
        (6, 'Play Squash', 'SPORTS', 'point_of_interest', 'squash', 'https://source.unsplash.com/P9y0G14Z7wA/1600x900'),
@@ -16,6 +16,9 @@ VALUES (1, 'Play Football', 'SPORTS', 'point_of_interest', 'football', 'https://
        (14, 'Do Wakeboarding', 'SPORTS', 'point_of_interest', 'wakeboarding', 'https://source.unsplash.com/UYJQr5e4id8/1600x900'),
        (15, 'Do Wakesurfing', 'SPORTS', 'point_of_interest', 'wakesurfing', 'https://source.unsplash.com/3Cft95Pim7g/1600x900'),
        (16, 'Play a game of chess', 'SPORTS', '', '', 'https://source.unsplash.com/qrp3APQF15g/1600x900'),
+       (17, 'Go Jogging', 'SPORTS', '', '', 'https://source.unsplash.com/oGv9xIl7DkY/1600x900'),
+       (18, 'Go Horse Riding', 'SPORTS', 'point_of_interest', 'riding', 'https://source.unsplash.com/XAW98NjONmM/1600x900'),
+       (19, 'Go Skating', 'SPORTS', 'point_of_interest', 'skatepark', 'https://source.unsplash.com/8SgpKk65oVE/1600x900'),
        (100, 'Play Tennis', 'SPORTS', 'gym', 'tennis', 'https://source.unsplash.com/MLU_X1d3ofQ/1600x900');
 
 /* MUSIC AND DANCING */
@@ -23,12 +26,13 @@ INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATE
 VALUES (101, 'Listen to Concert at Tonhalle Zurich', 'MUSIC', 'point_of_interest', 'tonhalle zurich', 'https://www.tonhalle-maag.ch/site/assets/files/13019/blick-in-saal-c-hannes-henz.780x0.jpg'),
        (102, 'Listen to an Opera', 'MUSIC', 'point_of_interest', 'Opernhaus', 'https://source.unsplash.com/XSYr1XOxCBA/1600x900'),
        (103, 'Have a Jam Session', 'MUSIC', 'park', 'park', 'https://source.unsplash.com/L3sBSDZKnws/1600x900'),
-       (104, 'Go to a Night Club', 'MUSIC', 'night_club', '', 'https://source.unsplash.com/xKEraztc598/1600x900');
+       (104, 'Go to a Night Club', 'MUSIC', 'night_club', '', 'https://source.unsplash.com/xKEraztc598/1600x900'),
+       (105, 'Take a Dance lesson', 'MUSIC', 'point_of_interest', 'dancelesson', 'https://source.unsplash.com/Kx2IgM3Q5jA/1600x900');
 
 /* THEATRE */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (202, 'See a musical', 'THEATRE', 'point_of_interest', 'musicalplay', 'https://source.unsplash.com/p6rNTdAPbuk/1600x900'),
-       (203, 'Take an improv class', 'THEATRE', 'point_of_interest', 'improv', 'https://source.unsplash.com/mGeSmM_EOqc/1600x900');
+VALUES (201, 'See a musical', 'THEATRE', 'point_of_interest', 'musicalplay', 'https://source.unsplash.com/p6rNTdAPbuk/1600x900'),
+       (202, 'Take an improv class', 'THEATRE', 'point_of_interest', 'improv', 'https://source.unsplash.com/mGeSmM_EOqc/1600x900');
 
 /* EATING AND DRINKING*/
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
@@ -50,14 +54,18 @@ INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATE
 VALUES (401, 'Make a pizza', 'COOKING', '', '', 'https://source.unsplash.com/_NiHoCvEGuY/1600x900'),
        (402, 'Take a cooking class', 'COOKING', 'point_of_interest', 'cooking class', 'https://source.unsplash.com/bG5rhvRH0JM/1600x900'),
        (403, 'Cook a vegan meal', 'COOKING', '', '', 'https://source.unsplash.com/IGfIGP5ONV0/1600x900'),
-       (404, 'Do an outdoor BBQ', 'COOKING', 'point_of_interest', 'barbecue area', 'https://source.unsplash.com/HH8D03HHqDI/1600x900');
+       (404, 'Outdoor BBQ', 'COOKING', 'point_of_interest', 'barbecue area', 'https://source.unsplash.com/HH8D03HHqDI/1600x900'),
+       (405, 'Bake a Cake', 'COOKING', '', '', 'https://source.unsplash.com/jQHASEJp44Y/1600x900'),
+       (406, 'Make a Fondue', 'COOKING', '', '', 'https://source.unsplash.com/vo7GGTh6sXM/1600x900'),
+       (407, 'Make a Raclette', 'COOKING', '', '', 'https://source.unsplash.com/8EfaUXB8qw4/1600x900');
 
 /* SIGHTSEEING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (501, 'Visit the Grossmünster', 'SIGHTSEEING', 'tourist_attraction', 'Grossmünster', 'https://source.unsplash.com/MSkwgjm9UEw/1600x900'),
-       (502, 'Visit the Lindenhof', 'SIGHTSEEING', 'tourist_attraction', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
-       (503, 'Explore the city and take pictures', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/3G8lNeqg2TQ/1600x900');
-       
+       (502, 'Visit the Lindenhof', 'SIGHTSEEING', '', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
+       (503, 'Explore the city and take pictures', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/3G8lNeqg2TQ/1600x900'),
+       (504, 'Go on an E-scooter tour', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/HjlK_59WuWw/1600x900');
+
 /* OUTDOOR_ACTIVITY */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/nCj0zBLIaAk/1600x900'),
@@ -66,7 +74,10 @@ VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '', '', 'https://source.un
        (604, 'Help at the animal shelter', 'OUTDOOR_ACTIVITY', 'point_of_interest', 'animal shelter', 'https://source.unsplash.com/uNNCs5kL70Q/1600x900'),
        (605, 'Go on a street photography adventure', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/heGscFkmB9U/1600x900'),
        (606, 'Play a game of outdoor chess at Lindenhof', 'OUTDOOR_ACTIVITY', 'parc', 'lindenhof', 'https://www.zuerich.com/sites/default/files/web_zuerich_lindenhof_360_zt_8051.jpg'),
-       (607, 'Have a picnic', 'OUTDOOR_ACTIVITY', 'park', 'park', 'https://source.unsplash.com/Ejd2biBmjRM/1600x900');
+       (607, 'Play minigolf', 'OUTDOOR_ACTIVITY', 'point_of_interest', 'minigolf', 'https://source.unsplash.com/TO9hcfWyr-U/1600x900'),
+       (608, 'Go fishing', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/1cixOWMvnAg/1600x900'),
+       (609, 'Go watch a sports game', 'OUTDOOR_ACTIVITY', 'stadium', '', 'https://source.unsplash.com/g9SNY0aLMF0/1600x900'),
+       (610) 'Have a picnic', 'OUTDOOR_ACTIVITY', 'park', 'park', 'https://source.unsplash.com/Ejd2biBmjRM/1600x900');
 
 /* MOVIES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
@@ -80,9 +91,9 @@ VALUES (701, 'Watch a horror movie', 'MOVIES', 'movie_theater', '', 'https://sou
 
 /* MUSEUMS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (802, 'Visit a football museum', 'MUSEUMS', 'museum', 'football', 'https://source.unsplash.com/Y_upPEyxXN8/1600x900'),
-       (803, 'Visit a zoological museum ', 'MUSEUMS', 'museum', 'zoological', 'https://source.unsplash.com/BuQ1RZckYW4/1600x900'),
-       (804, 'Visit an art museum', 'MUSEUMS', 'museum', 'art', 'https://source.unsplash.com/1rBg5YSi00c/1600x900');
+VALUES (801, 'Visit a football Museum', 'MUSEUMS', 'museum', 'football', 'https://source.unsplash.com/Y_upPEyxXN8/1600x900'),
+       (802, 'Visit a zoological Museum ', 'MUSEUMS', 'museum', 'zoological', 'https://source.unsplash.com/BuQ1RZckYW4/1600x900'),
+       (803, 'Visit an art Museum', 'MUSEUMS', 'museum', 'art', 'https://source.unsplash.com/1rBg5YSi00c/1600x900');
 
 /* WELLNESS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
@@ -93,22 +104,29 @@ VALUES (901, 'Get a massage', 'WELLNESS', 'spa', 'massage', 'https://source.unsp
 /* SHOPPING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1002, 'Go shoe shopping', 'SHOPPING', 'shoe_store', 'shoe', 'https://source.unsplash.com/OX_en7CXMj4/1600x900'),
-       (1003, 'Do a makeover', 'SHOPPING', 'shopping_mall', 'shopping mall', 'https://source.unsplash.com/_3Q3tsJ01nc/1600x900');
+       (1003, 'Do a makeover', 'SHOPPING', 'shopping_mall', 'shopping mall', 'https://source.unsplash.com/_3Q3tsJ01nc/1600x900'),
+       (1004, 'Go book shopping', 'SHOPPING', 'store', 'book', 'https://source.unsplash.com/hVNe_oTCeCo/1600x900'),
+       (1005, 'Go CD shopping', 'SHOPPING', 'store', 'CDs', 'https://source.unsplash.com/_kXXlLPnKEc/1600x900');
+
 
 /* GAMES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (1102, 'Escape room', 'GAMES', 'point_of_interest', 'escape room', 'https://source.unsplash.com/RfdK3RQwuMk/1600x900'),
-       (1103, 'Play Mario Kart', 'GAMES', '', '', 'https://source.unsplash.com/2X6rLd40nF0/1600x900'),
-       (1104, 'Play FIFA', 'GAMES', '', '', 'https://source.unsplash.com/eCktzGjC-iU/1600x900'),
-       (1105, 'Play Chess', 'GAMES', '', '', 'https://source.unsplash.com/7VGzV09YnvA/1600x900'),
-       (1106, 'Play a card game', 'GAMES', '', '', 'https://source.unsplash.com/p1Xx215ooiM/1600x900'),
-       (1107, 'Play a board game', 'GAMES', '', '', 'https://source.unsplash.com/O9Epo1PwX5A/1600x900');
+VALUES (1101, 'Escape room', 'GAMES', 'point_of_interest', 'escape room', 'https://source.unsplash.com/RfdK3RQwuMk/1600x900'),
+       (1102, 'Play Mario Kart', 'GAMES', '', '', 'https://source.unsplash.com/2X6rLd40nF0/1600x900'),
+       (1103, 'Play FIFA', 'GAMES', '', '', 'https://source.unsplash.com/eCktzGjC-iU/1600x900'),
+       (1104, 'Play Chess', 'GAMES', '', '', 'https://source.unsplash.com/7VGzV09YnvA/1600x900'),
+       (1105, 'Play a card game', 'GAMES', '', '', 'https://source.unsplash.com/p1Xx215ooiM/1600x900'),
+       (1106, 'Play a board game', 'GAMES', '', '', 'https://source.unsplash.com/O9Epo1PwX5A/1600x900');
 
-/* WINTERSPORTS
+/* WINTERSPORTS */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (1201, 'Winter Sports Activity', 'WINTERSPORTS', '???', '???', '???'),
-       (1300, 'Winter Sports Activity 2', 'WINTERSPORTS', '???', '???', '???');
-*/
+VALUES (1201, 'Go skiing/snowboarding', 'WINTERSPORTS', 'point_of_interest', 'skiing', 'https://source.unsplash.com/R3tHkgwYaic/1600x900'),
+       (1202, 'Go sledging', 'WINTERSPORTS', 'point_of_interest', 'sledging', 'https://source.unsplash.com/cgCw-8rGoVA/1600x900'),
+       (1203, 'Go ice skating', 'WINTERSPORTS', 'point_of_interest', 'iceskating', 'https://source.unsplash.com/kusv6eDY3Wo/1600x900'),
+       (1204, 'Build an igloo', 'WINTERSPORTS', '', '', 'https://source.unsplash.com/AsQRFr8h2yM/1600x900'),
+       (1205, 'Go curling', 'WINTERSPORTS', 'point_of_interest', 'curling', 'https://source.unsplash.com/gkkmD3vsE98/1600x900'),
+       (1206, 'Go cross-country skiing', 'WINTERSPORTS', '', '', 'https://source.unsplash.com/Dp8uIiyIRNQ/1600x900'),
+       (1207, 'Go snowshoeing', 'WINTERSPORTS', '', '', 'https://source.unsplash.com/q64bx-L-xeA/1600x900');
 
 /* TRAVEL (maybe a future category since we're only allowing zurich as a location
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)

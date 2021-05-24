@@ -77,7 +77,7 @@ VALUES (601, 'Go on a bike tour', 'OUTDOOR_ACTIVITY', '', '', 'https://source.un
        (607, 'Play minigolf', 'OUTDOOR_ACTIVITY', 'point_of_interest', 'minigolf', 'https://source.unsplash.com/TO9hcfWyr-U/1600x900'),
        (608, 'Go fishing', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/1cixOWMvnAg/1600x900'),
        (609, 'Go watch a sports game', 'OUTDOOR_ACTIVITY', 'stadium', '', 'https://source.unsplash.com/g9SNY0aLMF0/1600x900'),
-       (610) 'Have a picnic', 'OUTDOOR_ACTIVITY', 'park', 'park', 'https://source.unsplash.com/Ejd2biBmjRM/1600x900');
+       (610, 'Have a outdoor picnic', 'OUTDOOR_ACTIVITY', 'park', 'park', 'https://source.unsplash.com/Ejd2biBmjRM/1600x900');
 
 /* MOVIES */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)

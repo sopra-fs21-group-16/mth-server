@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.entities;
 
 import ch.uzh.ifi.hase.soprafs21.additionalConstraints.annotationInterfaces.Age;
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 
 import javax.persistence.*;
@@ -13,6 +14,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Internal User Representation
@@ -148,6 +151,10 @@ public class User implements Serializable {
     public UserInterests getUserInterests() {return userInterests;}
 
     public void setUserInterests(UserInterests userInterests) {this.userInterests = userInterests;}
+
+    public HashSet<ActivityCategory> getActivityInterests() {
+        return getUserInterests().getActivityInterests();
+    }
 
     public int getAge(){
         // if no date of birth is set yet, we throw exception

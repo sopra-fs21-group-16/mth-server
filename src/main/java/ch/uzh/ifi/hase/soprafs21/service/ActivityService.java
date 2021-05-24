@@ -111,10 +111,9 @@ public class ActivityService {
                 List<ActivityPreset> activityPresets = activityPresetRepository.findByActivityCategory(overlappingInterest);
                 for(ActivityPreset activityPreset : activityPresets) {
                     List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
-                    UserSwipeStatus userSwipeStatus1 = userSwipeStatusRepository.save(new UserSwipeStatus(user, SwipeStatus.INITIAL));
-                    UserSwipeStatus userSwipeStatus2 = userSwipeStatusRepository.save(new UserSwipeStatus(potentialUser, SwipeStatus.INITIAL));
-                    userSwipeStatusRepository.flush();
-
+                    UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus(user, SwipeStatus.INITIAL);
+                    UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus(potentialUser, SwipeStatus.INITIAL);
+                    
                     userSwipeStatusList.add(userSwipeStatus1);
                     userSwipeStatusList.add(userSwipeStatus2);
 

@@ -177,10 +177,7 @@ public class SchedulingService {
     }
 
     public void checkIfScheduledSessionExistsWithGivenId(long sessionId){
-        try{
-            schedulingSessionRepository.findById(sessionId);
-        }
-        catch(ResponseStatusException e){
+        if(schedulingSessionRepository.findById(sessionId) == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with session id " + sessionId + " was not found"));
         }
     }

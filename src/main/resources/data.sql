@@ -84,11 +84,11 @@ VALUES (1102, 'Escape room', 'GAMES', 'point_of_interest', 'escape room', 'https
        (1103, 'Play Mario Kart', 'GAMES', '', '', 'https://source.unsplash.com/2X6rLd40nF0/1600x900'),
        (1104, 'Play FIFA', 'GAMES', '', '', 'https://source.unsplash.com/eCktzGjC-iU/1600x900');
 
-/* WINTERSPORTS */
+/* WINTERSPORTS
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
 VALUES (1201, 'Winter Sports Activity', 'WINTERSPORTS', '???', '???', '???'),
        (1300, 'Winter Sports Activity 2', 'WINTERSPORTS', '???', '???', '???');
-
+*/
 
 /* TRAVEL (maybe a future category since we're only allowing zurich as a location
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)

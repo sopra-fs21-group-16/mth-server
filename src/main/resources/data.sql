@@ -18,8 +18,7 @@ VALUES (101, 'Listen to Concert at Tonhalle Zurich', 'MUSIC', 'point_of_interest
 
 /* THEATRE */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (201, 'See a play', 'THEATRE', '???', '???', '???'),
-       (202, 'See a musical', 'THEATRE', 'point_of_interest', 'musicalplay', 'https://source.unsplash.com/p6rNTdAPbuk/1600x900'),
+VALUES (202, 'See a musical', 'THEATRE', 'point_of_interest', 'musicalplay', 'https://source.unsplash.com/p6rNTdAPbuk/1600x900'),
        (203, 'Take an improv class', 'THEATRE', 'point_of_interest', 'improv', 'https://source.unsplash.com/mGeSmM_EOqc/1600x900');
 
 /* EATING AND DRINKING*/

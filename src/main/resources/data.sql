@@ -134,9 +134,9 @@ VALUES (1301, 'TRAVEL', 'TRAVEL', '???', '???', '???'),
        (1400, 'TRAVEL', 'TRAVEL', '???', '???', '???');
 */
 
-INSERT INTO USER (ID, EMAIL, PASSWORD,EMAIL_VERIFIED, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
+INSERT INTO USER (ID, EMAIL, PASSWORD, EMAIL_VERIFIED, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
                   USER_INTERESTS_ID)
-VALUES (101, 'database.user@uzh.ch', 'databasePassword',true, 'I like spending time in nature and watching movies. I am studying Informatics and my favorite subject is Software Engineering!', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
+VALUES (101, 'database.user@uzh.ch', 'databasePassword', true, 'I like spending time in nature and watching movies. I am studying Informatics and my favorite subject is Software Engineering!', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
        (102, 'database.user2@uzh.ch', 'databasePassword2', true, 'My interests range from outdoor activities to good food. My favorite number is 43.', '+41791232222', 'databaseToken2','databaseTester2', '2000-01-01', 'FEMALE', 'TestLink2', '2021-04-26', NULL),
        (103, 'database.user3@uzh.ch', 'databasePassword3', true, 'I am so dull', '+41791232223', 'databaseToken3','databaseTester3', '2000-01-02', 'FEMALE', 'TestLink2', '2021-04-27', NULL);
 

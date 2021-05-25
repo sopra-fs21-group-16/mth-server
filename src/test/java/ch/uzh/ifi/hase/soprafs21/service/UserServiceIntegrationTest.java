@@ -469,7 +469,7 @@ public class UserServiceIntegrationTest {
 
         User testUser = new User();
         testUser.setId(1L);
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);
@@ -486,7 +486,7 @@ public class UserServiceIntegrationTest {
 
         User testUser = new User();
         testUser.setId(1L);
-        testUser.setEmail("test.user@uzh.ch");
+        testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);

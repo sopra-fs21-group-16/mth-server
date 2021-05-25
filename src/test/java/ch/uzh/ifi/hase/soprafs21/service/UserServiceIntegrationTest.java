@@ -374,7 +374,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertTrue(userService.isUserAuthorized(createdUser.getId(),createdUser.getId(), createdUser.getToken()));
+        assertTrue(userService.isUserAuthorized(createdUser.getId(), createdUser.getId(), createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);
@@ -392,7 +392,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L,createdUser.getId(), createdUser.getToken()));
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L, createdUser.getId(), createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);
@@ -457,6 +457,23 @@ public class UserServiceIntegrationTest {
         // when
         // exception is thrown because initial value of emailVerified is set to false
         assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailVerified(createdUserWithID));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void checkIfEmailExists_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        assertTrue(userService.checkIfEmailExists(createdUserWithID.getEmail()));
 
         //delete specific user
         userRepository.delete(createdUserWithID);

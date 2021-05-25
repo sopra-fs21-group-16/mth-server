@@ -388,4 +388,45 @@ public class UserServiceTest {
 
         assertEquals(verificationToken,userService.createVerificationToken(testUser, testUser.getToken()));
     }
+
+    @Test
+    public void getUserByEmail_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("token");
+
+        given(userRepository.findByEmail(testUser.getEmail())).willReturn(testUser);
+
+        assertEquals(testUser, userService.getUserByEmail(testUser.getEmail()));
+    }
+
+    @Test
+    public void checkIfEmailExists_success(){
+        // create user that is in repo
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("token");
+
+        given(userRepository.findByEmail(testUser.getEmail())).willReturn(testUser);
+
+        assertTrue(userService.checkIfEmailExists(testUser.getEmail()));
+    }
+
+    @Test
+    public void checkIfEmailExists_emailNotFound(){
+        // create user that is in repo --> user has no email
+        testUser.setId(1L);
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        testUser.setToken("token");
+
+        given(userRepository.findByEmail(testUser.getEmail())).willReturn(null);
+
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailExists(testUser.getEmail()));
+    }
 }

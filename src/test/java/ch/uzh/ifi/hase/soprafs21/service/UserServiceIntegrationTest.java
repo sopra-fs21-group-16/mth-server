@@ -461,5 +461,4 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
-
 }

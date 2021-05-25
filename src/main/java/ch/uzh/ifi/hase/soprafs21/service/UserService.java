@@ -59,13 +59,16 @@ public class UserService {
     }
 
     public User getUserByToken(String token) {
-        User userByToken = this.userRepository.findByToken(token);
-        return userByToken;
+        return this.userRepository.findByToken(token);
     }
 
     public long getIdByToken(String token){
         User userByToken = this.userRepository.findByToken(token);
         return userByToken.getId();
+    }
+
+    public User getUserByEmail(String email){
+        return this.userRepository.findByEmail(email);
     }
 
     public User createUser(User newUser) {
@@ -181,7 +184,6 @@ public class UserService {
         }
 
         if (userInput.getPassword() != null){
-            /** TODO: send emailVerification when changing password */
             userFromRepo.setPassword(bCryptPasswordEncoder.encode(userInput.getPassword()));
             noNewData = false;
         }
@@ -239,11 +241,8 @@ public class UserService {
     }
 
     public void checkIfUserExistsWithGivenId(long userId){
-        try{
-            userRepository.findById(userId);
-        }
-        catch(ResponseStatusException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user with " + userId + " was not found"));
+        if(userRepository.findById(userId) == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("user with " + userId + " was not found"));
         }
     }
 
@@ -338,6 +337,15 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired");
         }
 
+        return true;
+    }
+
+    public Boolean checkIfEmailExists(String email){
+        User userByEmail = userRepository.findByEmail(email);
+
+        if(userByEmail == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email address does not exist, please use a valid email address");
+        }
         return true;
     }
 }

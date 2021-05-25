@@ -189,9 +189,11 @@ public class UserServiceTest {
         testUser.setEmail("test.user2@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
+        User userInRepo = userService.createUser(testUser);
 
         // when
-        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Mockito.any());
+        given(userRepository.findById(Mockito.anyLong())).willReturn(userInRepo);
+
         userService.checkIfUserExistsWithGivenId(testUser.getId());
     }
 

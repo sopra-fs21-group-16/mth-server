@@ -16,7 +16,7 @@ public class VerificationToken {
 
     private String token;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.ALL})
     private User user;
 
     private LocalDateTime expiryDate;

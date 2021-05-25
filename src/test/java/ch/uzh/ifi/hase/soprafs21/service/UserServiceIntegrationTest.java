@@ -478,4 +478,21 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
+
+    @Test
+    public void checkIfEmailExists_emailNotFound(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user3@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailExists("test.user@uzh.ch"));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
 }

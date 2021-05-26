@@ -356,4 +356,10 @@ public class UserService {
         }
         return true;
     }
+
+    public void createToken(User user){
+        user.setToken(UUID.randomUUID().toString());
+        userRepository.save(user);
+        userRepository.flush();
+    }
 }

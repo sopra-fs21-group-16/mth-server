@@ -193,6 +193,9 @@ public class UserController {
         // get the user that has given email
         User userFromRepo = userService.getUserByEmail(email);
 
+        // create the Auth-Token that a user should have for confirmResetPassword
+        userService.createToken(userFromRepo);
+
         // sending email that contains VerificationToken to reset password
         String appUrl = request.getContextPath();
         eventPublisher.publishEvent(new OnPasswordResetEvent(userFromRepo, request.getLocale(), appUrl));

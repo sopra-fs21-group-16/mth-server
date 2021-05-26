@@ -538,6 +538,8 @@ public class UserControllerTest {
 
         given(userService.getUserByEmail(Mockito.anyString())).willReturn(userFromRepo);
 
+        doNothing().when(userService).createToken(userFromRepo);
+
         // when
         MockHttpServletRequestBuilder putRequest = put("/users/password")
                 .contentType(MediaType.APPLICATION_JSON)

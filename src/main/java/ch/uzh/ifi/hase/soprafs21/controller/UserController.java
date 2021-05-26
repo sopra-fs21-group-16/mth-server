@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification.OnRegistrationCompleteEvent;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.passwordReset.OnPasswordResetEvent;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -10,9 +13,15 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
 import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +33,12 @@ import java.util.List;
  */
 @RestController
 public class UserController {
+
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private Environment env;
 
     private final UserService userService;
 
@@ -37,12 +52,16 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
+    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO, HttpServletRequest request) {
         // convert API user to internal representation
         User userInput = DTOMapperUser.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
         User createdUser = userService.createUser(userInput);
+
+        // sending email that contains VerificationToken to authenticate email address of user
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, request.getLocale(), appUrl));
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
@@ -145,13 +164,58 @@ public class UserController {
         return activityGetDTOs;
     }
 
-    @GetMapping("/users/profile/verify")
-    @ResponseStatus(HttpStatus.OK)
-    public void verifyUserProfile(@PathVariable Long userId, @RequestBody String verificationToken){
+    /**
+     * When the user receives the "Confirm Registration" link they should click on it.
+     * Once they do, the controller will extract the value of the token parameter in the resulting
+     * GET request and will use it to enable the user
+     */
+    @GetMapping("/users/profile/verify/{token}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public void confirmRegistration(@PathVariable String token, HttpServletResponse response) throws IOException {
 
-        throw new UnsupportedOperationException("Not implemented yet");
+        VerificationToken verificationToken = userService.getVerificationToken(token);
 
-        // verifies Email
-        //userService.verifyEmail(verificationToken);
+        // check if the token is not null and is not expired
+        userService.checkIfValidVerificationToken(verificationToken);
+
+        userService.confirmRegistration(verificationToken);
+
+        // redirect the user to the login after the email verification
+        response.sendRedirect(env.getProperty("CLIENT_URL") + "/login");
+    }
+
+    @PutMapping("/users/password")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public void sendEmailForResetPassword(@RequestHeader("Email")String email, HttpServletRequest request){
+        userService.checkIfEmailExists(email);
+
+        // get the user that has given email
+        User userFromRepo = userService.getUserByEmail(email);
+
+        // create the Auth-Token that a user should have for confirmResetPassword
+        userService.createToken(userFromRepo);
+
+        // sending email that contains VerificationToken to reset password
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnPasswordResetEvent(userFromRepo, request.getLocale(), appUrl));
+    }
+
+    @GetMapping("/users/password/{token}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public void confirmResetPassword(@PathVariable String token, HttpServletResponse response) throws IOException {
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+
+        // check if the token is not null and is not expired
+        userService.checkIfValidVerificationToken(verificationToken);
+
+        User user = userService.getUserByVerificationToken(verificationToken);
+
+        // extract the Auth-Token of the user
+        String authToken = userService.getTokenByUser(user);
+
+        // redirect the user to the password reset page and add the Auth-Token
+        response.addHeader("Auth-Token", authToken);
+        response.sendRedirect(env.getProperty("CLIENT_URL") + "/users/password");
     }
 }

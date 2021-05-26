@@ -86,8 +86,7 @@ public class ActivityService {
         activity.setUserSwipeStatusList(userSwipeStatusList);
         activityRepository.save(activity);
         activityRepository.flush();
-         */
-
+        */
     }
 
     public List<Activity> generateActivities(long userId) {

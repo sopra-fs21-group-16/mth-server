@@ -117,13 +117,12 @@ class SchedulesControllerTest {
         given(userService.checkIfValidToken("Token")).willReturn(true);
         Mockito.doNothing().when(schedulingService).updateSchedulingSession(Mockito.anyLong(), Mockito.any(), Mockito.any());
 
-        MockHttpServletRequestBuilder putRequest = put("/schedules/1")
+        MockHttpServletRequestBuilder getRequest = get("/schedules/1")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(asJsonString(schedulingSessionPutDTO))
             .header("Auth-Token", "Token");
 
         
-        mockMvc.perform(putRequest)
+        mockMvc.perform(getRequest)
                 .andExpect(status().isOk());
    }
           
@@ -154,14 +153,14 @@ class SchedulesControllerTest {
 
         // when
         given(userService.checkIfValidToken("Token")).willReturn(true);
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"Scheduling session with session id " + givenSessionIdFromHeader + " was not found")).when(schedulingService).deleteScheduledSession(givenSessionIdFromHeader);
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,"Scheduling session with session id " + givenSessionIdFromHeader + " was not found")).when(schedulingService).deleteScheduledSession(givenSessionIdFromHeader);
 
         MockHttpServletRequestBuilder deleteRequest = delete("/schedules/" + givenSessionIdFromHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", "Token");
       
         mockMvc.perform(deleteRequest)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
     /*

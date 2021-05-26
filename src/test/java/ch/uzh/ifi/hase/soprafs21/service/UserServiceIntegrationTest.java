@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,6 +30,10 @@ public class UserServiceIntegrationTest {
     @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
+
+    @Qualifier("verificationTokenRepository")
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
 
     @Autowired
     private UserService userService;
@@ -120,6 +126,7 @@ public class UserServiceIntegrationTest {
         testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester");
         testUser.setPassword("testPassword");
+        testUser.setEmailVerified(true);
 
         User createdUser = userService.createUser(testUser);
         userService.logOutUser(createdUser.getId());
@@ -157,7 +164,6 @@ public class UserServiceIntegrationTest {
         newUser.setGender(Gender.MALE);
         newUser.setProfilePicture("FakeLink");
 
-
         // when
         userService.applyUserProfileChange(newUser, testUser);
 
@@ -191,6 +197,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfValidToken_Success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
         testUser.setEmail("test.user@uzh.ch");
@@ -225,6 +232,23 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
+    public void checkIfValidToken_WrongToken_NoSuccess(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidToken("wrong token"));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
     public void checkIfComputeAge_success(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
@@ -245,15 +269,38 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void checkIfGetIdByToken_success(){
-        assertNull(userRepository.findByEmail("test.user2@uzh.ch"));
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
         User testUser = new User();
-        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setEmail("test.user@uzh.ch");
         testUser.setName("Tester2");
         testUser.setPassword("testPassword2");
         User createdUserWithID = userService.createUser(testUser);
 
         assertEquals(createdUserWithID.getId(),userService.getIdByToken(createdUserWithID.getToken()));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void confirmRegistration_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        // when
+        userService.confirmRegistration(verificationToken);
+
+        assertTrue(createdUserWithID.getEmailVerified());
 
         //delete specific user
         userRepository.delete(createdUserWithID);
@@ -291,6 +338,7 @@ public class UserServiceIntegrationTest {
 
         assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(100000L,createdUser.getToken()));
 
+
         //delete specific user
         userRepository.delete(createdUser);
     }
@@ -309,6 +357,7 @@ public class UserServiceIntegrationTest {
 
         assertThrows(ResponseStatusException.class, () -> userService.isUserAuthenticated(createdUser.getId(),"WrongToken"));
 
+
         //delete specific user
         userRepository.delete(createdUser);
     }
@@ -325,7 +374,7 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertTrue(userService.isUserAuthorized(createdUser.getId(), createdUser.getId() ,createdUser.getToken()));
+        assertTrue(userService.isUserAuthorized(createdUser.getId(), createdUser.getId(), createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);
@@ -343,9 +392,73 @@ public class UserServiceIntegrationTest {
         // when
         User createdUser = userService.createUser(testUser);
 
-        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L, createdUser.getId() ,createdUser.getToken()));
+        assertThrows(ResponseStatusException.class, () -> userService.isUserAuthorized(11L, createdUser.getId(), createdUser.getToken()));
 
         //delete specific user
         userRepository.delete(createdUser);
+    }
+
+    @Test
+    public void checkIfValidVerificationToken_verificationToken_invalid(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+        createdUserWithID.setToken(null);
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        LocalDateTime expiryDate = verificationToken.calculateExpiryDate();
+        verificationToken.setExpiryDate(expiryDate);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidVerificationToken(verificationToken));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void checkIFValidVerificationToken_verificationToken_expired(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // expired date
+        LocalDateTime localeDateTimeExpired = LocalDateTime.now().minus(2,ChronoUnit.DAYS);
+
+        VerificationToken verificationToken = new VerificationToken(testUser.getToken(),testUser);
+        verificationToken.setExpiryDate(localeDateTimeExpired);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfValidVerificationToken(verificationToken));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void checkIfEmailVerified_success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // when
+        // exception is thrown because initial value of emailVerified is set to false
+        assertThrows(ResponseStatusException.class, () -> userService.checkIfEmailVerified(createdUserWithID));
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 }

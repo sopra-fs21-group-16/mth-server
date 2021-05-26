@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs21.repository.VerificationTokenRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,14 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    private final VerificationTokenRepository verificationTokenRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
 
     @Autowired
-    public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+    public UserService(@Qualifier("userRepository") UserRepository userRepository, @Qualifier("verificationTokenRepository") VerificationTokenRepository verificationTokenRepository) {
         this.userRepository = userRepository;
+        this.verificationTokenRepository = verificationTokenRepository;
     }
 
     /**
@@ -54,13 +59,16 @@ public class UserService {
     }
 
     public User getUserByToken(String token) {
-        User userByToken = this.userRepository.findByToken(token);
-        return userByToken;
+        return this.userRepository.findByToken(token);
     }
 
     public long getIdByToken(String token){
         User userByToken = this.userRepository.findByToken(token);
         return userByToken.getId();
+    }
+
+    public User getUserByEmail(String email){
+        return this.userRepository.findByEmail(email);
     }
 
     public User createUser(User newUser) {
@@ -99,6 +107,7 @@ public class UserService {
 
         catch (ResponseStatusException error) {
             if (bCryptPasswordEncoder.matches(userInput.getPassword(),userByEmail.getPassword())){
+                checkIfEmailVerified(userByEmail);
                 userByEmail.setLastSeen(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
                 userByEmail.setToken(UUID.randomUUID().toString());
                 userRepository.save(userByEmail);
@@ -175,7 +184,6 @@ public class UserService {
         }
 
         if (userInput.getPassword() != null){
-            /** TODO: send emailVerification when changing password */
             userFromRepo.setPassword(bCryptPasswordEncoder.encode(userInput.getPassword()));
             noNewData = false;
         }
@@ -233,35 +241,21 @@ public class UserService {
     }
 
     public void checkIfUserExistsWithGivenId(long userId){
-        try{
-            userRepository.findById(userId);
-        }
-        catch(ResponseStatusException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("user with " + userId + " was not found"));
+        if(userRepository.findById(userId) == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("user with " + userId + " was not found"));
         }
     }
 
     public boolean checkIfValidToken(String tokenToCheck){
-        boolean validStatus = false;
 
         // token is invalid if token is null
         if(tokenToCheck == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
         }
 
-        // get a list of all registered users
-        UserService userService = new UserService(userRepository);
-        List<User> users = userService.getUsers();
-
         // and token is invalid if token is not consistent with a token inside the repo
-        for (User user : users){
-            if(tokenToCheck.equals(user.getToken())){
-                validStatus = true;
-            }
-        }
-
         // throw exception if token is not consistent to any user in repo
-        if(!validStatus){
+        if(userRepository.findByToken(tokenToCheck) == null){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid, you have to be a user to have access");
         }
 
@@ -301,5 +295,71 @@ public class UserService {
         int age = differenceOfDates.getYears();
 
         return age;
+    }
+
+    public void confirmRegistration(VerificationToken verificationToken){
+
+        User user = verificationToken.getUser();
+
+        user.setEmailVerified(true);
+        userRepository.save(user);
+    }
+
+    public boolean checkIfEmailVerified(User user){
+        if(!(user.getEmailVerified())){
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "The email of the user is still not verified");
+        }
+        return true;
+    }
+
+    public VerificationToken getVerificationToken(String verificationToken){
+        return verificationTokenRepository.findByToken(verificationToken);
+    }
+
+    public VerificationToken createVerificationToken(User user, String token){
+        VerificationToken myToken = new VerificationToken(token,user);
+
+        LocalDateTime expiryDate = myToken.calculateExpiryDate();
+        myToken.setExpiryDate(expiryDate);
+
+        return verificationTokenRepository.save(myToken);
+    }
+
+    public boolean checkIfValidVerificationToken(VerificationToken verificationToken){
+
+        if(verificationToken.getToken() == null){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid");
+        }
+
+        LocalDateTime localeDateTime = LocalDateTime.now();
+
+        if((verificationToken.getExpiryDate().isBefore(localeDateTime))){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired");
+        }
+
+        return true;
+    }
+
+    public User getUserByVerificationToken(VerificationToken verificationToken){
+        return verificationToken.getUser();
+    }
+
+    public String getTokenByUser(User user){
+        return user.getToken();
+    }
+
+    public Boolean checkIfEmailExists(String email){
+        User userByEmail = userRepository.findByEmail(email);
+
+        if(userByEmail == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The email address does not exist, please use a valid email address");
+        }
+        return true;
+    }
+
+    public void createToken(User user){
+        user.setToken(UUID.randomUUID().toString());
+        userRepository.save(user);
+        userRepository.flush();
     }
 }

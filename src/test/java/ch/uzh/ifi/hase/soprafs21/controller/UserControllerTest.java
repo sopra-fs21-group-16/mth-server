@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs21.controller;
 import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.ActivityPreset;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
@@ -451,7 +452,198 @@ public class UserControllerTest {
     }
 
     @Test
-    void verifyUserProfile() {
+    void confirmRegistration_Success() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = "ssfs";
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        given(userService.checkIfValidVerificationToken(verificationToken)).willReturn(true);
+
+        doNothing().when(userService).confirmRegistration(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isFound());
+    }
+
+    @Test
+    void confirmRegistration_invalid_verificationToken() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = null;
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidVerificationToken(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void confirmRegistration_expired_verificationToken() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = "ssfs";
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired")).when(userService).checkIfValidVerificationToken(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/profile/verify/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void sendEmailForResetPassword_Success() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        given(userService.checkIfEmailExists(Mockito.anyString())).willReturn(true);
+
+        given(userService.getUserByEmail(Mockito.anyString())).willReturn(userFromRepo);
+
+        doNothing().when(userService).createToken(userFromRepo);
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/users/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Email", userFromRepo.getEmail());
+
+        mockMvc.perform(putRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void sendEmailForResetPassword_invalidEmail() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "The email address does not exist, please use a valid email address")).when(userService).checkIfEmailExists(Mockito.anyString());
+
+        // when
+        MockHttpServletRequestBuilder putRequest = put("/users/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Email", userFromRepo.getEmail());
+
+        mockMvc.perform(putRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void confirmResetPassword_Success() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+        userFromRepo.setToken("validToken");
+
+        String tokenFromURI = "ssfs";
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        given(userService.checkIfValidVerificationToken(verificationToken)).willReturn(true);
+
+        given(userService.getUserByVerificationToken(verificationToken)).willReturn(userFromRepo);
+
+        given(userService.getTokenByUser(userFromRepo)).willReturn(userFromRepo.getToken());
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/password/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isFound());
+    }
+
+    @Test
+    void confirmResetPassword_invalid_verificationToken() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = null;
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token is not valid")).when(userService).checkIfValidVerificationToken(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/password/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void confirmResetPassword_expired_verificationToken() throws Exception{
+        // user in repo that should be returned
+        User userFromRepo = new User();
+        userFromRepo.setId(1L);
+        userFromRepo.setEmail("test@uzh.ch");
+        userFromRepo.setName("testname");
+        userFromRepo.setBio("bio");
+
+        String tokenFromURI = "ssfs";
+        VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
+
+        given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
+
+        doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The token has expired")).when(userService).checkIfValidVerificationToken(verificationToken);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/users/password/" + tokenFromURI)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)  // mockMbc simulates HTTP request on given URL
+                .andExpect(status().isUnauthorized());
     }
 
     /**

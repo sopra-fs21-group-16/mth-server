@@ -21,6 +21,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.doThrow;
+import static org.mockito.Mockito.mockingDetails;
 
 class SchedulingServiceTest {
     
@@ -524,7 +525,7 @@ class SchedulingServiceTest {
         schedulingSession.setActivityList(activityList);
 
         //when
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with session id " + schedulingSession.getId() + " was not found"))).when(schedulingSessionRepository).findById(Mockito.anyLong());
+        Mockito.when(schedulingSessionRepository.findById(2L)).thenReturn(null);
 
         assertThrows(ResponseStatusException.class, () -> schedulingService.checkIfScheduledSessionExistsWithGivenId(schedulingSession.getId()));
     }

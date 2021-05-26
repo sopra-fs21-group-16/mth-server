@@ -575,6 +575,7 @@ public class UserControllerTest {
         userFromRepo.setEmail("test@uzh.ch");
         userFromRepo.setName("testname");
         userFromRepo.setBio("bio");
+        userFromRepo.setToken("validToken");
 
         String tokenFromURI = "ssfs";
         VerificationToken verificationToken = new VerificationToken(tokenFromURI, userFromRepo);
@@ -582,6 +583,10 @@ public class UserControllerTest {
         given(userService.getVerificationToken(Mockito.anyString())).willReturn(verificationToken);
 
         given(userService.checkIfValidVerificationToken(verificationToken)).willReturn(true);
+
+        given(userService.getUserByVerificationToken(verificationToken)).willReturn(userFromRepo);
+
+        given(userService.getTokenByUser(userFromRepo)).willReturn(userFromRepo.getToken());
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/password/" + tokenFromURI)

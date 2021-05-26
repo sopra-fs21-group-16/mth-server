@@ -340,6 +340,14 @@ public class UserService {
         return true;
     }
 
+    public User getUserByVerificationToken(VerificationToken verificationToken){
+        return verificationToken.getUser();
+    }
+
+    public String getTokenByUser(User user){
+        return user.getToken();
+    }
+
     public Boolean checkIfEmailExists(String email){
         User userByEmail = userRepository.findByEmail(email);
 

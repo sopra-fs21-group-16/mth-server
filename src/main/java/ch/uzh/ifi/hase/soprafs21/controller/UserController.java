@@ -206,8 +206,13 @@ public class UserController {
         // check if the token is not null and is not expired
         userService.checkIfValidVerificationToken(verificationToken);
 
-        // redirect the user to the password reset page
-        response.addHeader("PasswordReset-VerificationToken",token);
+        User user = userService.getUserByVerificationToken(verificationToken);
+
+        // extract the Auth-Token of the user
+        String authToken = userService.getTokenByUser(user);
+
+        // redirect the user to the password reset page and add the Auth-Token
+        response.addHeader("Auth-Token", authToken);
         response.sendRedirect(env.getProperty("CLIENT_URL") + "/users/password");
     }
 }

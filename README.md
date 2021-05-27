@@ -55,5 +55,18 @@ If you want to avoid running all tests with every change, use the following comm
 ### Roadmap
 
 ### Authors and acknowledgment
+#### Backend 
+- Aleksandar Ristic
+- Samuel Brügger
+- Tarek Alakmeh // Backend Coordinator
+
+#### Frontend
+- Amos Calamida // Frontend Coordinator
+- Micha Eschmann
+
+#### Further Acknowledgment
+- Marion Dübendorfer // TA
+- Tomas Fritz, Prof. Dr.
 
 ### License
+- Under our own Copyright &copy; 

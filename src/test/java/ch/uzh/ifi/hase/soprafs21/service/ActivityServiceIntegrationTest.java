@@ -54,7 +54,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_validInputs_success(){
         //given
-        User testUser = userRepository.findById(101L);
+        User testUser = userRepository.findById(201L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
@@ -86,7 +86,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_WrongActivityID_throwsException(){
         //given
-        User testUser = userRepository.findById(101L);
+        User testUser = userRepository.findById(201L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
@@ -115,8 +115,8 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_WrongUserID_throwsException() {
         //given
-        User testUser = userRepository.findById(101L);
-        User wrongUser = userRepository.findById(102L);
+        User testUser = userRepository.findById(201L);
+        User wrongUser = userRepository.findById(202L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
@@ -145,7 +145,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void setSwipingStatus_TokenNotExists_throwsException(){
         //given
-        User testUser = userRepository.findById(101L);
+        User testUser = userRepository.findById(201L);
         Activity testActivity = new Activity();
         testActivity.setCreationDate(LocalDate.now());
         ArrayList<UserSwipeStatus> userSwipeStatusList = new ArrayList<UserSwipeStatus>();
@@ -174,7 +174,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void getAllActivitiesOfUser_success(){
         //given
-        User testUser = userRepository.findById(101L);
+        User testUser = userRepository.findById(201L);
 
         Activity testActivity = new Activity();
         testActivity.setCreationDate(LocalDate.now());
@@ -187,6 +187,7 @@ public class ActivityServiceIntegrationTest {
         //userSwipeStatusRepository.flush();
         testActivity.setId(50L);
         testActivity.setUserSwipeStatusList(userSwipeStatusList);
+        testActivity.setCreationDate(LocalDate.now());
 
         testActivity = activityRepository.save(testActivity);
         activityRepository.flush();
@@ -195,7 +196,9 @@ public class ActivityServiceIntegrationTest {
         tests.add(testActivity);
 
         // NOTE: content of both objects is equal, but when comparing the objects themselves, then they are not equal
-        //assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
+        assertEquals(tests.get(0).getId(),activityService.getAllActivitiesOfUser(testUser).get(0).getId());
+        assertEquals(tests.get(0).getCreationDate(),activityService.getAllActivitiesOfUser(testUser).get(0).getCreationDate());
+
         assertTrue(activityService.getAllActivitiesOfUser(testUser).contains(tests.get(0)));
 
         // delete the specific activity and userSwipeStatus
@@ -206,8 +209,8 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void getAllActivitiesWithMatchedUsers_success(){
         //given
-        User testUser = userRepository.findById(101L);
-        User testUser2 = userRepository.findById(102L);
+        User testUser = userRepository.findById(201L);
+        User testUser2 = userRepository.findById(202L);
 
         Activity testActivity = new Activity();
         testActivity.setCreationDate(LocalDate.now());
@@ -242,7 +245,7 @@ public class ActivityServiceIntegrationTest {
     @Test
     public void generateActivities_validInputs(){
         //given
-        User testUser = userRepository.findById(101L);
+        User testUser = userRepository.findById(201L);
 
         //when
         List<Activity> returnedActivities = activityService.generateActivities(testUser.getId());

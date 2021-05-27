@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -20,6 +21,8 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 public class UserServiceTest {
 
@@ -122,11 +125,25 @@ public class UserServiceTest {
         testUser2.setName("Tester2");
         testUser2.setPassword("testWrongPassword");
 
-
         Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(testUser);
         userService.logOutUser(testUser.getId());
 
         Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(testUser);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser2));
+    }
+
+    @Test
+    public void loginUser_invalidEmail_throwsException(){
+
+        User testUser2 = new User();
+        testUser2.setId(1L);
+        testUser2.setEmail("test.user@uzh.ch");
+        testUser2.setName("Tester2");
+        testUser2.setPassword("testWrongPassword");
+
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(null);
 
         // then
         assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser2));
@@ -245,6 +262,19 @@ public class UserServiceTest {
 
         assertEquals(18,userService.computeAge(now));
     }
+
+    @Test
+    public void checkIfComputeAge_invalidDateOfBirth_success(){
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        testUser.setDateOfBirth(null);
+
+        assertEquals(0,userService.computeAge(testUser.getDateOfBirth()));
+    }
+
 
     @Test
     public void checkIfGetIdByToken_success(){

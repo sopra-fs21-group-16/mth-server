@@ -31,7 +31,7 @@ public class SchedulesController {
 
     //Schedule - to get IDs of all Scheduling Sessions with this user
     @GetMapping("/schedules")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<Long> getSchedulingSessionOfUser(@RequestHeader("Auth-Token") String token) {
         userService.checkIfValidToken(token);

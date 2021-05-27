@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * User Controller
+ * Schedules Controller
  * This class is responsible for handling all REST request that are related to scheduling session.
  * The controller will receive the request and delegate the execution to the UserService and ScheduleService and finally return the result.
  */

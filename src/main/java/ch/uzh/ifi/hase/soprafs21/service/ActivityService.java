@@ -94,11 +94,14 @@ public class ActivityService {
         User user = userService.getUserByID(userId);
         List<User> potentialUsers = sievePotentialUsers(user);
         List<Activity> activityList = new ArrayList<>();
+        List<Activity> persistentActivities = new ArrayList<>(getAllUnmatchedActivities(user)); // all unmatched existing activities (still need to be swiped by user, so don't add these again as duplicates)
+        List<Activity> matchedActivities = new ArrayList<>(getAllActivitiesWithMatchedUsers(user)); // all activities that are already matched (don't show again!)
 
         potentialUsers.sort(Comparator.comparing(potentialUser -> getAmountOfOverlappingUserActivityInterests(user.getActivityInterests(), potentialUser.getActivityInterests())));
         Collections.reverse(potentialUsers);
 
-        int MAX = 10;
+        int PROFILE_LIMIT = 10;
+        int UNSEEN_ACTIVITY_LIMIT = 20;
         int i = 1;
         log.info("Profile Ranking:");
         for(User potentialUser : potentialUsers) {
@@ -117,28 +120,33 @@ public class ActivityService {
                     userSwipeStatusList.add(userSwipeStatus1);
                     userSwipeStatusList.add(userSwipeStatus2);
 
-                    activityList.add(new Activity(activityPreset, userSwipeStatusList));
+                    Activity newActivity = new Activity(activityPreset, userSwipeStatusList);
+                    if(!(persistentActivities.contains(newActivity) || matchedActivities.contains(newActivity))) {
+                        activityList.add(newActivity);
+                        log.info("generateActivities: generate new activity {}", newActivity.getActivityPreset().getActivityName());
+                    } else {
+                        log.info("generateActivities: wanted to generate new activity, but was already known: {}", newActivity.getActivityPreset().getActivityName());
+                    }
                 }
             }
 
-            if(i >= MAX) {
+            if(i >= PROFILE_LIMIT) {
                 break;
             }
 
             i++;
         }
 
-        List<Activity> persistentActivities = new ArrayList<>(getAllUnmatchedActivities(user)); // all unmatched existing activities
-        persistentActivities.addAll(getAllActivitiesWithMatchedUsers(user)); // all matched activities
-        log.info("generateActivities: activityList size before dup-delete: {}", activityList.size());
-        activityList.removeAll(persistentActivities);
-        log.info("generateActivities: activityList size after dup-delete: {}", activityList.size());
-
-        //activityRepository.saveAll(activityList);
+        int unseenActivitiesAmount = persistentActivities.size();
         for(Activity activity : activityList) {
+            if(unseenActivitiesAmount >= UNSEEN_ACTIVITY_LIMIT) {
+                log.info("generateActivities: unseenActivities limit reached ({}). No new activities are being added", unseenActivitiesAmount);
+                break;
+            }
             log.info("generateActivities: Save activity {} in ActivityRepository", activity.getActivityPreset().getActivityName());
             activityRepository.save(activity);
             activityRepository.flush();
+            unseenActivitiesAmount++;
         }
 
         ArrayList<Activity> returnList = new ArrayList<Activity>(getAllUnmatchedActivities(user));

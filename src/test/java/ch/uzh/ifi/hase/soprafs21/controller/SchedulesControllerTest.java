@@ -20,6 +20,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -64,11 +67,26 @@ class SchedulesControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    /*
+
     @Test
-    void getListOfActivitiesAndSessionID() {
+    void getSchedulingSessionOfUser_validInputs() throws Exception {
+        List<Long> IDs = new ArrayList<Long>();
+
+        // when
+        given(userService.checkIfValidToken("Token")).willReturn(true);
+        given(schedulingService.getSchedulingSessionsOfUser("TOken")).willReturn(IDs);
+
+        MockHttpServletRequestBuilder getRequest = get("/schedules")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", "Token");
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
+
+
     }
-     */
+
 
     @Test
     void getScheduledActivity() throws Exception {
@@ -164,11 +182,10 @@ class SchedulesControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    /*
+
     @Test
     void deleteScheduledActivity() throws Exception{
     }
-     */
 
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.entities.*;
+import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ScheduledActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.SchedulingSessionRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -34,16 +35,20 @@ public class SchedulingService {
 
     private final ActivityService activityService;
 
+    private final ActivityRepository activityRepository;
+
     private final UserRepository userRepository;
 
     @Autowired
     public SchedulingService(@Qualifier("schedulingSessionRepository") SchedulingSessionRepository schedulingSessionRepository,
                              @Qualifier("scheduledActivityRepository") ScheduledActivityRepository scheduledActivityRepository,
                              @Qualifier("activityService") ActivityService activityService,
+                             @Qualifier("activityRepository") ActivityRepository activityRepository,
                              @Qualifier("userRepository") UserRepository userRepository) {
         this.schedulingSessionRepository = schedulingSessionRepository;
         this.scheduledActivityRepository = scheduledActivityRepository;
         this.activityService = activityService;
+        this.activityRepository = activityRepository;
         this.userRepository = userRepository;
     }
 
@@ -83,6 +88,8 @@ public class SchedulingService {
         if (scheduledActivity.getLocation() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduled activity misses specific location.");
         }
+        long activityID = scheduledActivity.getActivity().getId();
+        scheduledActivity.setActivity(activityRepository.findById(activityID));
 
         ScheduledActivity newScheduledActivity = scheduledActivityRepository.save(scheduledActivity);
         scheduledActivityRepository.flush();
@@ -93,7 +100,7 @@ public class SchedulingService {
     public SchedulingSession getSchedulingSession(long sessionId, String token) {
         SchedulingSession schedulingSession = schedulingSessionRepository.findById(sessionId);
         if (schedulingSession == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Scheduling session Not Found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session Not Found");
         }
         boolean isPartOfMatch = false;
         List<UserSwipeStatus> userSwipeStatusList = schedulingSession.getActivityList().get(0).getUserSwipeStatusList();
@@ -181,7 +188,7 @@ public class SchedulingService {
             schedulingSessionRepository.findById(sessionId);
         }
         catch(ResponseStatusException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with session id " + sessionId + " was not found"));
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Scheduling session with session id " + sessionId + " was not found"));
         }
     }
 
@@ -206,5 +213,28 @@ public class SchedulingService {
             }
         }
         return sessionIdList;
+    }
+
+    public ScheduledActivity getSpecificScheduledActivity(long scheduledActivityId,String token) {
+        User user = userRepository.findByToken(token);
+        ScheduledActivity scheduledActivity = scheduledActivityRepository.findById(scheduledActivityId);
+        if (scheduledActivity == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Scheduled Activity with id " + scheduledActivityId + " was not found."));
+        }
+        if (scheduledActivity.getActivity().getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId()) || scheduledActivity.getActivity().getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())){
+            return scheduledActivity;
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("User is not part of the Scheduled Activity with id " + scheduledActivityId + "."));
+    }
+
+    public List<ScheduledActivity> getAllScheduledActivities(String token) {
+        User user = userRepository.findByToken(token);
+        List<ScheduledActivity> scheduledActivities = scheduledActivityRepository.findAll();
+        for (ScheduledActivity scheduledActivity : scheduledActivities){
+            if (scheduledActivity.getActivity().getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId()) || scheduledActivity.getActivity().getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())){
+                scheduledActivities.add(scheduledActivity);
+            }
+        }
+        return scheduledActivities;
     }
 }

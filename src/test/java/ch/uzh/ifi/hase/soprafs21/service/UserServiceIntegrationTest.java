@@ -1,8 +1,12 @@
 package ch.uzh.ifi.hase.soprafs21.service;
 
+import ch.uzh.ifi.hase.soprafs21.constant.ActivityCategory;
+import ch.uzh.ifi.hase.soprafs21.constant.AgeRange;
 import ch.uzh.ifi.hase.soprafs21.constant.Gender;
+import ch.uzh.ifi.hase.soprafs21.constant.GenderPreference;
 import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
+import ch.uzh.ifi.hase.soprafs21.entities.UserInterests;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.VerificationTokenRepository;
 import org.junit.jupiter.api.Test;
@@ -15,6 +19,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -145,6 +151,22 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
+    public void loginUser_invalidEmail_throwsException(){
+        // given
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+        User testUser2 = new User();
+        testUser2.setId(1L);
+        testUser2.setEmail("test.user@uzh.ch");
+        testUser2.setName("Tester2");
+        testUser2.setPassword("testWrongPassword");
+
+        // user is not created --> should throw exception
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser2));
+    }
+
+    @Test
     public void updateUserProfile_Success(){
         assertNull(userRepository.findByEmail("test.user@uzh.ch"));
 
@@ -157,12 +179,23 @@ public class UserServiceIntegrationTest {
         // user with new data
         User newUser = new User();
         newUser.setEmail("newName@uzh.ch");
+        newUser.setPassword("newPassword");
         newUser.setName("newName");
         newUser.setDateOfBirth(LocalDate.of(2000, 1, 8));
         newUser.setBio("newBio");
         newUser.setPhone("+41791231212");
         newUser.setGender(Gender.MALE);
         newUser.setProfilePicture("FakeLink");
+
+        UserInterests userInterests = new UserInterests();
+        userInterests.setGenderPreference(GenderPreference.EVERYONE);
+        Set<ActivityCategory> activityCategorySet = new HashSet<>();
+        activityCategorySet.add(ActivityCategory.THEATRE);
+        activityCategorySet.add(ActivityCategory.SPORTS);
+        userInterests.setActivityInterests(activityCategorySet);
+        userInterests.setAgeRange(new AgeRange(18,25));
+
+        newUser.setUserInterests(userInterests);
 
         // when
         userService.applyUserProfileChange(newUser, testUser);
@@ -172,6 +205,51 @@ public class UserServiceIntegrationTest {
 
         //delete specific user
         userRepository.delete(createdUserWithID);
+    }
+
+    @Test
+    public void updateUserProfile_updatingUserInterests_Success(){
+        assertNull(userRepository.findByEmail("test.user@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test.user@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+        User createdUserWithID = userService.createUser(testUser);
+
+        // user with new data
+        User newUser = new User();
+        UserInterests userInterests = new UserInterests();
+        userInterests.setGenderPreference(GenderPreference.EVERYONE);
+        Set<ActivityCategory> activityCategorySet = new HashSet<>();
+        activityCategorySet.add(ActivityCategory.THEATRE);
+        activityCategorySet.add(ActivityCategory.SPORTS);
+        userInterests.setActivityInterests(activityCategorySet);
+        userInterests.setAgeRange(new AgeRange(18,25));
+
+        newUser.setUserInterests(userInterests);
+
+        // when
+        userService.applyUserProfileChange(newUser, createdUserWithID);
+
+        // updating userInterests
+        UserInterests userInterestsNew = new UserInterests();
+        userInterestsNew.setGenderPreference(GenderPreference.EVERYONE);
+        Set<ActivityCategory> activityCategorySetNew = new HashSet<>();
+        activityCategorySetNew.add(ActivityCategory.EATING);
+        activityCategorySetNew.add(ActivityCategory.OUTDOOR_ACTIVITY);
+        userInterestsNew.setActivityInterests(activityCategorySetNew);
+        userInterestsNew.setAgeRange(new AgeRange(18,25));
+
+        // user with new UserInterests data
+        User newUser2 = new User();
+        newUser2.setUserInterests(userInterestsNew);
+
+        // when
+        userService.applyUserProfileChange(newUser2, createdUserWithID);
+
+        // then
+        assertEquals(newUser2.getUserInterests().getGenderPreference(), createdUserWithID.getUserInterests().getGenderPreference());
     }
 
     @Test

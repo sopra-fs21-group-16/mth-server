@@ -13,7 +13,7 @@ import java.util.List;
 
 
 /**
- * User Controller
+ * Schedules Controller
  * This class is responsible for handling all REST request that are related to scheduling session.
  * The controller will receive the request and delegate the execution to the UserService and ScheduleService and finally return the result.
  */
@@ -31,7 +31,7 @@ public class SchedulesController {
 
     //Schedule - to get IDs of all Scheduling Sessions with this user
     @GetMapping("/schedules")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<Long> getSchedulingSessionOfUser(@RequestHeader("Auth-Token") String token) {
         userService.checkIfValidToken(token);
@@ -79,6 +79,22 @@ public class SchedulesController {
         return DTOMapperScheduling.INSTANCE.convertEntityToScheduledActivityGetDTO(schedulingService.saveScheduledActivity(sessionId, scheduledActivity));
     }
 
+    @GetMapping("/schedules/activities/{scheduledActivityId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public ScheduledActivityGetDTO getSpecificScheduledActivity(@PathVariable Long scheduledActivityId, @RequestHeader("Auth-Token") String token) {
+        userService.checkIfValidToken(token);
+        return DTOMapperScheduling.INSTANCE.convertEntityToScheduledActivityGetDTO(schedulingService.getSpecificScheduledActivity(scheduledActivityId, token));
+    }
+
+    @GetMapping("/schedules/activities")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<ScheduledActivityGetDTO> getSpecificScheduledActivity(@RequestHeader("Auth-Token") String token) {
+        userService.checkIfValidToken(token);
+        return DTOMapperScheduling.INSTANCE.convertEntityListToScheduledActivityGetDTOList(schedulingService.getAllScheduledActivities(token));
+    }
+
     //Schedule - To get proposed locations/dates etc. during a Session
     @GetMapping("/schedules/{sessionId}")
     @ResponseStatus(HttpStatus.OK)
@@ -122,5 +138,4 @@ public class SchedulesController {
 
         /** TODO: Update User information of A and B (?) */
     }
-
 }

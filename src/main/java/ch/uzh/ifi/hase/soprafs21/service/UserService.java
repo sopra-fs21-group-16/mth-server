@@ -101,7 +101,6 @@ public class UserService {
         try {
             checkIfUserExistsByEmail(userByEmail);
         }
-
         catch (ResponseStatusException error) {
             if (bCryptPasswordEncoder.matches(userInput.getPassword(),userByEmail.getPassword())){
                 checkIfEmailVerified(userByEmail);
@@ -118,7 +117,7 @@ public class UserService {
         catch (NullPointerException error) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Email or Password is wrong.");
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Something went wrong.");
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The given email is not registered");
     }
 
     public void logOutUser(long userId){
@@ -181,7 +180,6 @@ public class UserService {
         }
 
         if (userInput.getPassword() != null){
-            /** TODO: send emailVerification when changing password */
             userFromRepo.setPassword(bCryptPasswordEncoder.encode(userInput.getPassword()));
             noNewData = false;
         }

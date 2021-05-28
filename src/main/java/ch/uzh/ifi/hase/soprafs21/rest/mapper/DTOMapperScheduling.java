@@ -10,6 +10,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface DTOMapperScheduling {
 
@@ -46,4 +48,6 @@ public interface DTOMapperScheduling {
     @Mapping(source = "offer", target = "offer")
     @Mapping(source = "answer", target = "answer")
     SchedulingSessionGetDTO convertEntityToSchedulingSessionGetDTO(SchedulingSession schedulingSession);
+
+    List<ScheduledActivityGetDTO> convertEntityListToScheduledActivityGetDTOList(List<ScheduledActivity> scheduledActivityList);
 }

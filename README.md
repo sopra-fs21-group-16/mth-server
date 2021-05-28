@@ -69,4 +69,4 @@ If you want to avoid running all tests with every change, use the following comm
 - Tomas Fritz, Prof. Dr.
 
 ### License
-- Under our own Copyright &copy; 
+- copyright protected &copy; 

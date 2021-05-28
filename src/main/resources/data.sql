@@ -136,14 +136,14 @@ VALUES (1301, 'TRAVEL', 'TRAVEL', '???', '???', '???'),
 
 INSERT INTO USER (ID, EMAIL, PASSWORD, EMAIL_VERIFIED, BIO, PHONE, TOKEN, NAME, DATE_OF_BIRTH, GENDER, PROFILE_PICTURE, LAST_SEEN,
                   USER_INTERESTS_ID)
-VALUES (101, 'database.user@uzh.ch', 'databasePassword', true, 'I like spending time in nature and watching movies. I am studying Informatics and my favorite subject is Software Engineering!', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
-       (102, 'database.user2@uzh.ch', 'databasePassword2', true, 'My interests range from outdoor activities to good food. My favorite number is 43.', '+41791232222', 'databaseToken2','databaseTester2', '2000-01-01', 'FEMALE', 'TestLink2', '2021-04-26', NULL),
-       (103, 'database.user3@uzh.ch', 'databasePassword3', true, 'I am so dull', '+41791232223', 'databaseToken3','databaseTester3', '2000-01-02', 'FEMALE', 'TestLink2', '2021-04-27', NULL);
+VALUES (201, 'database.user@uzh.ch', 'databasePassword', true, 'I like spending time in nature and watching movies. I am studying Informatics and my favorite subject is Software Engineering!', '+41791231111', 'databaseToken', 'databaseTester', '2000-01-01', 'MALE', 'TestLink', '2021-04-25', NULL),
+       (202, 'database.user2@uzh.ch', 'databasePassword2', true, 'My interests range from outdoor activities to good food. My favorite number is 43.', '+41791232222', 'databaseToken2','databaseTester2', '2000-01-01', 'FEMALE', 'TestLink2', '2021-04-26', NULL),
+       (203, 'database.user3@uzh.ch', 'databasePassword3', true, 'I am so dull', '+41791232223', 'databaseToken3','databaseTester3', '2000-01-02', 'FEMALE', 'TestLink2', '2021-04-27', NULL);
 
 INSERT INTO USER_INTERESTS (ID, AGE_RANGE_MIN, AGE_RANGE_MAX, GENDER_PREFERENCE, USER_ID)
-VALUES (1001, 18, 30, 'FEMALE', 101),
-       (1002, 19, 26, 'MALE', 102),
-       (1003, 19, 26, 'MALE', 103);
+VALUES (1001, 18, 30, 'FEMALE', 201),
+       (1002, 19, 26, 'MALE', 202),
+       (1003, 19, 26, 'MALE', 203);
 
 INSERT INTO USER_INTERESTS_ACTIVITY (USER_INTERESTS_ID, ACTIVITY_INTERESTS)
 VALUES (1001, 'EATING'),
@@ -161,12 +161,12 @@ VALUES (1001, 'EATING'),
 
 UPDATE USER
 SET USER_INTERESTS_ID=1001
-WHERE ID = 101;
+WHERE ID = 201;
 
 UPDATE USER
 SET USER_INTERESTS_ID=1002
-WHERE ID = 102;
+WHERE ID = 202;
 
 UPDATE USER
 SET USER_INTERESTS_ID=1003
-WHERE ID = 103;
+WHERE ID = 203;

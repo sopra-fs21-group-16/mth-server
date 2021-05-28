@@ -91,18 +91,6 @@ public class UserController {
         userService.logOutUser(userId);
     }
 
-    @GetMapping("/users/ping")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void userPing(@RequestHeader("Auth-Token")String token){
-
-        throw new UnsupportedOperationException("Not implemented yet");
-
-        // checks if user id and token are from the same user
-        //userService.authorizationCheck(userId, token);
-
-        // additional step necessary
-    }
-
     @PutMapping("/users/profile")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -141,7 +129,6 @@ public class UserController {
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(userFromRepo);
     }
 
-    /** TODO: For the future, the URL has to be changed and specified for getting matched users */
     @GetMapping("/users/matches")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

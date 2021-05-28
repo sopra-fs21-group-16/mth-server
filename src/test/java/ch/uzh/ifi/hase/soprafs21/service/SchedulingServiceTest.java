@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs21.service;
 
 import ch.uzh.ifi.hase.soprafs21.constant.SwipeStatus;
 import ch.uzh.ifi.hase.soprafs21.entities.*;
+import ch.uzh.ifi.hase.soprafs21.repository.ActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.ScheduledActivityRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.SchedulingSessionRepository;
 import ch.uzh.ifi.hase.soprafs21.repository.UserRepository;
@@ -35,6 +36,10 @@ class SchedulingServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ActivityRepository activityRepository;
+
 
     @InjectMocks
     private SchedulingService schedulingService;
@@ -183,11 +188,12 @@ class SchedulingServiceTest {
         //when
         Mockito.when(schedulingSessionRepository.findById(Mockito.anyLong())).thenReturn(schedulingSession);
         Mockito.when(scheduledActivityRepository.save(Mockito.any())).thenReturn(scheduledActivity);
+        Mockito.when(activityRepository.findById(Mockito.anyLong())).thenReturn(testActivity);
 
         //then
         ScheduledActivity savedScheduledActivity = schedulingService.saveScheduledActivity(1L, scheduledActivity);
         Mockito.verify(schedulingSessionRepository, Mockito.times(1)).delete(Mockito.any());
-        assertEquals(savedScheduledActivity.getActivity(), testActivity);
+        assertEquals(testActivity, savedScheduledActivity.getActivity());
         assertEquals(savedScheduledActivity.getDate(), date);
         assertEquals(savedScheduledActivity.getLocation(), "TestLocation");
     }
@@ -522,7 +528,7 @@ class SchedulingServiceTest {
         schedulingSession.setActivityList(activityList);
 
         //when
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduling session with session id " + schedulingSession.getId() + " was not found"))).when(schedulingSessionRepository).findById(Mockito.anyLong());
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Scheduling session with session id " + schedulingSession.getId() + " was not found"))).when(schedulingSessionRepository).findById(Mockito.anyLong());
 
         assertThrows(ResponseStatusException.class, () -> schedulingService.checkIfScheduledSessionExistsWithGivenId(schedulingSession.getId()));
     }

@@ -250,6 +250,9 @@ public class UserServiceIntegrationTest {
 
         // then
         assertEquals(newUser2.getUserInterests().getGenderPreference(), createdUserWithID.getUserInterests().getGenderPreference());
+
+        //delete specific user
+        userRepository.delete(createdUserWithID);
     }
 
     @Test

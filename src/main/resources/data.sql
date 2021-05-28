@@ -23,7 +23,7 @@ VALUES (1, 'Play Football', 'SPORTS', 'point_of_interest', 'football', 'https://
 
 /* MUSIC AND DANCING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (101, 'Listen to Concert at Tonhalle Zurich', 'MUSIC', 'point_of_interest', 'tonhalle zurich', 'https://www.tonhalle-maag.ch/site/assets/files/13019/blick-in-saal-c-hannes-henz.780x0.jpg'),
+VALUES (101, 'Listen to Classical Concert', 'MUSIC', 'point_of_interest', '', 'https://www.tonhalle-maag.ch/site/assets/files/13019/blick-in-saal-c-hannes-henz.780x0.jpg'),
        (102, 'Listen to an Opera', 'MUSIC', 'point_of_interest', 'Opernhaus', 'https://source.unsplash.com/XSYr1XOxCBA/1600x900'),
        (103, 'Have a Jam Session', 'MUSIC', 'park', 'park', 'https://source.unsplash.com/L3sBSDZKnws/1600x900'),
        (104, 'Go to a Night Club', 'MUSIC', 'night_club', '', 'https://source.unsplash.com/xKEraztc598/1600x900'),
@@ -55,13 +55,13 @@ VALUES (401, 'Make a pizza', 'COOKING', '', '', 'https://source.unsplash.com/_Ni
        (402, 'Take a cooking class', 'COOKING', 'point_of_interest', 'cooking class', 'https://source.unsplash.com/bG5rhvRH0JM/1600x900'),
        (403, 'Cook a vegan meal', 'COOKING', '', '', 'https://source.unsplash.com/IGfIGP5ONV0/1600x900'),
        (404, 'Outdoor BBQ', 'COOKING', 'point_of_interest', 'barbecue area', 'https://source.unsplash.com/HH8D03HHqDI/1600x900'),
-       (405, 'Bake a Cake', 'COOKING', '', '', 'https://source.unsplash.com/jQHASEJp44Y/1600x900'),
-       (406, 'Make a Fondue', 'COOKING', '', '', 'https://source.unsplash.com/vo7GGTh6sXM/1600x900'),
-       (407, 'Make a Raclette', 'COOKING', '', '', 'https://source.unsplash.com/8EfaUXB8qw4/1600x900');
+       (405, 'Bake a cake', 'COOKING', '', '', 'https://source.unsplash.com/jQHASEJp44Y/1600x900'),
+       (406, 'Make a fondue', 'COOKING', '', '', 'https://source.unsplash.com/vo7GGTh6sXM/1600x900'),
+       (407, 'Make a raclette', 'COOKING', '', '', 'https://source.unsplash.com/8EfaUXB8qw4/1600x900');
 
 /* SIGHTSEEING */
 INSERT INTO ACTIVITY_PRESET (ID, ACTIVITY_NAME, ACTIVITY_CATEGORY, GOOGLEPOICATEGORY, GOOGLEPOIKEYWORD, IMAGEURL)
-VALUES (501, 'Visit the Grossmünster', 'SIGHTSEEING', 'tourist_attraction', 'Grossmünster', 'https://source.unsplash.com/MSkwgjm9UEw/1600x900'),
+VALUES (501, 'Visit the Grossmuenster', 'SIGHTSEEING', 'tourist_attraction', 'Grossmünster', 'https://source.unsplash.com/MSkwgjm9UEw/1600x900'),
        (502, 'Visit the Lindenhof', 'SIGHTSEEING', '', 'Lindenhof', 'https://source.unsplash.com/AGTiLHWv0FM/1600x900'),
        (503, 'Explore the city and take pictures', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/3G8lNeqg2TQ/1600x900'),
        (504, 'Go on an E-scooter tour', 'OUTDOOR_ACTIVITY', '', '', 'https://source.unsplash.com/HjlK_59WuWw/1600x900');

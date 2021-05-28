@@ -541,4 +541,29 @@ public class UserServiceIntegrationTest {
         //delete specific user
         userRepository.delete(createdUserWithID);
     }
+
+    @Test
+    public void handleValidationError_success() {
+        assertNull(userRepository.findByEmail("test@uzh.ch"));
+
+        User testUser = new User();
+        testUser.setEmail("test@uzh.ch");
+        testUser.setName("Tester");
+        testUser.setPassword("testPassword");
+
+        // when
+        User createdUser = userService.createUser(testUser);
+
+        // user with new data
+        User newUser = new User();
+        // invalid date of birth, invalid age
+        LocalDate now = LocalDate.now();
+        newUser.setDateOfBirth(now);
+
+        // apply invalid change
+        assertThrows(ResponseStatusException.class, () -> userService.applyUserProfileChange(newUser, createdUser));
+
+        //delete specific user
+        userRepository.delete(createdUser);
+    }
 }

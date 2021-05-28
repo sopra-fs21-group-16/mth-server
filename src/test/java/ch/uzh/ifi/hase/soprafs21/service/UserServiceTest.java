@@ -140,6 +140,21 @@ public class UserServiceTest {
     }
 
     @Test
+    public void loginUser_invalidEmail_throwsException(){
+
+        User testUser2 = new User();
+        testUser2.setId(1L);
+        testUser2.setEmail("test.user@uzh.ch");
+        testUser2.setName("Tester2");
+        testUser2.setPassword("testWrongPassword");
+
+        Mockito.when(userRepository.findByEmail(Mockito.any())).thenReturn(null);
+
+        // then
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser(testUser2));
+    }
+
+    @Test
     public void applyUserProfileChange_success(){
         // create user that has to be changed
         testUser.setId(1L);
@@ -250,6 +265,18 @@ public class UserServiceTest {
         testUser.setDateOfBirth(now);
 
         assertEquals(18,userService.computeAge(now));
+    }
+
+    @Test
+    public void checkIfComputeAge_invalidDateOfBirth_success(){
+        testUser.setId(1L);
+        testUser.setEmail("test.user2@uzh.ch");
+        testUser.setName("Tester2");
+        testUser.setPassword("testPassword2");
+
+        testUser.setDateOfBirth(null);
+
+        assertEquals(0,userService.computeAge(testUser.getDateOfBirth()));
     }
 
     @Test

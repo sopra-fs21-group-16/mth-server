@@ -68,13 +68,6 @@ public class Activity implements Serializable{
         this.userSwipeStatusList = userSwipeStatusList;
     }
 
-    /**
-     * ToDo
-     */
-    public Boolean isMatch(){
-        return null;
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

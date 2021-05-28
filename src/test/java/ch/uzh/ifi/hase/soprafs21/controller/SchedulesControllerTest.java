@@ -137,6 +137,7 @@ class SchedulesControllerTest {
 
         MockHttpServletRequestBuilder putRequest = put("/schedules/1")
             .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(schedulingSessionPutDTO))
             .header("Auth-Token", "Token");
 
         

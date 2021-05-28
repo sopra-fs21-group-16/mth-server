@@ -172,14 +172,14 @@ class SchedulesControllerTest {
 
         // when
         given(userService.checkIfValidToken("Token")).willReturn(true);
-        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"Scheduling session with session id " + givenSessionIdFromHeader + " was not found")).when(schedulingService).deleteScheduledSession(givenSessionIdFromHeader);
+        doThrow(new ResponseStatusException(HttpStatus.BAD_REQUEST,"Scheduling session with session id " + givenSessionIdFromHeader + " was not found")).when(schedulingService).deleteScheduledSession(givenSessionIdFromHeader);
 
         MockHttpServletRequestBuilder deleteRequest = delete("/schedules/" + givenSessionIdFromHeader)
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Auth-Token", "Token");
       
         mockMvc.perform(deleteRequest)
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest());
     }
 
 

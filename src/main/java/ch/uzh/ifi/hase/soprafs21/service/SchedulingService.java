@@ -77,7 +77,7 @@ public class SchedulingService {
     public ScheduledActivity saveScheduledActivity(long sessionId, ScheduledActivity scheduledActivity) {
         SchedulingSession schedulingSession = schedulingSessionRepository.findById(sessionId);
         if (schedulingSession == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Scheduling session not found");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduling session not found");
         }
         if (scheduledActivity.getActivity() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Scheduled activity misses specific activity.");
@@ -184,10 +184,7 @@ public class SchedulingService {
     }
 
     public void checkIfScheduledSessionExistsWithGivenId(long sessionId){
-        try{
-            schedulingSessionRepository.findById(sessionId);
-        }
-        catch(ResponseStatusException e){
+        if(schedulingSessionRepository.findById(sessionId) == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Scheduling session with session id " + sessionId + " was not found"));
         }
     }

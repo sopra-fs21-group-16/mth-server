@@ -53,6 +53,7 @@ public class DTOMapperUserTest {
         LocalDate dateOfBirth = LocalDate.of(2000,2,3);
         user.setDateOfBirth(dateOfBirth);
         user.setGender(Gender.MALE);
+        user.setEmailVerified(false);
         user.setBio("asdf");
         user.setToken("1");
         user.setPhone("079 122 34 54");
@@ -78,6 +79,7 @@ public class DTOMapperUserTest {
         assertEquals(user.getName(),userGetDTO.getName());
         assertEquals(user.getDateOfBirth(),userGetDTO.getDateOfBirth());
         assertEquals(user.getGender(),userGetDTO.getGender());
+        assertEquals(user.getEmailVerified(), userGetDTO.getEmailVerified());
         assertEquals(user.getBio(),userGetDTO.getBio());
         assertEquals(user.getToken(),userGetDTO.getToken());
         assertEquals(user.getPhone(),userGetDTO.getPhone());

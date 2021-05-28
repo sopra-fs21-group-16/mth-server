@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs21.controller;
 
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.VerificationToken;
+import ch.uzh.ifi.hase.soprafs21.emailAuthentication.emailVerification.OnRegistrationCompleteEvent;
 import ch.uzh.ifi.hase.soprafs21.entities.Activity;
 import ch.uzh.ifi.hase.soprafs21.entities.User;
 import ch.uzh.ifi.hase.soprafs21.rest.dto.activityDTO.ActivityGetDTO;
@@ -10,9 +12,15 @@ import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperActivity;
 import ch.uzh.ifi.hase.soprafs21.rest.mapper.DTOMapperUser;
 import ch.uzh.ifi.hase.soprafs21.service.ActivityService;
 import ch.uzh.ifi.hase.soprafs21.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +32,12 @@ import java.util.List;
  */
 @RestController
 public class UserController {
+
+    @Autowired
+    ApplicationEventPublisher eventPublisher;
+
+    @Autowired
+    private Environment env;
 
     private final UserService userService;
 
@@ -37,12 +51,16 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
+    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO, HttpServletRequest request) {
         // convert API user to internal representation
         User userInput = DTOMapperUser.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
         // create user
         User createdUser = userService.createUser(userInput);
+
+        // sending email that contains VerificationToken to authenticate email address of user
+        String appUrl = request.getContextPath();
+        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(createdUser, request.getLocale(), appUrl));
 
         // convert internal representation of user back to API
         return DTOMapperUser.INSTANCE.convertEntityToUserGetDTO(createdUser);
@@ -130,5 +148,25 @@ public class UserController {
         }
 
         return activityGetDTOs;
+    }
+
+    /**
+     * When the user receives the "Confirm Registration" link they should click on it.
+     * Once they do, the controller will extract the value of the token parameter in the resulting
+     * GET request and will use it to enable the user
+     */
+    @GetMapping("/users/profile/verify/{token}")
+    @ResponseStatus(HttpStatus.OK)
+    public void confirmRegistration(@PathVariable String token, HttpServletResponse response) throws IOException {
+
+        VerificationToken verificationToken = userService.getVerificationToken(token);
+
+        // check if the token is not null and is not expired
+        userService.checkIfValidVerificationToken(verificationToken);
+
+        userService.confirmRegistration(verificationToken);
+
+        // redirect the user to the login after the email verification
+        response.sendRedirect(env.getProperty("CLIENT_URL") + "/login");
     }
 }

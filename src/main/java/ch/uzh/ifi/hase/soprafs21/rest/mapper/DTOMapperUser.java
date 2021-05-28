@@ -33,6 +33,7 @@ public interface DTOMapperUser {
     @Mapping(source = "name", target = "name")
     @Mapping(source = "dateOfBirth", target = "dateOfBirth")
     @Mapping(source = "gender", target = "gender")
+    @Mapping(source = "emailVerified", target = "emailVerified")
     @Mapping(source = "bio", target = "bio")
     @Mapping(source = "token", target = "token")
     @Mapping(source = "phone", target = "phone")

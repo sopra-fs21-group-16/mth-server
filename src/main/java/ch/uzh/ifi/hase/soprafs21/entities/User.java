@@ -44,6 +44,10 @@ public class User implements Serializable {
     @NotBlank(message = "Password must not be empty")
     private String password;
 
+    // this field is used to indicate if a user has verified its email --> initially false
+    @Column
+    private boolean emailVerified = false;
+
     @Column
     private String bio;
 
@@ -108,6 +112,10 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean getEmailVerified() {return emailVerified;}
+
+    public void setEmailVerified(boolean emailVerified) {this.emailVerified = emailVerified;}
 
     public String getBio() {
         return bio;

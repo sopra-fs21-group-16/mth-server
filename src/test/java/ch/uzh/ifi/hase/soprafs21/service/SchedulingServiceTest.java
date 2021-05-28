@@ -424,6 +424,7 @@ class SchedulingServiceTest {
         //when
         Mockito.when(schedulingSessionRepository.findById(1L)).thenReturn(schedulingSession);
         Mockito.when(schedulingSessionRepository.save(Mockito.any())).thenReturn(schedulingSession);
+        Mockito.when(activityRepository.findById(Mockito.anyLong())).thenReturn(testActivity);
 
         schedulingService.updateSchedulingSession(1L, newSchedulingSession, "Token");
 
@@ -575,4 +576,113 @@ class SchedulingServiceTest {
         assertEquals(IDs, returnedIDs);
     }
 
+    @Test
+    void checkIfScheduledSessionExistsWithGivenId_ValidId() {
+        //given
+        User testUser1 = new User();
+        testUser1.setId(1L);
+        testUser1.setToken("Token");
+        User testUser2 = new User();
+        testUser2.setId(2L);
+        testUser2.setToken("Token2");
+        Activity testActivity = new Activity();
+        testActivity.setId(11L);
+        List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus();
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus();
+        userSwipeStatus1.setUser(testUser1);
+        userSwipeStatus1.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatus2.setUser(testUser2);
+        userSwipeStatus2.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+        List<Activity> activityList = new ArrayList<>();
+        activityList.add(testActivity);
+        SchedulingSession schedulingSession = new SchedulingSession();
+        schedulingSession.setId(1L);
+        schedulingSession.setActivityList(activityList);
+
+        long sessionID = schedulingSession.getId();
+
+        //when
+        Mockito.when(schedulingSessionRepository.findById(sessionID)).thenReturn(schedulingSession);
+
+        schedulingService.checkIfScheduledSessionExistsWithGivenId(schedulingSession.getId());
+    }
+
+    @Test
+    void getSpecificScheduledActivity_ValidId_returnsScheduledActivity() {
+        //given
+        User testUser1 = new User();
+        testUser1.setId(1L);
+        testUser1.setToken("Token");
+        User testUser2 = new User();
+        testUser2.setId(2L);
+        testUser2.setToken("Token2");
+        Activity testActivity = new Activity();
+        testActivity.setId(11L);
+        List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus();
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus();
+        userSwipeStatus1.setUser(testUser1);
+        userSwipeStatus1.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatus2.setUser(testUser2);
+        userSwipeStatus2.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+        ScheduledActivity scheduledActivity = new ScheduledActivity(testActivity, "TestLocation", LocalDateTime.now());
+        scheduledActivity.setId(1L);
+
+        long scheduledActivityID = scheduledActivity.getId();
+        //when
+        Mockito.when(userRepository.findByToken("Token")).thenReturn(testUser1);
+        Mockito.when(scheduledActivityRepository.findById(scheduledActivityID)).thenReturn(scheduledActivity);
+
+        ScheduledActivity returnedScheduledActivity = schedulingService.getSpecificScheduledActivity(scheduledActivity.getId(), "Token");
+
+        assertEquals(scheduledActivity.getId(),returnedScheduledActivity.getId());
+        assertEquals(scheduledActivity.getActivity(),returnedScheduledActivity.getActivity());
+        assertEquals(scheduledActivity.getLocation(),returnedScheduledActivity.getLocation());
+        assertEquals(scheduledActivity.getDate(),returnedScheduledActivity.getDate());
+    }
+
+    @Test
+    void getAllScheduledActivities_ValidId_returnsScheduledActivityList() {
+        //given
+        User testUser1 = new User();
+        testUser1.setId(1L);
+        testUser1.setToken("Token");
+        User testUser2 = new User();
+        testUser2.setId(2L);
+        testUser2.setToken("Token2");
+        Activity testActivity = new Activity();
+        testActivity.setId(11L);
+        List<UserSwipeStatus> userSwipeStatusList = new ArrayList<>();
+        UserSwipeStatus userSwipeStatus1 = new UserSwipeStatus();
+        UserSwipeStatus userSwipeStatus2 = new UserSwipeStatus();
+        userSwipeStatus1.setUser(testUser1);
+        userSwipeStatus1.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatus2.setUser(testUser2);
+        userSwipeStatus2.setSwipeStatus(SwipeStatus.TRUE);
+        userSwipeStatusList.add(userSwipeStatus1);
+        userSwipeStatusList.add(userSwipeStatus2);
+        testActivity.setUserSwipeStatusList(userSwipeStatusList);
+        ScheduledActivity scheduledActivity = new ScheduledActivity(testActivity, "TestLocation", LocalDateTime.now());
+        scheduledActivity.setId(1L);
+        List<ScheduledActivity> scheduledActivityList = new ArrayList<>();
+        scheduledActivityList.add(scheduledActivity);
+
+        //when
+        Mockito.when(userRepository.findByToken("Token")).thenReturn(testUser1);
+        Mockito.when(scheduledActivityRepository.findAll()).thenReturn(scheduledActivityList);
+
+        List<ScheduledActivity> returnedScheduledActivityList = schedulingService.getAllScheduledActivities("Token");
+
+        assertEquals(scheduledActivity.getId(),returnedScheduledActivityList.get(0).getId());
+        assertEquals(scheduledActivity.getActivity(),returnedScheduledActivityList.get(0).getActivity());
+        assertEquals(scheduledActivity.getLocation(),returnedScheduledActivityList.get(0).getLocation());
+        assertEquals(scheduledActivity.getDate(),returnedScheduledActivityList.get(0).getDate());
+    }
 }

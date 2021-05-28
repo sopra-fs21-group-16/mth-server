@@ -127,7 +127,9 @@ public class SchedulingService {
             noNewData = false;
         }
         if (schedulingSession.getChosenActivity() != null) {
-            schedulingSessionById.setChosenActivity(schedulingSession.getChosenActivity());
+            long activityID =schedulingSession.getChosenActivity().getId();
+            Activity chosenActivity = activityRepository.findById(activityID);
+            schedulingSessionById.setChosenActivity(chosenActivity);
             noNewData = false;
         }
         if (schedulingSession.getLocationList() != null) {
@@ -230,11 +232,12 @@ public class SchedulingService {
     public List<ScheduledActivity> getAllScheduledActivities(String token) {
         User user = userRepository.findByToken(token);
         List<ScheduledActivity> scheduledActivities = scheduledActivityRepository.findAll();
+        List<ScheduledActivity> scheduledActivitiesWithUser = new ArrayList<>();
         for (ScheduledActivity scheduledActivity : scheduledActivities){
             if (scheduledActivity.getActivity().getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId()) || scheduledActivity.getActivity().getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())){
-                scheduledActivities.add(scheduledActivity);
+                scheduledActivitiesWithUser.add(scheduledActivity);
             }
         }
-        return scheduledActivities;
+        return scheduledActivitiesWithUser;
     }
 }

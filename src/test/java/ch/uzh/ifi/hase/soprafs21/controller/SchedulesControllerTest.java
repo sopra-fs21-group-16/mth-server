@@ -110,6 +110,41 @@ class SchedulesControllerTest {
     }
 
     @Test
+    void getSpecificScheduledActivity() throws Exception {
+        ScheduledActivity scheduledActivity = new ScheduledActivity();
+
+        // when
+        given(userService.checkIfValidToken("Token")).willReturn(true);
+        given(schedulingService.getSpecificScheduledActivity(Mockito.anyLong(), Mockito.any())).willReturn(scheduledActivity);
+
+        MockHttpServletRequestBuilder getRequest = get("/schedules/activities/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", "Token");
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void getAllScheduledActivities() throws Exception {
+        ScheduledActivity scheduledActivity = new ScheduledActivity();
+        List<ScheduledActivity> scheduledActivityList = new ArrayList<>();
+        scheduledActivityList.add(scheduledActivity);
+        // when
+        given(userService.checkIfValidToken("Token")).willReturn(true);
+        given(schedulingService.getAllScheduledActivities(Mockito.any())).willReturn(scheduledActivityList);
+
+        MockHttpServletRequestBuilder getRequest = get("/schedules/activities")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Auth-Token", "Token");
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void getProposedInformation() throws Exception {
         SchedulingSession schedulingSession = new SchedulingSession();
 

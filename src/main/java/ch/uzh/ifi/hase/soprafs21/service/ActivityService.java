@@ -172,12 +172,20 @@ public class ActivityService {
         Set<Activity> allUnmatchedActivities = new HashSet<>();
 
         for(Activity activity : getAllActivitiesOfUser(user)) {
-            for(UserSwipeStatus userSwipeStatus : activity.getUserSwipeStatusList()) {
-                if (userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() == SwipeStatus.INITIAL) {
-                    allUnmatchedActivities.add(activity); // current user's activity
-                } else if (!userSwipeStatus.getUser().getId().equals(user.getId()) && userSwipeStatus.getSwipeStatus() != SwipeStatus.FALSE) {
-                    allUnmatchedActivities.add(activity); // potential user's activity
-                }
+            /* Current user == User 0 */
+            if(activity.getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId())
+                    && activity.getUserSwipeStatusList().get(0).getSwipeStatus() == SwipeStatus.INITIAL
+                    && activity.getUserSwipeStatusList().get(1).getSwipeStatus() != SwipeStatus.FALSE
+            ) {
+                allUnmatchedActivities.add(activity); // current user's activity
+            }
+
+            /* Current user == User 1 */
+            if(activity.getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())
+                    && activity.getUserSwipeStatusList().get(1).getSwipeStatus() == SwipeStatus.INITIAL
+                    && activity.getUserSwipeStatusList().get(0).getSwipeStatus() != SwipeStatus.FALSE
+            ) {
+                allUnmatchedActivities.add(activity); // current user's activity
             }
         }
 

@@ -93,6 +93,10 @@ public class ActivityService {
     public List<Activity> generateActivities(long userId) {
         User user = userService.getUserByID(userId);
         List<User> potentialUsers = sievePotentialUsers(user);
+
+        // if no potential users exist, then don't generate activities
+        if(potentialUsers.isEmpty()) { return new ArrayList<>();}
+
         List<Activity> activityList = new ArrayList<>();
         List<Activity> persistentActivities = new ArrayList<>(getAllUnmatchedActivities(user)); // all unmatched existing activities (still need to be swiped by user, so don't add these again as duplicates)
         List<Activity> matchedActivities = new ArrayList<>(getAllActivitiesWithMatchedUsers(user)); // all activities that are already matched (don't show again!)
@@ -201,6 +205,12 @@ public class ActivityService {
         List<User> potentialUsers = new ArrayList<User>();
 
         for(User potentialUser : userService.getUsers()) {
+
+            // if potential user has not completed its user profile creation
+            if(potentialUser.getGender() == null){
+                continue;
+            }
+
             if(potentialUser.getId().equals(user.getId())) {
                 continue;
             }

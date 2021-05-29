@@ -98,7 +98,7 @@ public class ActivityService {
         if(potentialUsers.isEmpty()) { return new ArrayList<>();}
 
         List<Activity> activityList = new ArrayList<>();
-        List<Activity> persistentActivities = new ArrayList<>(getAllUnmatchedActivities(user)); // all unmatched existing activities (still need to be swiped by user, so don't add these again as duplicates)
+        List<Activity> persistentActivities = new ArrayList<>(getAllActivitiesOfUser(user)); // all unmatched existing activities (still need to be swiped by user, so don't add these again as duplicates)
         List<Activity> matchedActivities = new ArrayList<>(getAllActivitiesWithMatchedUsers(user)); // all activities that are already matched (don't show again!)
 
         potentialUsers.sort(Comparator.comparing(potentialUser -> getAmountOfOverlappingUserActivityInterests(user.getActivityInterests(), potentialUser.getActivityInterests())));
@@ -141,7 +141,7 @@ public class ActivityService {
             i++;
         }
 
-        int unseenActivitiesAmount = persistentActivities.size();
+        int unseenActivitiesAmount = getAllUnmatchedActivities(user).size();
         for(Activity activity : activityList) {
             if(unseenActivitiesAmount >= UNSEEN_ACTIVITY_LIMIT) {
                 log.info("generateActivities: unseenActivities limit reached ({}). No new activities are being added", unseenActivitiesAmount);

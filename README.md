@@ -53,6 +53,14 @@ If you want to avoid running all tests with every change, use the following comm
 `./gradlew build --continuous -xtest`
 
 ### Roadmap
+#### Persistent Backend 
+As other features had higher priorities, we're still running on a H2-database that resets all data after restarting the server. As a next step, we want to switch our underlying database management system to PostgreSQL. 
+
+#### Improve Match-Making Algorithm
+Our algorithm to match users is still in its early phase. We want to improve the the quality of our generated matches and activities, especially as the userbase grows. Subtasks would encompass creating a match generating schedule that orchestrates and controlls the amount of new matches a user can get per time unit (trade-off between quality of the match and amount of generated activities).
+
+#### Group Activities
+MoreThanHey is not only a dating app, but primarily a match making app where you can find new people that are interested in doing the same activites as you are. Therefore we want to offer a feature that allows group activities (especially for multi-person sport events like Volleyball).
 
 ### Authors and acknowledgment
 #### Backend 

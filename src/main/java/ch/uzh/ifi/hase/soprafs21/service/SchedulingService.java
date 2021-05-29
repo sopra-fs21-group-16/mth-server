@@ -219,7 +219,7 @@ public class SchedulingService {
         User user = userRepository.findByToken(token);
         ScheduledActivity scheduledActivity = scheduledActivityRepository.findById(scheduledActivityId);
         if (scheduledActivity == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format("Scheduled Activity with id " + scheduledActivityId + " was not found."));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Scheduled Activity with id " + scheduledActivityId + " was not found."));
         }
         if (scheduledActivity.getActivity().getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId()) || scheduledActivity.getActivity().getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())){
             return scheduledActivity;
@@ -230,11 +230,12 @@ public class SchedulingService {
     public List<ScheduledActivity> getAllScheduledActivities(String token) {
         User user = userRepository.findByToken(token);
         List<ScheduledActivity> scheduledActivities = scheduledActivityRepository.findAll();
+        List<ScheduledActivity> finalScheduledActivities = new ArrayList<>();
         for (ScheduledActivity scheduledActivity : scheduledActivities){
             if (scheduledActivity.getActivity().getUserSwipeStatusList().get(0).getUser().getId().equals(user.getId()) || scheduledActivity.getActivity().getUserSwipeStatusList().get(1).getUser().getId().equals(user.getId())){
-                scheduledActivities.add(scheduledActivity);
+                finalScheduledActivities.add(scheduledActivity);
             }
         }
-        return scheduledActivities;
+        return finalScheduledActivities;
     }
 }

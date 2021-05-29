@@ -13,7 +13,7 @@
 We used Java and Spring Boot for the backend of the MoreThanHey application. To test our application, we use JUnit and Mockito. 
 
 ### Main Components
-Our Backened uses Models, Controllers, Services and REST DTO Mappers. Our main maincomponents:
+Our Backened uses Models, Controllers, Services and REST DTO Mappers. Our main components:
 - User ([UserController](https://github.com/sopra-fs21-group-16/mth-server/blob/master/src/main/java/ch/uzh/ifi/hase/soprafs21/controller/UserController.java), [UserService](https://github.com/sopra-fs21-group-16/mth-server/tree/master/src/main/java/ch/uzh/ifi/hase/soprafs21/service))
     - All major components are based on or at least use the `User` class and its `UserService`. The `ActivityService` needs the user object to generate fitting activities based on the users interests, as well as machting users with a potential user based on their interests and preferences (such as age or gender).
 - Activity ([ActivityController](https://github.com/sopra-fs21-group-16/mth-server/blob/master/src/main/java/ch/uzh/ifi/hase/soprafs21/controller/ActivityController.java), [ActivityService](https://github.com/sopra-fs21-group-16/mth-server/blob/master/src/main/java/ch/uzh/ifi/hase/soprafs21/service/ActivityService.java))
